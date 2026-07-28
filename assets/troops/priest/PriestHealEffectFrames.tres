@@ -1,0 +1,43 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://dsb6tq31my06m"]
+
+[ext_resource type="Texture2D" uid="uid://bwu3xiidp0o3q" path="res://assets/troops/priest/PriestHealEffectSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_effect_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 34, 30)
+margin = Rect2(34, 34, 66, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_effect_1"]
+atlas = ExtResource("1")
+region = Rect2(34, 0, 34, 34)
+margin = Rect2(34, 30, 66, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_effect_2"]
+atlas = ExtResource("1")
+region = Rect2(68, 0, 34, 37)
+margin = Rect2(34, 27, 66, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_effect_3"]
+atlas = ExtResource("1")
+region = Rect2(102, 0, 34, 42)
+margin = Rect2(34, 22, 66, 58)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_effect_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_effect_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_effect_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_effect_3")
+}],
+"loop": false,
+"name": &"cast",
+"speed": 12.0
+}]

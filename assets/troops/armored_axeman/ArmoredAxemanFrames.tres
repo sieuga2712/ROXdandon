@@ -1,0 +1,457 @@
+[gd_resource type="SpriteFrames" load_steps=54 format=3 uid="uid://ddc5tvb74og0n"]
+
+[ext_resource type="Texture2D" uid="uid://b1bj2gipy81ve" path="res://assets/troops/armored_axeman/ArmoredAxemanSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(336, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(360, 0, 26, 32)
+margin = Rect2(34, 30, 74, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(386, 0, 26, 32)
+margin = Rect2(34, 30, 74, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(412, 0, 27, 33)
+margin = Rect2(33, 29, 73, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(439, 0, 45, 35)
+margin = Rect2(34, 28, 55, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(484, 0, 35, 32)
+margin = Rect2(41, 31, 65, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(519, 0, 34, 25)
+margin = Rect2(41, 37, 66, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_7"]
+atlas = ExtResource("1")
+region = Rect2(553, 0, 34, 25)
+margin = Rect2(41, 37, 66, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack01_8"]
+atlas = ExtResource("1")
+region = Rect2(587, 0, 23, 25)
+margin = Rect2(40, 37, 77, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(610, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(634, 0, 26, 32)
+margin = Rect2(34, 30, 74, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(660, 0, 27, 33)
+margin = Rect2(33, 29, 73, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(687, 0, 27, 33)
+margin = Rect2(33, 29, 73, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(714, 0, 42, 26)
+margin = Rect2(38, 37, 58, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(756, 0, 36, 28)
+margin = Rect2(40, 37, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(792, 0, 46, 25)
+margin = Rect2(26, 37, 54, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(838, 0, 40, 25)
+margin = Rect2(29, 37, 60, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(878, 0, 42, 26)
+margin = Rect2(38, 37, 58, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(920, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(944, 0, 29, 24)
+margin = Rect2(31, 38, 71, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(973, 0, 29, 24)
+margin = Rect2(31, 38, 71, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(0, 35, 28, 25)
+margin = Rect2(32, 38, 72, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(28, 35, 41, 25)
+margin = Rect2(35, 37, 59, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(69, 35, 33, 34)
+margin = Rect2(34, 28, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(102, 35, 26, 32)
+margin = Rect2(34, 30, 74, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(128, 35, 45, 35)
+margin = Rect2(34, 28, 55, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_8"]
+atlas = ExtResource("1")
+region = Rect2(173, 35, 46, 32)
+margin = Rect2(41, 31, 54, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_9"]
+atlas = ExtResource("1")
+region = Rect2(219, 35, 54, 25)
+margin = Rect2(41, 38, 46, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_10"]
+atlas = ExtResource("1")
+region = Rect2(273, 35, 57, 25)
+margin = Rect2(41, 38, 43, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_attack03_11"]
+atlas = ExtResource("1")
+region = Rect2(330, 35, 34, 24)
+margin = Rect2(41, 38, 66, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_death_0"]
+atlas = ExtResource("1")
+region = Rect2(444, 35, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_death_1"]
+atlas = ExtResource("1")
+region = Rect2(468, 35, 30, 28)
+margin = Rect2(40, 34, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_death_2"]
+atlas = ExtResource("1")
+region = Rect2(498, 35, 30, 23)
+margin = Rect2(39, 39, 70, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_death_3"]
+atlas = ExtResource("1")
+region = Rect2(528, 35, 31, 21)
+margin = Rect2(31, 41, 69, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(364, 35, 20, 25)
+margin = Rect2(40, 37, 80, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(384, 35, 20, 25)
+margin = Rect2(40, 37, 80, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(404, 35, 20, 25)
+margin = Rect2(40, 37, 80, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(424, 35, 20, 25)
+margin = Rect2(40, 37, 80, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(24, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(48, 0, 24, 27)
+margin = Rect2(41, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(72, 0, 24, 27)
+margin = Rect2(41, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(96, 0, 24, 27)
+margin = Rect2(41, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(120, 0, 24, 27)
+margin = Rect2(41, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(144, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(168, 0, 24, 27)
+margin = Rect2(41, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(192, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(216, 0, 24, 25)
+margin = Rect2(41, 37, 76, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(240, 0, 24, 26)
+margin = Rect2(41, 36, 76, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(264, 0, 24, 28)
+margin = Rect2(41, 34, 76, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(288, 0, 24, 27)
+margin = Rect2(41, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_axeman_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(312, 0, 24, 25)
+margin = Rect2(41, 37, 76, 75)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack01_8")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack02_8")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_attack03_11")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_axeman_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

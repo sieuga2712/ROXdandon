@@ -1,0 +1,441 @@
+[gd_resource type="SpriteFrames" load_steps=52 format=3 uid="uid://dhg14nyu5qh34"]
+
+[ext_resource type="Texture2D" uid="uid://bfotmairt4sf2" path="res://assets/troops/knight/KnightSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(420, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(450, 0, 23, 31)
+margin = Rect2(39, 31, 77, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(473, 0, 24, 29)
+margin = Rect2(39, 33, 76, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(497, 0, 33, 31)
+margin = Rect2(40, 31, 67, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(530, 0, 33, 29)
+margin = Rect2(40, 33, 67, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(563, 0, 30, 24)
+margin = Rect2(40, 38, 70, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(593, 0, 29, 24)
+margin = Rect2(40, 38, 71, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(622, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(652, 0, 27, 24)
+margin = Rect2(33, 38, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(679, 0, 29, 24)
+margin = Rect2(31, 38, 71, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(708, 0, 38, 34)
+margin = Rect2(40, 28, 62, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(746, 0, 22, 28)
+margin = Rect2(40, 34, 78, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(768, 0, 22, 28)
+margin = Rect2(40, 34, 78, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(790, 0, 25, 31)
+margin = Rect2(40, 31, 75, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(815, 0, 39, 35)
+margin = Rect2(41, 27, 61, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(854, 0, 39, 25)
+margin = Rect2(41, 37, 61, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack02_9"]
+atlas = ExtResource("1")
+region = Rect2(893, 0, 29, 24)
+margin = Rect2(41, 38, 71, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(922, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(952, 0, 21, 30)
+margin = Rect2(39, 32, 79, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(973, 0, 21, 30)
+margin = Rect2(39, 32, 79, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(994, 0, 21, 30)
+margin = Rect2(39, 32, 79, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(0, 35, 30, 31)
+margin = Rect2(39, 31, 70, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(30, 35, 36, 30)
+margin = Rect2(36, 32, 64, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(66, 35, 43, 30)
+margin = Rect2(32, 32, 57, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(109, 35, 52, 38)
+margin = Rect2(41, 24, 48, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_8"]
+atlas = ExtResource("1")
+region = Rect2(161, 35, 53, 38)
+margin = Rect2(41, 24, 47, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_9"]
+atlas = ExtResource("1")
+region = Rect2(214, 35, 53, 33)
+margin = Rect2(41, 29, 47, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_attack03_10"]
+atlas = ExtResource("1")
+region = Rect2(267, 35, 29, 24)
+margin = Rect2(41, 38, 71, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_death_0"]
+atlas = ExtResource("1")
+region = Rect2(392, 35, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_death_1"]
+atlas = ExtResource("1")
+region = Rect2(422, 35, 30, 23)
+margin = Rect2(39, 39, 70, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_death_2"]
+atlas = ExtResource("1")
+region = Rect2(452, 35, 27, 20)
+margin = Rect2(42, 42, 73, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_death_3"]
+atlas = ExtResource("1")
+region = Rect2(479, 35, 28, 20)
+margin = Rect2(42, 42, 72, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(296, 35, 24, 27)
+margin = Rect2(37, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(320, 35, 24, 27)
+margin = Rect2(37, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(344, 35, 24, 27)
+margin = Rect2(37, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(368, 35, 24, 27)
+margin = Rect2(37, 35, 76, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(30, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(60, 0, 30, 26)
+margin = Rect2(39, 36, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(90, 0, 30, 26)
+margin = Rect2(39, 36, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(120, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(150, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(180, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(210, 0, 30, 26)
+margin = Rect2(39, 36, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(240, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(270, 0, 30, 24)
+margin = Rect2(39, 38, 70, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(300, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(330, 0, 30, 26)
+margin = Rect2(39, 36, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(360, 0, 30, 25)
+margin = Rect2(39, 37, 70, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knight_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(390, 0, 30, 24)
+margin = Rect2(39, 38, 70, 76)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack01_6")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack02_9")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_attack03_10")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knight_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

@@ -1,0 +1,91 @@
+[gd_resource type="SpriteFrames" load_steps=12 format=3 uid="uid://ees0imv00poq"]
+
+[ext_resource type="Texture2D" uid="uid://tyrlg5h73m2p" path="res://assets/troops/wizard/MagicProjectileSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 65, 77)
+margin = Rect2(23, 12, 35, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_1"]
+atlas = ExtResource("1")
+region = Rect2(65, 0, 44, 50)
+margin = Rect2(33, 26, 56, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_2"]
+atlas = ExtResource("1")
+region = Rect2(109, 0, 30, 36)
+margin = Rect2(38, 32, 70, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_3"]
+atlas = ExtResource("1")
+region = Rect2(139, 0, 30, 36)
+margin = Rect2(38, 33, 70, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_4"]
+atlas = ExtResource("1")
+region = Rect2(169, 0, 32, 36)
+margin = Rect2(35, 32, 68, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_5"]
+atlas = ExtResource("1")
+region = Rect2(201, 0, 31, 36)
+margin = Rect2(39, 33, 69, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_6"]
+atlas = ExtResource("1")
+region = Rect2(232, 0, 30, 36)
+margin = Rect2(38, 32, 70, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_7"]
+atlas = ExtResource("1")
+region = Rect2(262, 0, 29, 39)
+margin = Rect2(37, 28, 71, 61)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_8"]
+atlas = ExtResource("1")
+region = Rect2(291, 0, 29, 39)
+margin = Rect2(37, 28, 71, 61)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_9"]
+atlas = ExtResource("1")
+region = Rect2(320, 0, 32, 43)
+margin = Rect2(35, 26, 68, 57)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_magic_cast_9")
+}],
+"loop": false,
+"name": &"cast",
+"speed": 12.0
+}]

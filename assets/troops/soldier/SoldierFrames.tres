@@ -1,0 +1,385 @@
+[gd_resource type="SpriteFrames" load_steps=45 format=3 uid="uid://brb6l8ks0e46b"]
+
+[ext_resource type="Texture2D" uid="uid://d3fcreg1wcunc" path="res://assets/troops/soldier/SoldierSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(294, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(315, 0, 23, 31)
+margin = Rect2(39, 31, 77, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(338, 0, 24, 30)
+margin = Rect2(39, 32, 76, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(362, 0, 38, 24)
+margin = Rect2(34, 38, 62, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(400, 0, 38, 24)
+margin = Rect2(34, 38, 62, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(438, 0, 26, 24)
+margin = Rect2(34, 38, 74, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(464, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(485, 0, 23, 33)
+margin = Rect2(39, 29, 77, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(508, 0, 22, 32)
+margin = Rect2(41, 30, 78, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(530, 0, 32, 28)
+margin = Rect2(40, 34, 68, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(562, 0, 32, 22)
+margin = Rect2(40, 40, 68, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(594, 0, 32, 23)
+margin = Rect2(40, 39, 68, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(626, 0, 23, 25)
+margin = Rect2(39, 37, 77, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(649, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(670, 0, 21, 26)
+margin = Rect2(39, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(691, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(712, 0, 26, 25)
+margin = Rect2(39, 37, 74, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(738, 0, 25, 24)
+margin = Rect2(39, 38, 75, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(763, 0, 24, 24)
+margin = Rect2(39, 38, 76, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(787, 0, 40, 25)
+margin = Rect2(39, 37, 60, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_attack03_8"]
+atlas = ExtResource("1")
+region = Rect2(827, 0, 27, 25)
+margin = Rect2(39, 37, 73, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_death_0"]
+atlas = ExtResource("1")
+region = Rect2(942, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_death_1"]
+atlas = ExtResource("1")
+region = Rect2(963, 0, 21, 23)
+margin = Rect2(39, 39, 79, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_death_2"]
+atlas = ExtResource("1")
+region = Rect2(984, 0, 20, 21)
+margin = Rect2(43, 41, 80, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_death_3"]
+atlas = ExtResource("1")
+region = Rect2(0, 33, 26, 17)
+margin = Rect2(44, 45, 74, 83)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(854, 0, 22, 25)
+margin = Rect2(38, 37, 78, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(876, 0, 22, 25)
+margin = Rect2(38, 37, 78, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(898, 0, 22, 25)
+margin = Rect2(38, 37, 78, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(920, 0, 22, 25)
+margin = Rect2(38, 37, 78, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(21, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(42, 0, 21, 26)
+margin = Rect2(39, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(63, 0, 21, 26)
+margin = Rect2(39, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(84, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(105, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(126, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(147, 0, 21, 26)
+margin = Rect2(39, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(168, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(189, 0, 21, 24)
+margin = Rect2(39, 38, 79, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(210, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(231, 0, 21, 26)
+margin = Rect2(39, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(252, 0, 21, 25)
+margin = Rect2(39, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soldier_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(273, 0, 21, 24)
+margin = Rect2(39, 38, 79, 76)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack01_5")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack02_5")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_attack03_8")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soldier_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

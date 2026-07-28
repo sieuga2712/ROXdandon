@@ -1,0 +1,332 @@
+[gd_resource type="SpriteFrames" load_steps=39 format=3 uid="uid://bp040rl7163x2"]
+
+[ext_resource type="Texture2D" uid="uid://d3tle7uqh4jjp" path="res://assets/troops/priest/PriestSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(294, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(315, 0, 22, 27)
+margin = Rect2(41, 35, 78, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(337, 0, 22, 27)
+margin = Rect2(41, 35, 78, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(359, 0, 19, 32)
+margin = Rect2(41, 30, 81, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(378, 0, 31, 27)
+margin = Rect2(41, 35, 69, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(409, 0, 31, 27)
+margin = Rect2(41, 35, 69, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(440, 0, 31, 27)
+margin = Rect2(41, 35, 69, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_7"]
+atlas = ExtResource("1")
+region = Rect2(471, 0, 31, 27)
+margin = Rect2(41, 35, 69, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack01_8"]
+atlas = ExtResource("1")
+region = Rect2(502, 0, 31, 27)
+margin = Rect2(41, 35, 69, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_death_0"]
+atlas = ExtResource("1")
+region = Rect2(748, 0, 20, 26)
+margin = Rect2(41, 36, 80, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_death_1"]
+atlas = ExtResource("1")
+region = Rect2(768, 0, 20, 24)
+margin = Rect2(41, 38, 80, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_death_2"]
+atlas = ExtResource("1")
+region = Rect2(788, 0, 24, 22)
+margin = Rect2(41, 40, 76, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_death_3"]
+atlas = ExtResource("1")
+region = Rect2(812, 0, 28, 18)
+margin = Rect2(41, 44, 72, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_0"]
+atlas = ExtResource("1")
+region = Rect2(533, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_1"]
+atlas = ExtResource("1")
+region = Rect2(554, 0, 22, 27)
+margin = Rect2(41, 35, 78, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_2"]
+atlas = ExtResource("1")
+region = Rect2(576, 0, 23, 27)
+margin = Rect2(41, 35, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_3"]
+atlas = ExtResource("1")
+region = Rect2(599, 0, 23, 27)
+margin = Rect2(41, 35, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_4"]
+atlas = ExtResource("1")
+region = Rect2(622, 0, 23, 27)
+margin = Rect2(41, 35, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_5"]
+atlas = ExtResource("1")
+region = Rect2(645, 0, 23, 27)
+margin = Rect2(41, 35, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(668, 0, 20, 26)
+margin = Rect2(41, 36, 80, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(688, 0, 20, 26)
+margin = Rect2(41, 36, 80, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(708, 0, 20, 26)
+margin = Rect2(41, 36, 80, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(728, 0, 20, 26)
+margin = Rect2(41, 36, 80, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(21, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(42, 0, 21, 27)
+margin = Rect2(41, 35, 79, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(63, 0, 21, 27)
+margin = Rect2(41, 35, 79, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(84, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(105, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(126, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(147, 0, 21, 27)
+margin = Rect2(41, 35, 79, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(168, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(189, 0, 21, 25)
+margin = Rect2(41, 37, 79, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(210, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(231, 0, 21, 27)
+margin = Rect2(41, 35, 79, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(252, 0, 21, 26)
+margin = Rect2(41, 36, 79, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_priest_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(273, 0, 21, 25)
+margin = Rect2(41, 37, 79, 75)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_attack01_8")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_heal_5")
+}],
+"loop": false,
+"name": &"heal",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_priest_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

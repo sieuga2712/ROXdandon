@@ -1,0 +1,436 @@
+class_name BattleScene
+extends Control
+
+## Màn chiến đấu PvE - auto-battle: bấm "Chọn ải" xong vào thẳng trận, không
+## còn pha "xếp quân" (party cố định 4 người, không có gì để chọn trước mỗi
+## trận - xem GameState.PARTY_TROOP_IDS). start_battle(stage) spawn cả 2 phe
+## vào %BattleArena (SubViewport riêng) và chạy AI mỗi frame cho tới khi 1 phe
+## chết hết hoặc hết giờ.
+##
+## Quyết định thiết kế (kế thừa từ bản city-builder cũ, xem lịch sử):
+## - Sát thương = ATK (x Crit Damage nếu chí mạng) TRỪ THẲNG (không phải %)
+##   giáp hiệu quả = DEF/M.DEF x (1 - Armor Penetration/100), tối thiểu 1 sát
+##   thương mỗi đòn để trận đấu luôn có hồi kết.
+## - Skill "Đánh mạnh": cứ mỗi SKILL_INTERVAL giây, đòn tiếp theo trong tầm
+##   đánh tự động là 1 đòn mạnh (x SKILL_DAMAGE_MULT sát thương) thay cho đòn
+##   thường. Riêng Priest không có đòn mạnh - skill xen kẽ giữa hồi máu đồng
+##   đội (HP thấp nhất, = PRIEST_HEAL_RATIO x ATK) và 1 đòn đánh thường, xem
+##   _priest_cast().
+## - Đạn bay (Projectile): character_key "archer"/"wizard" spawn 1 Projectile
+##   bay từ người bắn tới mục tiêu, sát thương chỉ áp dụng khi đạn TỚI NƠI.
+##   Priest không dùng Projectile - áp dụng ngay lập tức kèm 1 ImpactEffect.
+## - Không còn squad/dồn lính: mỗi TroopUnit là 1 nhân vật/quái riêng biệt.
+##   AI target vẫn tự gom các unit đang nhắm CHUNG 1 mục tiêu để chia góc vây
+##   quanh mục tiêu đó (tránh đứng đè lên nhau), tính lại mỗi frame thay vì
+##   theo squad cố định - xem _update_side().
+## - Đội hình: dùng 1 bộ offset hình nêm cố định (FORMATION_OFFSETS, kế thừa ý
+##   tưởng từ BattleHexCell cũ) quanh tâm đội hình mỗi phe, mirror theo trục X
+##   cho phe địch. Party 4 người luôn vừa trong 6 vị trí; quái mỗi ải nên giữ
+##   tổng số <= 6 để đội hình không đè lên nhau (v1 chưa cần > 6).
+
+signal closed
+
+const TROOP_UNIT_SCENE: PackedScene = preload("res://scenes/troop/TroopUnit.tscn")
+const PROJECTILE_SCENE: PackedScene = preload("res://scenes/troop/Projectile.tscn")
+const ARROW_TEXTURE: Texture2D = preload("res://assets/troops/archer/ArrowProjectile.png")
+const ARROW_SKILL_SCALE: float = 1.5 ## Đòn mạnh của cung thủ vẫn dùng chung ảnh mũi tên, chỉ phóng to hơn để phân biệt với đòn thường
+const MAGIC_PROJECTILE_FRAMES: SpriteFrames = preload("res://assets/troops/wizard/MagicProjectileFrames.tres") ## Đòn thường
+const MAGIC_SKILL_PROJECTILE_FRAMES: SpriteFrames = preload("res://assets/troops/wizard/MagicSkillProjectileFrames.tres") ## Đòn mạnh
+const IMPACT_EFFECT_SCENE: PackedScene = preload("res://scenes/troop/ImpactEffect.tscn")
+const PRIEST_ATTACK_EFFECT_FRAMES: SpriteFrames = preload("res://assets/troops/priest/PriestAttackEffectFrames.tres")
+const PRIEST_HEAL_EFFECT_FRAMES: SpriteFrames = preload("res://assets/troops/priest/PriestHealEffectFrames.tres")
+
+const DAMAGE_POPUP_SCENE: PackedScene = preload("res://scenes/troop/DamagePopup.tscn")
+const POPUP_SPAWN_OFFSET: Vector2 = Vector2(0, -70) ## Cao hơn thanh máu 1 chút
+const COLOR_DAMAGE_NORMAL: Color = Color.WHITE
+const COLOR_DAMAGE_SKILL: Color = Color(1.0, 0.6, 0.0) ## cam
+const COLOR_HEAL: Color = Color(0.3, 0.9, 0.3) ## xanh lá
+
+## Bán kính hitbox va chạm để lính không đè khít lên nhau - nhỏ hơn hẳn
+## hitbox logic dùng cho tầm đánh (TroopUnit.HITBOX_DIAMETER/2). Không dùng
+## physics thật vì lính di chuyển bằng cách gán thẳng .position mỗi frame
+## (xem _update_unit), nên tự đẩy nhau ở _resolve_collisions().
+const COLLISION_RADIUS: float = TroopUnit.HITBOX_DIAMETER / 4.0
+
+## Đội hình hình nêm quanh tâm đội - hand-copy từ BattleHexCell.FORMATION_OFFSETS
+## của bản city-builder cũ (mũi nhọn hướng về phía địch, 2 hàng giữa, 3 hậu
+## phương). offset[0] là mũi (đứng gần địch nhất - nên là tank).
+const FORMATION_OFFSETS: Array[Vector2] = [
+	Vector2(1.2, 0.0), ## mũi nhọn
+	Vector2(0.0, -0.5), Vector2(0.0, 0.5), ## hàng giữa x2
+	Vector2(-1.2, -1.0), Vector2(-1.2, 0.0), Vector2(-1.2, 1.0), ## hậu phương x3
+]
+const FORMATION_WORLD_SPACING: float = 40.0
+const PLAYER_TEAM_CENTER: Vector2 = Vector2(-180, 0)
+const ENEMY_TEAM_CENTER: Vector2 = Vector2(180, 0)
+
+const SKILL_INTERVAL: float = 2.0 ## Đánh mạnh tự động kích hoạt mỗi 2 giây
+const PRIEST_SKILL_INTERVAL: float = 1.0 ## Riêng Priest: chu kỳ ngắn hơn hẳn để hồi máu/đánh thường xen kẽ rõ hơn
+const SKILL_DAMAGE_MULT: float = 2.0
+const PRIEST_HEAL_RATIO: float = 0.5 ## Riêng Priest: skill hồi máu = 50% ATK thay vì đòn mạnh gây sát thương
+
+## ================== DEBUG (đổi lại true nếu cần bật lại lúc test) ==================
+const DEBUG_SHOW_COLLISION_SHAPES: bool = false
+const DEBUG_FREEZE_UNITS: bool = false
+
+@onready var arena: Node2D = %BattleArena
+@onready var battle_camera: Camera2D = %BattleCamera
+@onready var timer_label: Label = %BattleTimerLabel
+@onready var result_panel: PanelContainer = %BattleResultPanel
+@onready var result_title: Label = %BattleResultTitle
+@onready var result_reward: Label = %BattleResultReward
+@onready var result_close_button: Button = %BattleResultCloseButton
+@onready var surrender_button: Button = %SurrenderButton
+
+var _stage: StageData
+var _player_units: Array[TroopUnit] = []
+var _enemy_units: Array[TroopUnit] = []
+var _time_left: float = 0.0
+var _active: bool = false ## true = đang chạy AI mỗi frame (xem _process)
+
+func _ready() -> void:
+	visible = false
+	result_panel.visible = false
+	result_close_button.pressed.connect(_on_result_closed)
+	surrender_button.pressed.connect(_on_surrender_pressed)
+	if DEBUG_SHOW_COLLISION_SHAPES:
+		get_tree().debug_collisions_hint = true
+	battle_camera.position = Vector2.ZERO
+	battle_camera.zoom = Vector2.ONE
+
+func start_battle(stage: StageData) -> void:
+	_stage = stage
+	_clear_units()
+	_spawn_team(GameState.PARTY_TROOP_IDS, Enums.Team.PLAYER, PLAYER_TEAM_CENTER, 1.0)
+	var enemy_ids: Array[int] = []
+	for i in range(stage.enemy_troop_ids.size()):
+		for _n in range(stage.enemy_troop_counts[i]):
+			enemy_ids.append(stage.enemy_troop_ids[i])
+	_spawn_team(enemy_ids, Enums.Team.ENEMY, ENEMY_TEAM_CENTER, -1.0)
+
+	_time_left = stage.time_limit
+	_active = true
+	result_panel.visible = false
+	surrender_button.visible = true
+	timer_label.visible = true
+	visible = true
+
+## facing = +1.0 (phe mình, mũi nhọn hướng +X = về phía địch bên phải) hoặc
+## -1.0 (phe địch, mirror ngược lại để mũi nhọn hướng về phía người chơi).
+func _spawn_team(troop_ids: Array[int], team: Enums.Team, team_center: Vector2, facing: float) -> void:
+	for i in range(troop_ids.size()):
+		var troop := TroopDatabase.get_by_id(troop_ids[i])
+		if troop == null:
+			continue
+		var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
+		arena.add_child(unit)
+		unit.setup(troop, team)
+		var offset := FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()]
+		offset.x *= facing
+		unit.position = team_center + offset * FORMATION_WORLD_SPACING
+		if team == Enums.Team.PLAYER:
+			_player_units.append(unit)
+		else:
+			_enemy_units.append(unit)
+
+func _clear_units() -> void:
+	for child in arena.get_children():
+		child.queue_free()
+	_player_units.clear()
+	_enemy_units.clear()
+
+func _process(delta: float) -> void:
+	if not _active:
+		return
+	_time_left = maxf(_time_left - delta, 0.0)
+	timer_label.text = "%d:%02d" % [int(_time_left) / 60, int(_time_left) % 60]
+	_run_ai(delta)
+	_resolve_collisions()
+	_check_battle_end()
+
+## Đẩy nhẹ 2 lính ra xa nhau nếu khoảng cách giữa 2 tâm < 2*COLLISION_RADIUS.
+## Lính đang is_engaged (đứng yên trong tầm đánh) không bị đẩy trừ khi CẢ 2
+## đều đang engaged - lính đang di chuyển băng qua sẽ tự nhường, không kéo
+## lính đang đánh dở ra khỏi tầm.
+func _resolve_collisions() -> void:
+	var all_units: Array[TroopUnit] = _player_units + _enemy_units
+	var min_dist := COLLISION_RADIUS * 2.0
+	for i in range(all_units.size()):
+		var a := all_units[i]
+		if a.is_dead():
+			continue
+		for j in range(i + 1, all_units.size()):
+			var b := all_units[j]
+			if b.is_dead():
+				continue
+			var diff := b.position - a.position
+			var dist := diff.length()
+			if dist >= min_dist:
+				continue
+			var dir := diff.normalized() if dist > 0.001 else Vector2.RIGHT
+			var push := min_dist - dist
+			if a.is_engaged and not b.is_engaged:
+				b.position += dir * push
+			elif b.is_engaged and not a.is_engaged:
+				a.position -= dir * push
+			else:
+				a.position -= dir * push * 0.5
+				b.position += dir * push * 0.5
+
+func _run_ai(delta: float) -> void:
+	_update_side(_player_units, _enemy_units, delta)
+	_update_side(_enemy_units, _player_units, delta)
+
+## Không còn squad cố định - mỗi unit tự tìm địch gần nhất, nhưng các unit
+## đang nhắm CHUNG 1 mục tiêu (rất thường xảy ra vì party chỉ 4 người) được
+## gom lại và chia đều góc vây quanh mục tiêu đó (Attack Slot), tính lại MỖI
+## FRAME thay vì theo squad cố định như bản cũ - tránh đứng đè khít lên nhau.
+func _update_side(units: Array[TroopUnit], enemies: Array[TroopUnit], delta: float) -> void:
+	var target_of: Dictionary = {} ## unit -> TroopUnit (null nếu hết địch)
+	var group_by_target: Dictionary = {} ## TroopUnit mục tiêu -> Array[TroopUnit] đang cùng nhắm nó
+	for unit in units:
+		if unit.is_dead():
+			continue
+		var target := _find_nearest(unit, enemies)
+		target_of[unit] = target
+		if target != null:
+			if not group_by_target.has(target):
+				group_by_target[target] = []
+			group_by_target[target].append(unit)
+
+	var slot_of: Dictionary = {}
+	for target in group_by_target:
+		var group: Array = group_by_target[target]
+		for i in range(group.size()):
+			slot_of[group[i]] = TAU * i / group.size()
+
+	for unit in units:
+		_update_unit(unit, target_of.get(unit), slot_of.get(unit, 0.0), units, delta)
+
+## Local Avoidance: lực đẩy tổng hợp từ mọi đồng đội (CÙNG PHE) đang đứng
+## trong bán kính AVOIDANCE_RADIUS quanh unit - càng gần đẩy càng mạnh. Cộng
+## vào hướng Seek (hướng tới slot) để lính tự lệch đường vòng qua chỗ đông.
+const AVOIDANCE_RADIUS: float = COLLISION_RADIUS * 4.0
+const AVOIDANCE_WEIGHT: float = 0.8 ## <1 = Seek luôn có ảnh hưởng nhiều hơn
+
+func _compute_avoidance(unit: TroopUnit, allies: Array[TroopUnit]) -> Vector2:
+	var avoidance := Vector2.ZERO
+	for ally in allies:
+		if ally == unit or ally.is_dead():
+			continue
+		var offset := unit.position - ally.position
+		var dist := offset.length()
+		if dist < AVOIDANCE_RADIUS and dist > 0.001:
+			avoidance += offset.normalized() * (AVOIDANCE_RADIUS - dist) / AVOIDANCE_RADIUS
+	return avoidance
+
+## Khoảng nghỉ TRƯỚC/SAU lúc skill thật sự ra hiệu ứng = 50% attack_interval().
+func _skill_pause(unit: TroopUnit) -> float:
+	return unit.attack_interval() * 0.5
+
+const ATTACK_READY_HOLD: float = 0.15 ## Đòn thường giữ 1 nhịp "sẵn sàng" ngắn trước khi ra đòn, để thanh đánh thường kịp hiện màu sẵn sàng
+const REGEN_INTERVAL: float = 5.0 ## Lính hồi máu mỗi 5 giây theo regen_hp
+
+func _update_unit(unit: TroopUnit, target: TroopUnit, slot_angle: float, allies: Array[TroopUnit], delta: float) -> void:
+	if unit.is_dead():
+		return
+	unit.attack_cooldown = maxf(unit.attack_cooldown - delta, 0.0)
+	unit.skill_cooldown = maxf(unit.skill_cooldown - delta, 0.0)
+	unit.regen_cooldown += delta
+	if unit.regen_cooldown >= REGEN_INTERVAL:
+		unit.regen_cooldown = 0.0
+		unit.heal(unit.troop_data.regen_hp)
+
+	if target == null:
+		unit.is_engaged = false
+		unit.play_idle()
+		return
+
+	unit.face_towards(target.position)
+	if DEBUG_FREEZE_UNITS:
+		unit.is_engaged = false
+		unit.play_idle()
+		return ## chỉ quay mặt về mục tiêu, không di chuyển/tấn công
+
+	var distance := unit.position.distance_to(target.position)
+	if distance > unit.attack_range_px():
+		unit.is_engaged = false
+		unit.play_walk()
+		var slot_position := target.position + Vector2.RIGHT.rotated(slot_angle) * (unit.attack_range_px() * 0.85)
+		var seek := (slot_position - unit.position).normalized()
+		var avoidance := _compute_avoidance(unit, allies)
+		var combined := seek + avoidance * AVOIDANCE_WEIGHT
+		var move_dir := combined.normalized() if combined.length() > 0.05 else seek
+		unit.position += move_dir * unit.move_speed_px() * delta
+		return
+
+	unit.is_engaged = true
+	var is_priest: bool = unit.troop_data.character_key == "priest"
+
+	if unit.skill_recovery_timer > 0.0:
+		unit.skill_recovery_timer = maxf(unit.skill_recovery_timer - delta, 0.0)
+		return
+
+	if unit.skill_windup_timer >= 0.0:
+		unit.skill_windup_timer -= delta
+		if unit.skill_windup_timer <= 0.0:
+			unit.skill_windup_timer = -1.0
+			unit.skill_cooldown_max = PRIEST_SKILL_INTERVAL if is_priest else SKILL_INTERVAL
+			unit.skill_cooldown = unit.skill_cooldown_max
+			if is_priest:
+				_priest_cast(unit, target)
+			else:
+				unit.play_attack()
+				_resolve_attack(unit, target, true)
+			unit.skill_recovery_timer = _skill_pause(unit)
+			unit.attack_cooldown = unit.attack_interval()
+		return
+
+	if unit.skill_cooldown <= 0.0:
+		unit.skill_windup_timer = _skill_pause(unit)
+		return
+
+	if unit.attack_windup_timer >= 0.0:
+		unit.attack_windup_timer -= delta
+		if unit.attack_windup_timer <= 0.0:
+			unit.attack_windup_timer = -1.0
+			unit.attack_cooldown = unit.attack_interval()
+			unit.play_attack()
+			_resolve_attack(unit, target, false)
+		return
+
+	if unit.attack_cooldown <= 0.0:
+		unit.attack_windup_timer = ATTACK_READY_HOLD
+
+func _priest_cast(unit: TroopUnit, target: TroopUnit) -> void:
+	unit.skill_toggle = not unit.skill_toggle
+	if unit.skill_toggle:
+		var ally := _find_heal_target(unit)
+		if ally != null:
+			unit.play_heal()
+			_apply_heal(unit, ally)
+			return
+	unit.play_attack()
+	_resolve_attack(unit, target, false)
+
+func _find_heal_target(unit: TroopUnit) -> TroopUnit:
+	var allies: Array[TroopUnit] = _player_units if unit.team == Enums.Team.PLAYER else _enemy_units
+	var best: TroopUnit = null
+	var best_ratio := INF
+	for ally in allies:
+		if ally.is_dead():
+			continue
+		var ratio: float = ally.current_hp / ally.max_hp()
+		if ratio < best_ratio:
+			best_ratio = ratio
+			best = ally
+	return best
+
+func _apply_heal(caster: TroopUnit, ally: TroopUnit) -> void:
+	var heal_amount: float = caster.effective_atk() * PRIEST_HEAL_RATIO
+	ally.heal(heal_amount)
+	_spawn_heal_popup(ally, heal_amount)
+	_spawn_impact_effect(ally.position, PRIEST_HEAL_EFFECT_FRAMES)
+
+func _find_nearest(unit: TroopUnit, pool: Array[TroopUnit]) -> TroopUnit:
+	var nearest: TroopUnit = null
+	var nearest_dist := INF
+	for other in pool:
+		if other.is_dead():
+			continue
+		var d := unit.position.distance_to(other.position)
+		if d < nearest_dist:
+			nearest_dist = d
+			nearest = other
+	return nearest
+
+## Sát thương = ATK HIỆU DỤNG nhân Crit Damage nếu chí mạng, nhân thêm
+## SKILL_DAMAGE_MULT nếu là đòn "Đánh mạnh", trừ giáp hiệu quả của đối
+## phương (DEF nếu đòn vật lý, M.DEF nếu đòn phép), giáp hiệu quả giảm theo
+## Armor Penetration. Tối thiểu 1 sát thương.
+func _resolve_attack(attacker: TroopUnit, defender: TroopUnit, is_skill: bool = false) -> void:
+	var atk_data := attacker.troop_data
+	var is_crit := randf() < atk_data.crit_rate
+	var base_damage: float = attacker.effective_atk() * (atk_data.crit_damage if is_crit else 1.0)
+	if is_skill:
+		base_damage *= SKILL_DAMAGE_MULT
+	var raw_defense: float = defender.troop_data.m_def if atk_data.damage_type == Enums.DamageType.MAGIC else defender.troop_data.def
+	var effective_defense: float = raw_defense * (1.0 - atk_data.armor_penetration / 100.0)
+	var final_damage: float = maxf(base_damage - effective_defense, 1.0)
+
+	match atk_data.character_key:
+		"archer":
+			_spawn_arrow(attacker, defender, final_damage, is_skill)
+		"wizard":
+			_spawn_magic_bolt(attacker, defender, final_damage, is_skill)
+		"priest":
+			_apply_damage(attacker, defender, final_damage, is_skill)
+			_spawn_impact_effect(defender.position, PRIEST_ATTACK_EFFECT_FRAMES)
+		_:
+			_apply_damage(attacker, defender, final_damage, is_skill)
+
+func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float, is_skill: bool) -> void:
+	if defender.is_dead():
+		return
+	defender.take_damage(final_damage)
+	_spawn_damage_popup(defender, final_damage, is_skill)
+	if attacker.troop_data.life_steal > 0.0:
+		attacker.heal(final_damage * attacker.troop_data.life_steal)
+
+func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float, is_skill: bool) -> void:
+	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
+	arena.add_child(projectile)
+	var visual_scale: float = ARROW_SKILL_SCALE if is_skill else 1.0
+	projectile.setup_static(attacker.position, defender.position, ARROW_TEXTURE, func(): _apply_damage(attacker, defender, final_damage, is_skill), visual_scale)
+
+func _spawn_magic_bolt(attacker: TroopUnit, defender: TroopUnit, final_damage: float, is_skill: bool) -> void:
+	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
+	arena.add_child(projectile)
+	var frames: SpriteFrames = MAGIC_SKILL_PROJECTILE_FRAMES if is_skill else MAGIC_PROJECTILE_FRAMES
+	projectile.setup_animated(attacker.position, defender.position, frames, "cast", func(): _apply_damage(attacker, defender, final_damage, is_skill))
+
+func _spawn_impact_effect(world_position: Vector2, frames: SpriteFrames) -> void:
+	var effect: ImpactEffect = IMPACT_EFFECT_SCENE.instantiate()
+	arena.add_child(effect)
+	effect.setup(world_position, frames, "cast")
+
+func _spawn_damage_popup(unit: TroopUnit, amount: float, is_skill: bool) -> void:
+	var popup: DamagePopup = DAMAGE_POPUP_SCENE.instantiate()
+	arena.add_child(popup)
+	var color := COLOR_DAMAGE_SKILL if is_skill else COLOR_DAMAGE_NORMAL
+	popup.setup("-%d" % roundi(amount), color, unit.position + POPUP_SPAWN_OFFSET)
+
+func _spawn_heal_popup(unit: TroopUnit, amount: float) -> void:
+	var popup: DamagePopup = DAMAGE_POPUP_SCENE.instantiate()
+	arena.add_child(popup)
+	popup.setup("+%d" % roundi(amount), COLOR_HEAL, unit.position + POPUP_SPAWN_OFFSET)
+
+func _check_battle_end() -> void:
+	var enemy_alive := _enemy_units.any(func(u): return not u.is_dead())
+	var player_alive := _player_units.any(func(u): return not u.is_dead())
+	if not enemy_alive:
+		_end_battle(true)
+	elif not player_alive:
+		_end_battle(false)
+	elif _time_left <= 0.0:
+		_end_battle(false)
+
+## Người chơi chủ động bấm "Chịu thua" - luôn tính là thua ngay lập tức.
+func _on_surrender_pressed() -> void:
+	if not _active:
+		return
+	_end_battle(false)
+
+func _end_battle(won: bool) -> void:
+	_active = false
+	surrender_button.visible = false
+	result_title.text = "Thắng!" if won else "Thua!"
+	result_reward.text = "+%d vàng" % _stage.reward_gold if won else "Không có phần thưởng"
+	result_panel.visible = true
+	if won:
+		GameState.add_gold(_stage.reward_gold)
+
+func _on_result_closed() -> void:
+	visible = false
+	_clear_units()
+	closed.emit()
