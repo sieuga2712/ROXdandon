@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="LinhData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/troop/LinhData.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/troops/werewolf/WerewolfIcon.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = 21
+troop_type = 0
+troop_name = "Werewolf"
+damage_type = 0
+sprite = ExtResource("2")
+character_key = "werewolf"
+skill_name = "Đánh mạnh"
+hp = 140
+atk = 15
+def = 5
+m_def = 5
+atk_speed = 10.0
+move_speed = 7.0
+spellcast_speed = 0.0
+crit_rate = 0.3
+crit_damage = 1.5
+armor_penetration = 10.0
+life_steal = 0.01
+regen_hp = 10.0
+attack_range = 1.0

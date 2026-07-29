@@ -1,0 +1,441 @@
+[gd_resource type="SpriteFrames" load_steps=52 format=3 uid="uid://clhxvqse71bo1"]
+
+[ext_resource type="Texture2D" uid="uid://1y6ty235bcqs" path="res://assets/troops/orc_rider/OrcRiderSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(468, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(502, 0, 33, 32)
+margin = Rect2(36, 29, 67, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(535, 0, 32, 31)
+margin = Rect2(36, 30, 68, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(567, 0, 33, 33)
+margin = Rect2(36, 28, 67, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(600, 0, 45, 33)
+margin = Rect2(36, 28, 55, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(645, 0, 45, 33)
+margin = Rect2(36, 28, 55, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(690, 0, 44, 33)
+margin = Rect2(36, 28, 56, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack01_7"]
+atlas = ExtResource("1")
+region = Rect2(734, 0, 35, 33)
+margin = Rect2(36, 28, 65, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(769, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(803, 0, 33, 34)
+margin = Rect2(36, 27, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(836, 0, 33, 38)
+margin = Rect2(36, 23, 67, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(869, 0, 34, 45)
+margin = Rect2(36, 16, 66, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(903, 0, 51, 52)
+margin = Rect2(36, 9, 49, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(954, 0, 61, 45)
+margin = Rect2(36, 29, 39, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(1015, 0, 57, 42)
+margin = Rect2(36, 29, 43, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(1072, 0, 51, 32)
+margin = Rect2(36, 29, 49, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(1123, 0, 35, 33)
+margin = Rect2(36, 28, 65, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(1158, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(1192, 0, 33, 34)
+margin = Rect2(36, 27, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(1225, 0, 33, 38)
+margin = Rect2(36, 23, 67, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(1258, 0, 34, 45)
+margin = Rect2(36, 16, 66, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(1292, 0, 40, 43)
+margin = Rect2(36, 18, 60, 57)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(1332, 0, 59, 32)
+margin = Rect2(36, 29, 41, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(1391, 0, 87, 32)
+margin = Rect2(8, 29, 13, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(1478, 0, 61, 32)
+margin = Rect2(8, 29, 39, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_8"]
+atlas = ExtResource("1")
+region = Rect2(1539, 0, 60, 32)
+margin = Rect2(11, 29, 40, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_9"]
+atlas = ExtResource("1")
+region = Rect2(1599, 0, 59, 32)
+margin = Rect2(36, 29, 41, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_attack03_10"]
+atlas = ExtResource("1")
+region = Rect2(1658, 0, 33, 32)
+margin = Rect2(36, 29, 67, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_death_0"]
+atlas = ExtResource("1")
+region = Rect2(1691, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_death_1"]
+atlas = ExtResource("1")
+region = Rect2(1725, 0, 33, 32)
+margin = Rect2(36, 29, 67, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_death_2"]
+atlas = ExtResource("1")
+region = Rect2(1758, 0, 45, 22)
+margin = Rect2(32, 39, 55, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_death_3"]
+atlas = ExtResource("1")
+region = Rect2(1803, 0, 54, 17)
+margin = Rect2(27, 44, 46, 83)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1857, 0, 34, 32)
+margin = Rect2(36, 29, 66, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1891, 0, 34, 32)
+margin = Rect2(36, 29, 66, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1925, 0, 33, 32)
+margin = Rect2(36, 29, 67, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1958, 0, 33, 32)
+margin = Rect2(36, 29, 67, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(34, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(68, 0, 33, 34)
+margin = Rect2(36, 27, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(101, 0, 33, 34)
+margin = Rect2(36, 27, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(134, 0, 33, 33)
+margin = Rect2(36, 28, 67, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(167, 0, 33, 33)
+margin = Rect2(36, 28, 67, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(200, 0, 34, 33)
+margin = Rect2(36, 28, 66, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(234, 0, 33, 34)
+margin = Rect2(36, 27, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(267, 0, 33, 33)
+margin = Rect2(36, 28, 67, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(300, 0, 33, 32)
+margin = Rect2(36, 29, 67, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(333, 0, 33, 33)
+margin = Rect2(36, 28, 67, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(366, 0, 33, 33)
+margin = Rect2(36, 28, 67, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(399, 0, 34, 32)
+margin = Rect2(36, 29, 66, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orc_rider_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(433, 0, 35, 32)
+margin = Rect2(36, 29, 65, 68)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack01_7")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack02_8")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_attack03_10")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orc_rider_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

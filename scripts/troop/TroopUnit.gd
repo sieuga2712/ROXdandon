@@ -31,6 +31,22 @@ const CHARACTER_FRAMES: Dictionary = {
 	"archer": preload("res://assets/troops/archer/ArcherFrames.tres"),
 	"wizard": preload("res://assets/troops/wizard/WizardFrames.tres"),
 	"priest": preload("res://assets/troops/priest/PriestFrames.tres"),
+	## Quái (Tiny RPG Character Asset Pack 01 v2.0 -Full 22 Characters) - dùng
+	## làm quân địch trong data/stages/*.tres, xem GameState.PARTY_TROOP_IDS
+	## (party chỉ dùng 4 nhân vật lính người ở trên, không dùng quái).
+	"orc": preload("res://assets/troops/orc/OrcFrames.tres"),
+	"armored_orc": preload("res://assets/troops/armored_orc/ArmoredOrcFrames.tres"),
+	"elite_orc": preload("res://assets/troops/elite_orc/EliteOrcFrames.tres"),
+	"orc_rider": preload("res://assets/troops/orc_rider/OrcRiderFrames.tres"),
+	"skeleton": preload("res://assets/troops/skeleton/SkeletonFrames.tres"),
+	"armored_skeleton": preload("res://assets/troops/armored_skeleton/ArmoredSkeletonFrames.tres"),
+	"greatsword_skeleton": preload("res://assets/troops/greatsword_skeleton/GreatswordSkeletonFrames.tres"),
+	"skeleton_archer": preload("res://assets/troops/skeleton_archer/SkeletonArcherFrames.tres"),
+	"slime": preload("res://assets/troops/slime/SlimeFrames.tres"),
+	"bat": preload("res://assets/troops/bat/BatFrames.tres"),
+	"werebear": preload("res://assets/troops/werebear/WerebearFrames.tres"),
+	"werewolf": preload("res://assets/troops/werewolf/WerewolfFrames.tres"),
+	"necromancer": preload("res://assets/troops/necromancer/NecromancerFrames.tres"),
 }
 const CHARACTER_ATTACK_ANIMS: Dictionary = {
 	"soldier": ["attack01", "attack02", "attack03"],
@@ -42,6 +58,19 @@ const CHARACTER_ATTACK_ANIMS: Dictionary = {
 	"archer": ["attack01", "attack02"],
 	"wizard": ["attack01", "attack02"],
 	"priest": ["attack01"],
+	"orc": ["attack01", "attack02"],
+	"armored_orc": ["attack01", "attack02", "attack03"],
+	"elite_orc": ["attack01", "attack02", "attack03"],
+	"orc_rider": ["attack01", "attack02", "attack03"],
+	"skeleton": ["attack01", "attack02"],
+	"armored_skeleton": ["attack01", "attack02"],
+	"greatsword_skeleton": ["attack01", "attack02", "attack03"],
+	"skeleton_archer": ["attack01"],
+	"slime": ["attack01", "attack02"],
+	"bat": ["attack01", "attack02"],
+	"werebear": ["attack01", "attack02", "attack03"],
+	"werewolf": ["attack01", "attack02"],
+	"necromancer": ["attack01", "attack02"],
 }
 const DEFAULT_CHARACTER_KEY: String = "soldier" ## LinhData.character_key rỗng/không khớp -> dùng tạm nhân vật này
 
@@ -79,6 +108,7 @@ var skill_recovery_timer: float = 0.0 ## >0: đang trong khoảng nghỉ SAU khi
 var attack_windup_timer: float = -1.0 ## >=0: đòn đánh thường đã sẵn sàng, đang giữ 1 nhịp ngắn (ATTACK_READY_HOLD) trước khi thật sự ra đòn - để thanh đánh thường kịp hiện màu sẵn sàng
 var regen_cooldown: float = 0.0
 var is_engaged: bool = false ## true khi đang trong tầm đánh của mục tiêu (đứng yên đánh nhau) - BattleScene._update_unit set mỗi frame, dùng để _resolve_collisions() không đẩy lính đang đánh ra khỏi tầm
+var is_selected: bool = false ## true = đang được chọn trên overworld map (RTS-style, xem OverworldWorld) - không liên quan gì tới combat/BattleScene
 var _attack_animations: Array[String] = []
 
 func setup(data: LinhData, unit_team: Enums.Team) -> void:
@@ -103,17 +133,34 @@ func setup(data: LinhData, unit_team: Enums.Team) -> void:
 func is_dead() -> bool:
 	return current_hp <= 0.0
 
+## OverworldWorld gọi khi đổi chọn/bỏ chọn unit (click/kéo vùng chọn) - chỉ
+## queue_redraw() khi thực sự đổi giá trị, tránh vẽ lại thừa mỗi frame.
+func set_selected(value: bool) -> void:
+	if is_selected == value:
+		return
+	is_selected = value
+	queue_redraw()
+
 func max_hp() -> float:
 	return troop_data.hp
 
 func effective_atk() -> float:
 	return troop_data.atk
 
+const SELECTION_RING_RADIUS: float = HITBOX_DIAMETER / 2.0 + 4.0
+const SELECTION_RING_COLOR: Color = Color(1.0, 1.0, 0.4, 0.9)
+
 ## Không dùng CollisionShape2D thật (hitbox/tầm đánh chỉ là số liệu logic để
 ## so khoảng cách - xem attack_range_px), nên vẽ tay 2 vòng tròn tương đương
-## để bật/tắt cùng nút có sẵn của Godot: Debug > Visible Collision Shapes.
+## để bật/tắt cùng nút có sẵn của Godot: Debug > Visible Collision Shapes. Vòng
+## chọn (is_selected) tách riêng, luôn hiện khi đang chọn - không phụ thuộc
+## debug_collisions_hint.
 func _draw() -> void:
-	if not get_tree().debug_collisions_hint or is_dead():
+	if is_dead():
+		return
+	if is_selected:
+		draw_arc(Vector2.ZERO, SELECTION_RING_RADIUS, 0.0, TAU, 32, SELECTION_RING_COLOR, 2.0)
+	if not get_tree().debug_collisions_hint:
 		return
 	draw_circle(Vector2.ZERO, HITBOX_DIAMETER / 2.0, Color(0.2, 1.0, 0.2, 0.25))
 	if troop_data != null:

@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://dsb6tq31my06m"]
 
-[ext_resource type="Texture2D" uid="uid://bwu3xiidp0o3q" path="res://assets/troops/priest/PriestHealEffectSheet.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://c72u5vnjvtoqb" path="res://assets/troops/priest/PriestHealEffectSheet.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_priest_heal_effect_0"]
 atlas = ExtResource("1")

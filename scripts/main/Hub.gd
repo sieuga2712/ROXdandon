@@ -1,22 +1,19 @@
 extends Control
 
-## Màn hình gốc (run/main_scene) - thay cho thành phố cũ. Chỉ hiện party cố
-## định + vàng hiện có + nút "Chọn ải". Việc nối StageSelectPanel/BattleScene
-## nằm ở StageFlowController.gd (node con).
+## Màn hình gốc (run/main_scene) - map nhỏ đi lại được (OverworldMap) thay cho
+## hàng icon tĩnh cũ, party giờ là unit thật điều khiển được ngay trên map
+## (xem OverworldWorld.gd). Việc nối StageSelectPanel/BattleScene nằm ở
+## StageFlowController.gd (node con).
 
-@onready var party_roster: HBoxContainer = %PartyRoster
+@onready var overworld_map: OverworldMap = %OverworldMap
 @onready var gold_label: Label = %GoldLabel
-
-func _ready() -> void:
-	for troop_id in GameState.PARTY_TROOP_IDS:
-		var troop := TroopDatabase.get_by_id(troop_id)
-		if troop == null:
-			continue
-		var card := VBoxContainer.new()
-		card.alignment = BoxContainer.ALIGNMENT_CENTER
-		card.add_child(UIBuilders.texture_icon(troop.sprite, UIConstants.TROOP_ICON_SIZE))
-		card.add_child(UIBuilders.small_label(troop.troop_name))
-		party_roster.add_child(card)
+@onready var stage_select_panel: StageSelectPanel = %StageSelectPanel
+@onready var battle_scene: BattleScene = %BattleScene
 
 func _process(_delta: float) -> void:
 	gold_label.text = "Vàng: %d" % GameState.gold
+	## StageSelectPanel/BattleScene cố tình cho chuột rơi xuyên qua vùng trống
+	## của chúng xuống node vẽ bên dưới (trước giờ vô hại vì bên dưới chỉ là
+	## Background tĩnh) - giờ bên dưới là map click/kéo được nên phải tắt
+	## interactive lúc panel/trận đấu đang mở.
+	overworld_map.set_interactive(not stage_select_panel.visible and not battle_scene.visible)

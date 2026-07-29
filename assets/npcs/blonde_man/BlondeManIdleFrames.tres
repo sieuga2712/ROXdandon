@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://d6thc10ybwdk"]
+
+[ext_resource type="Texture2D" uid="uid://yeedgpi3fa5j" path="res://RPG Top Down Characters - Free Version/Blonde Man/blonde_man.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_blonde_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_blonde_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_blonde_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_blonde_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(96, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_blonde_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_blonde_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_blonde_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_blonde_idle_3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}]

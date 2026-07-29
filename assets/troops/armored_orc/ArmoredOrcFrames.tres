@@ -1,0 +1,409 @@
+[gd_resource type="SpriteFrames" load_steps=48 format=3 uid="uid://cub7i0xiitqmw"]
+
+[ext_resource type="Texture2D" uid="uid://dsuganp4j0n21" path="res://assets/troops/armored_orc/ArmoredOrcSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(376, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(403, 0, 27, 25)
+margin = Rect2(41, 36, 73, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(430, 0, 23, 29)
+margin = Rect2(41, 32, 77, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(453, 0, 18, 31)
+margin = Rect2(41, 30, 82, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(471, 0, 34, 28)
+margin = Rect2(40, 35, 66, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(505, 0, 34, 26)
+margin = Rect2(40, 37, 66, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(539, 0, 28, 26)
+margin = Rect2(40, 37, 72, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(567, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(594, 0, 33, 24)
+margin = Rect2(41, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(627, 0, 28, 24)
+margin = Rect2(41, 37, 72, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(655, 0, 24, 23)
+margin = Rect2(41, 38, 76, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(679, 0, 24, 23)
+margin = Rect2(41, 38, 76, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(703, 0, 39, 23)
+margin = Rect2(40, 38, 61, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(742, 0, 40, 23)
+margin = Rect2(40, 38, 60, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(782, 0, 40, 23)
+margin = Rect2(40, 38, 60, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(822, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(849, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(876, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(903, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(930, 0, 26, 22)
+margin = Rect2(41, 39, 74, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(956, 0, 47, 28)
+margin = Rect2(23, 33, 53, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(1003, 0, 60, 24)
+margin = Rect2(20, 37, 40, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(1063, 0, 64, 24)
+margin = Rect2(20, 37, 36, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_attack03_8"]
+atlas = ExtResource("1")
+region = Rect2(1127, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_death_0"]
+atlas = ExtResource("1")
+region = Rect2(1154, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_death_1"]
+atlas = ExtResource("1")
+region = Rect2(1181, 0, 30, 26)
+margin = Rect2(39, 35, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_death_2"]
+atlas = ExtResource("1")
+region = Rect2(1211, 0, 43, 23)
+margin = Rect2(27, 38, 57, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_death_3"]
+atlas = ExtResource("1")
+region = Rect2(1254, 0, 43, 16)
+margin = Rect2(26, 45, 57, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1297, 0, 28, 24)
+margin = Rect2(39, 37, 72, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1325, 0, 28, 24)
+margin = Rect2(39, 37, 72, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1353, 0, 28, 24)
+margin = Rect2(39, 37, 72, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1381, 0, 28, 24)
+margin = Rect2(39, 37, 72, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(27, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(54, 0, 27, 25)
+margin = Rect2(41, 36, 73, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(81, 0, 27, 25)
+margin = Rect2(41, 36, 73, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(108, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(135, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(162, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(189, 0, 26, 25)
+margin = Rect2(42, 36, 74, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(215, 0, 26, 24)
+margin = Rect2(42, 37, 74, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(241, 0, 27, 23)
+margin = Rect2(41, 38, 73, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(268, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(295, 0, 27, 25)
+margin = Rect2(41, 36, 73, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(322, 0, 27, 24)
+margin = Rect2(41, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_orc_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(349, 0, 27, 23)
+margin = Rect2(41, 38, 73, 77)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack01_6")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack02_7")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_attack03_8")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_orc_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

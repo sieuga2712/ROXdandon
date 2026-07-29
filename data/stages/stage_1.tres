@@ -8,5 +8,5 @@ id = 1
 stage_name = "Ải 1"
 time_limit = 120.0
 reward_gold = 50
-enemy_troop_ids = Array[int]([2, 8])
+enemy_troop_ids = Array[int]([18, 14])
 enemy_troop_counts = Array[int]([2, 2])

@@ -1,0 +1,457 @@
+[gd_resource type="SpriteFrames" load_steps=54 format=3 uid="uid://dn2o0iwp88khn"]
+
+[ext_resource type="Texture2D" uid="uid://b78nbjqanrxan" path="res://assets/troops/greatsword_skeleton/GreatswordSkeletonSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(499, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(532, 0, 33, 25)
+margin = Rect2(27, 36, 67, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(565, 0, 33, 23)
+margin = Rect2(27, 38, 67, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(598, 0, 27, 32)
+margin = Rect2(34, 38, 73, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(625, 0, 40, 31)
+margin = Rect2(42, 39, 60, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(665, 0, 49, 25)
+margin = Rect2(42, 39, 51, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(714, 0, 47, 22)
+margin = Rect2(42, 39, 53, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_7"]
+atlas = ExtResource("1")
+region = Rect2(761, 0, 38, 23)
+margin = Rect2(42, 38, 62, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_8"]
+atlas = ExtResource("1")
+region = Rect2(799, 0, 34, 23)
+margin = Rect2(42, 38, 66, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(833, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(866, 0, 33, 25)
+margin = Rect2(27, 36, 67, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(899, 0, 32, 25)
+margin = Rect2(28, 36, 68, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(931, 0, 32, 25)
+margin = Rect2(29, 36, 68, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(963, 0, 21, 33)
+margin = Rect2(40, 28, 79, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(984, 0, 19, 34)
+margin = Rect2(42, 27, 81, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(1003, 0, 50, 40)
+margin = Rect2(42, 21, 50, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(1053, 0, 55, 27)
+margin = Rect2(42, 34, 45, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(1108, 0, 54, 23)
+margin = Rect2(42, 38, 46, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_9"]
+atlas = ExtResource("1")
+region = Rect2(1162, 0, 54, 23)
+margin = Rect2(42, 38, 46, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_10"]
+atlas = ExtResource("1")
+region = Rect2(1216, 0, 35, 23)
+margin = Rect2(42, 38, 65, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack02_11"]
+atlas = ExtResource("1")
+region = Rect2(1251, 0, 28, 23)
+margin = Rect2(42, 38, 72, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(1279, 0, 27, 24)
+margin = Rect2(42, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(1306, 0, 29, 23)
+margin = Rect2(42, 38, 71, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(1335, 0, 28, 23)
+margin = Rect2(42, 38, 72, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(1363, 0, 26, 23)
+margin = Rect2(42, 38, 74, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(1389, 0, 46, 23)
+margin = Rect2(42, 38, 54, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(1435, 0, 39, 24)
+margin = Rect2(42, 38, 61, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(1474, 0, 35, 26)
+margin = Rect2(42, 38, 65, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(1509, 0, 27, 24)
+margin = Rect2(42, 37, 73, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_death_0"]
+atlas = ExtResource("1")
+region = Rect2(1536, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_death_1"]
+atlas = ExtResource("1")
+region = Rect2(1569, 0, 36, 22)
+margin = Rect2(25, 39, 64, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_death_2"]
+atlas = ExtResource("1")
+region = Rect2(1605, 0, 41, 18)
+margin = Rect2(25, 43, 59, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_death_3"]
+atlas = ExtResource("1")
+region = Rect2(1646, 0, 41, 18)
+margin = Rect2(25, 43, 59, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1687, 0, 34, 24)
+margin = Rect2(25, 37, 66, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1721, 0, 34, 24)
+margin = Rect2(25, 37, 66, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1755, 0, 34, 24)
+margin = Rect2(25, 37, 66, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1789, 0, 34, 24)
+margin = Rect2(25, 37, 66, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(33, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(66, 0, 33, 25)
+margin = Rect2(27, 36, 67, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(99, 0, 33, 25)
+margin = Rect2(27, 36, 67, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(132, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(165, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(198, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(231, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(264, 0, 34, 24)
+margin = Rect2(27, 37, 66, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(298, 0, 35, 23)
+margin = Rect2(27, 38, 65, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(333, 0, 35, 23)
+margin = Rect2(27, 38, 65, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(368, 0, 33, 24)
+margin = Rect2(28, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(401, 0, 32, 24)
+margin = Rect2(28, 37, 68, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(433, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_walk_8"]
+atlas = ExtResource("1")
+region = Rect2(466, 0, 33, 24)
+margin = Rect2(27, 37, 67, 76)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack01_8")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack02_11")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_attack03_7")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_greatsword_skeleton_walk_8")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

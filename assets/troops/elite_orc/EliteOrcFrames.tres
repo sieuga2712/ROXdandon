@@ -1,0 +1,433 @@
+[gd_resource type="SpriteFrames" load_steps=51 format=3 uid="uid://7nu23p4n30mr"]
+
+[ext_resource type="Texture2D" uid="uid://yln2euqm0gii" path="res://assets/troops/elite_orc/EliteOrcSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(420, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(450, 0, 31, 29)
+margin = Rect2(41, 32, 69, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(481, 0, 29, 34)
+margin = Rect2(31, 27, 71, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(510, 0, 43, 32)
+margin = Rect2(39, 34, 57, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(553, 0, 38, 32)
+margin = Rect2(39, 34, 62, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(591, 0, 23, 30)
+margin = Rect2(39, 34, 77, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(614, 0, 22, 31)
+margin = Rect2(39, 33, 78, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(636, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(666, 0, 41, 29)
+margin = Rect2(41, 32, 59, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(707, 0, 54, 29)
+margin = Rect2(22, 32, 46, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(761, 0, 47, 29)
+margin = Rect2(22, 32, 53, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(808, 0, 47, 29)
+margin = Rect2(32, 32, 53, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(855, 0, 41, 29)
+margin = Rect2(41, 32, 59, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(896, 0, 54, 29)
+margin = Rect2(22, 32, 46, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(950, 0, 47, 29)
+margin = Rect2(22, 32, 53, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(997, 0, 47, 29)
+margin = Rect2(32, 32, 53, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_9"]
+atlas = ExtResource("1")
+region = Rect2(1044, 0, 41, 29)
+margin = Rect2(41, 32, 59, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack02_10"]
+atlas = ExtResource("1")
+region = Rect2(1085, 0, 31, 32)
+margin = Rect2(42, 33, 69, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_0"]
+atlas = ExtResource("1")
+region = Rect2(1116, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_1"]
+atlas = ExtResource("1")
+region = Rect2(1146, 0, 22, 38)
+margin = Rect2(39, 23, 78, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_2"]
+atlas = ExtResource("1")
+region = Rect2(1168, 0, 24, 45)
+margin = Rect2(36, 16, 76, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_3"]
+atlas = ExtResource("1")
+region = Rect2(1192, 0, 30, 42)
+margin = Rect2(31, 19, 70, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_4"]
+atlas = ExtResource("1")
+region = Rect2(1222, 0, 40, 47)
+margin = Rect2(44, 14, 60, 53)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_5"]
+atlas = ExtResource("1")
+region = Rect2(1262, 0, 41, 45)
+margin = Rect2(44, 17, 59, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_6"]
+atlas = ExtResource("1")
+region = Rect2(1303, 0, 41, 23)
+margin = Rect2(44, 39, 59, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_7"]
+atlas = ExtResource("1")
+region = Rect2(1344, 0, 30, 26)
+margin = Rect2(42, 35, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_attack03_8"]
+atlas = ExtResource("1")
+region = Rect2(1374, 0, 30, 26)
+margin = Rect2(42, 35, 70, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_death_0"]
+atlas = ExtResource("1")
+region = Rect2(1404, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_death_1"]
+atlas = ExtResource("1")
+region = Rect2(1434, 0, 38, 30)
+margin = Rect2(43, 31, 62, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_death_2"]
+atlas = ExtResource("1")
+region = Rect2(1472, 0, 47, 26)
+margin = Rect2(40, 35, 53, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_death_3"]
+atlas = ExtResource("1")
+region = Rect2(1519, 0, 37, 20)
+margin = Rect2(45, 41, 63, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1556, 0, 31, 28)
+margin = Rect2(39, 33, 69, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1587, 0, 31, 28)
+margin = Rect2(39, 33, 69, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1618, 0, 31, 28)
+margin = Rect2(39, 33, 69, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1649, 0, 31, 28)
+margin = Rect2(39, 33, 69, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(30, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(60, 0, 30, 29)
+margin = Rect2(41, 32, 70, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(90, 0, 30, 29)
+margin = Rect2(41, 32, 70, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(120, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(150, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(180, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(210, 0, 30, 29)
+margin = Rect2(41, 32, 70, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(240, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(270, 0, 30, 27)
+margin = Rect2(41, 34, 70, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(300, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(330, 0, 30, 29)
+margin = Rect2(41, 32, 70, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(360, 0, 30, 28)
+margin = Rect2(41, 33, 70, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elite_orc_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(390, 0, 30, 27)
+margin = Rect2(41, 34, 70, 73)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack01_6")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack02_10")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_attack03_8")
+}],
+"loop": false,
+"name": &"attack03",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elite_orc_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

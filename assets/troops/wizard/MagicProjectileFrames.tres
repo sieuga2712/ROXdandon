@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=12 format=3 uid="uid://ees0imv00poq"]
 
-[ext_resource type="Texture2D" uid="uid://tyrlg5h73m2p" path="res://assets/troops/wizard/MagicProjectileSheet.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://b5jeb2r10inpa" path="res://assets/troops/wizard/MagicProjectileSheet.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_magic_cast_0"]
 atlas = ExtResource("1")

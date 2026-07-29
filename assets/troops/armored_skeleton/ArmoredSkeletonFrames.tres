@@ -1,0 +1,348 @@
+[gd_resource type="SpriteFrames" load_steps=41 format=3 uid="uid://ikurcw58tfgw"]
+
+[ext_resource type="Texture2D" uid="uid://ci2wxgrouqy5i" path="res://assets/troops/armored_skeleton/ArmoredSkeletonSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(322, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(345, 0, 25, 25)
+margin = Rect2(42, 37, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(370, 0, 29, 23)
+margin = Rect2(42, 38, 71, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(399, 0, 29, 23)
+margin = Rect2(38, 38, 71, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(428, 0, 44, 23)
+margin = Rect2(42, 38, 56, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(472, 0, 41, 24)
+margin = Rect2(42, 38, 59, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(513, 0, 35, 23)
+margin = Rect2(42, 38, 65, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_7"]
+atlas = ExtResource("1")
+region = Rect2(548, 0, 35, 23)
+margin = Rect2(42, 38, 65, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(583, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(606, 0, 33, 31)
+margin = Rect2(39, 32, 67, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(639, 0, 38, 32)
+margin = Rect2(35, 33, 62, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(677, 0, 33, 34)
+margin = Rect2(38, 32, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(710, 0, 37, 37)
+margin = Rect2(38, 31, 63, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(747, 0, 33, 31)
+margin = Rect2(39, 32, 67, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(780, 0, 38, 32)
+margin = Rect2(35, 33, 62, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(818, 0, 33, 34)
+margin = Rect2(38, 32, 67, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(851, 0, 37, 37)
+margin = Rect2(38, 31, 63, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_death_0"]
+atlas = ExtResource("1")
+region = Rect2(888, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_death_1"]
+atlas = ExtResource("1")
+region = Rect2(911, 0, 31, 29)
+margin = Rect2(42, 32, 69, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_death_2"]
+atlas = ExtResource("1")
+region = Rect2(942, 0, 34, 19)
+margin = Rect2(42, 42, 66, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_death_3"]
+atlas = ExtResource("1")
+region = Rect2(976, 0, 34, 17)
+margin = Rect2(42, 44, 66, 83)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1010, 0, 21, 28)
+margin = Rect2(42, 33, 79, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1031, 0, 21, 28)
+margin = Rect2(42, 33, 79, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1052, 0, 21, 28)
+margin = Rect2(42, 33, 79, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1073, 0, 21, 28)
+margin = Rect2(42, 33, 79, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(23, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(46, 0, 23, 28)
+margin = Rect2(42, 33, 77, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(69, 0, 23, 28)
+margin = Rect2(42, 33, 77, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(92, 0, 23, 28)
+margin = Rect2(42, 33, 77, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(115, 0, 23, 28)
+margin = Rect2(42, 33, 77, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(138, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(161, 0, 23, 28)
+margin = Rect2(42, 33, 77, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(184, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(207, 0, 23, 26)
+margin = Rect2(42, 35, 77, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(230, 0, 23, 27)
+margin = Rect2(42, 34, 77, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(253, 0, 23, 29)
+margin = Rect2(42, 32, 77, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(276, 0, 23, 28)
+margin = Rect2(42, 33, 77, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(299, 0, 23, 26)
+margin = Rect2(42, 35, 77, 74)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack01_7")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_attack02_8")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored_skeleton_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

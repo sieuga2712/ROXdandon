@@ -1,0 +1,340 @@
+[gd_resource type="SpriteFrames" load_steps=40 format=3 uid="uid://ck8bgdf5vki13"]
+
+[ext_resource type="Texture2D" uid="uid://cjv5youeib45n" path="res://assets/troops/slime/SlimeSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(311, 0, 25, 16)
+margin = Rect2(36, 45, 75, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(336, 0, 25, 20)
+margin = Rect2(36, 41, 75, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(361, 0, 25, 21)
+margin = Rect2(36, 40, 75, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(386, 0, 47, 18)
+margin = Rect2(38, 43, 53, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(433, 0, 47, 18)
+margin = Rect2(38, 43, 53, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(480, 0, 36, 18)
+margin = Rect2(38, 43, 64, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(516, 0, 25, 16)
+margin = Rect2(36, 45, 75, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(541, 0, 25, 20)
+margin = Rect2(36, 41, 75, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(566, 0, 25, 22)
+margin = Rect2(36, 39, 75, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(591, 0, 25, 26)
+margin = Rect2(36, 35, 75, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(616, 0, 25, 35)
+margin = Rect2(36, 26, 75, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(641, 0, 25, 39)
+margin = Rect2(36, 22, 75, 61)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(666, 0, 31, 39)
+margin = Rect2(30, 22, 69, 61)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(697, 0, 32, 35)
+margin = Rect2(36, 26, 68, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(729, 0, 64, 34)
+margin = Rect2(36, 42, 36, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_9"]
+atlas = ExtResource("1")
+region = Rect2(793, 0, 64, 33)
+margin = Rect2(36, 43, 36, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_10"]
+atlas = ExtResource("1")
+region = Rect2(857, 0, 42, 31)
+margin = Rect2(36, 45, 58, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack02_11"]
+atlas = ExtResource("1")
+region = Rect2(899, 0, 26, 16)
+margin = Rect2(35, 45, 74, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_death_0"]
+atlas = ExtResource("1")
+region = Rect2(925, 0, 24, 16)
+margin = Rect2(36, 45, 76, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_death_1"]
+atlas = ExtResource("1")
+region = Rect2(949, 0, 24, 13)
+margin = Rect2(36, 48, 76, 87)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_death_2"]
+atlas = ExtResource("1")
+region = Rect2(973, 0, 23, 11)
+margin = Rect2(37, 50, 77, 89)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_death_3"]
+atlas = ExtResource("1")
+region = Rect2(996, 0, 24, 9)
+margin = Rect2(36, 52, 76, 91)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1020, 0, 25, 18)
+margin = Rect2(36, 43, 75, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1045, 0, 25, 18)
+margin = Rect2(36, 43, 75, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1070, 0, 25, 18)
+margin = Rect2(36, 43, 75, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1095, 0, 25, 18)
+margin = Rect2(36, 43, 75, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 25, 16)
+margin = Rect2(36, 45, 75, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(25, 0, 25, 20)
+margin = Rect2(36, 41, 75, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(50, 0, 25, 22)
+margin = Rect2(36, 39, 75, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(75, 0, 25, 22)
+margin = Rect2(36, 39, 75, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(100, 0, 25, 20)
+margin = Rect2(36, 41, 75, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(125, 0, 27, 16)
+margin = Rect2(35, 45, 73, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(152, 0, 27, 16)
+margin = Rect2(35, 45, 73, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(179, 0, 30, 15)
+margin = Rect2(34, 46, 70, 85)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(209, 0, 27, 16)
+margin = Rect2(34, 45, 73, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(236, 0, 25, 17)
+margin = Rect2(35, 44, 75, 83)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(261, 0, 24, 18)
+margin = Rect2(35, 43, 76, 82)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(285, 0, 26, 16)
+margin = Rect2(35, 45, 74, 84)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack01_5")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack02_11")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_5")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

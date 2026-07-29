@@ -1,0 +1,388 @@
+[gd_resource type="SpriteFrames" load_steps=46 format=3 uid="uid://c88p61p3dx63w"]
+
+[ext_resource type="Texture2D" uid="uid://bs1urwf20y4pn" path="res://assets/troops/werewolf/WerewolfSheet.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_0"]
+atlas = ExtResource("1")
+region = Rect2(400, 0, 29, 21)
+margin = Rect2(41, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_1"]
+atlas = ExtResource("1")
+region = Rect2(429, 0, 28, 22)
+margin = Rect2(42, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_2"]
+atlas = ExtResource("1")
+region = Rect2(457, 0, 28, 22)
+margin = Rect2(42, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_3"]
+atlas = ExtResource("1")
+region = Rect2(485, 0, 17, 30)
+margin = Rect2(42, 31, 83, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_4"]
+atlas = ExtResource("1")
+region = Rect2(502, 0, 17, 29)
+margin = Rect2(42, 32, 83, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_5"]
+atlas = ExtResource("1")
+region = Rect2(519, 0, 36, 29)
+margin = Rect2(42, 32, 64, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_6"]
+atlas = ExtResource("1")
+region = Rect2(555, 0, 36, 27)
+margin = Rect2(42, 34, 64, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_7"]
+atlas = ExtResource("1")
+region = Rect2(591, 0, 31, 19)
+margin = Rect2(42, 42, 69, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack01_8"]
+atlas = ExtResource("1")
+region = Rect2(622, 0, 28, 20)
+margin = Rect2(42, 41, 72, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_0"]
+atlas = ExtResource("1")
+region = Rect2(650, 0, 26, 21)
+margin = Rect2(34, 40, 74, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_1"]
+atlas = ExtResource("1")
+region = Rect2(676, 0, 26, 22)
+margin = Rect2(34, 39, 74, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_2"]
+atlas = ExtResource("1")
+region = Rect2(702, 0, 26, 20)
+margin = Rect2(34, 41, 74, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_3"]
+atlas = ExtResource("1")
+region = Rect2(728, 0, 21, 20)
+margin = Rect2(39, 41, 79, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_4"]
+atlas = ExtResource("1")
+region = Rect2(749, 0, 32, 19)
+margin = Rect2(42, 42, 68, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_5"]
+atlas = ExtResource("1")
+region = Rect2(781, 0, 39, 19)
+margin = Rect2(37, 42, 61, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_6"]
+atlas = ExtResource("1")
+region = Rect2(820, 0, 15, 12)
+margin = Rect2(33, 44, 85, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_7"]
+atlas = ExtResource("1")
+region = Rect2(835, 0, 36, 39)
+margin = Rect2(42, 27, 64, 61)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_8"]
+atlas = ExtResource("1")
+region = Rect2(871, 0, 46, 24)
+margin = Rect2(42, 42, 54, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_9"]
+atlas = ExtResource("1")
+region = Rect2(917, 0, 46, 27)
+margin = Rect2(42, 37, 54, 73)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_10"]
+atlas = ExtResource("1")
+region = Rect2(963, 0, 34, 30)
+margin = Rect2(42, 34, 66, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_11"]
+atlas = ExtResource("1")
+region = Rect2(997, 0, 46, 25)
+margin = Rect2(42, 37, 54, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_attack02_12"]
+atlas = ExtResource("1")
+region = Rect2(1043, 0, 33, 19)
+margin = Rect2(42, 42, 67, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_death_0"]
+atlas = ExtResource("1")
+region = Rect2(1076, 0, 29, 21)
+margin = Rect2(41, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_death_1"]
+atlas = ExtResource("1")
+region = Rect2(1105, 0, 30, 24)
+margin = Rect2(38, 37, 70, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_death_2"]
+atlas = ExtResource("1")
+region = Rect2(1135, 0, 34, 21)
+margin = Rect2(33, 40, 66, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_death_3"]
+atlas = ExtResource("1")
+region = Rect2(1169, 0, 36, 15)
+margin = Rect2(31, 46, 64, 85)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(1205, 0, 28, 22)
+margin = Rect2(41, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(1233, 0, 28, 22)
+margin = Rect2(41, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(1261, 0, 28, 22)
+margin = Rect2(41, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(1289, 0, 28, 22)
+margin = Rect2(41, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 29, 21)
+margin = Rect2(41, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_idle_1"]
+atlas = ExtResource("1")
+region = Rect2(29, 0, 29, 21)
+margin = Rect2(41, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_idle_2"]
+atlas = ExtResource("1")
+region = Rect2(58, 0, 28, 22)
+margin = Rect2(42, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_idle_3"]
+atlas = ExtResource("1")
+region = Rect2(86, 0, 28, 22)
+margin = Rect2(42, 39, 72, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_idle_4"]
+atlas = ExtResource("1")
+region = Rect2(114, 0, 28, 20)
+margin = Rect2(42, 41, 72, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_idle_5"]
+atlas = ExtResource("1")
+region = Rect2(142, 0, 28, 20)
+margin = Rect2(42, 41, 72, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_0"]
+atlas = ExtResource("1")
+region = Rect2(170, 0, 29, 21)
+margin = Rect2(41, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_1"]
+atlas = ExtResource("1")
+region = Rect2(199, 0, 29, 22)
+margin = Rect2(41, 39, 71, 78)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_2"]
+atlas = ExtResource("1")
+region = Rect2(228, 0, 29, 21)
+margin = Rect2(41, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_3"]
+atlas = ExtResource("1")
+region = Rect2(257, 0, 28, 20)
+margin = Rect2(42, 41, 72, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_4"]
+atlas = ExtResource("1")
+region = Rect2(285, 0, 28, 20)
+margin = Rect2(42, 41, 72, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_5"]
+atlas = ExtResource("1")
+region = Rect2(313, 0, 29, 21)
+margin = Rect2(42, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_6"]
+atlas = ExtResource("1")
+region = Rect2(342, 0, 29, 21)
+margin = Rect2(42, 40, 71, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_werewolf_walk_7"]
+atlas = ExtResource("1")
+region = Rect2(371, 0, 29, 20)
+margin = Rect2(41, 41, 71, 80)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack01_8")
+}],
+"loop": false,
+"name": &"attack01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_attack02_12")
+}],
+"loop": false,
+"name": &"attack02",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_death_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_death_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_death_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_death_3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_hurt_3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_werewolf_walk_7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
