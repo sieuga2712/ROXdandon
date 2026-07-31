@@ -1,5 +1,7 @@
 # Hub & Quy ước UI chung
 
+> ⚠️ **LỖI THỜI - CHỈ GIỮ LÀM LỊCH SỬ.** `Hub.tscn` không còn là `run/main_scene` (đã thay bằng `MainShell.tscn`), `StageSelectPanel` không còn được instance ở đâu. Xem kiến trúc hiện tại ở [[Vỏ ứng dụng Portrait (MainShell & Navigation)]]. File `Hub.tscn`/`.gd` vẫn còn trong repo (chưa xoá) nhưng KHÔNG chạy.
+
 Thuộc [[Mục lục]]. Liên quan: [[Quy ước code & Autoload]], [[Đội hình cố định (Party)]], [[Vàng (GameState)]]. Thay thế toàn bộ mảng "Giao diện & Hình ảnh" của `vrisingDanDon` (HUD thành phố, Menu xây dựng, Bảng quản lý công trình...) - xem [[Chuyển thể từ vrisingDanDon]].
 
 ## Hub (`scenes/main/Hub.tscn`, `run/main_scene`)

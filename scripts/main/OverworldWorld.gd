@@ -14,10 +14,10 @@ extends Node2D
 
 const TROOP_UNIT_SCENE: PackedScene = preload("res://scenes/troop/TroopUnit.tscn")
 
-## Clamp di chuyển - nhỏ hơn GroundBackground (960x520, xem OverworldMap.tscn)
-## 1 chút để unit không đi ra sát mép/lấn nhà.
-const MAP_BOUNDS: Rect2 = Rect2(-460.0, -240.0, 920.0, 480.0)
-const SPAWN_CENTER: Vector2 = Vector2(0.0, 150.0)
+## Clamp di chuyển - nhỏ hơn GroundBackground (640x1000, xem OverworldMap.tscn,
+## đã đổi sang tỉ lệ dọc cho portrait) 1 chút để unit không đi ra sát mép/lấn nhà.
+const MAP_BOUNDS: Rect2 = Rect2(-300.0, -480.0, 600.0, 960.0)
+const SPAWN_CENTER: Vector2 = Vector2(0.0, 320.0)
 const SPAWN_SPREAD_RADIUS: float = 40.0
 const ARRIVE_EPSILON_PX: float = 4.0
 

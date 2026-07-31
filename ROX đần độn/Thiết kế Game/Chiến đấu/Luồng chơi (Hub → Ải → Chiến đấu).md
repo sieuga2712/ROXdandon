@@ -1,5 +1,7 @@
 # Luồng chơi (Hub → Ải → Chiến đấu)
 
+> ⚠️ **LỖI THỜI MỘT PHẦN.** Không còn "Hub" hay `StageSelectPanel` popup - tab "Ải" giờ là map AFK-farm riêng (xem [[Thành phố & Ải AFK-Farm]]), tab "Ải Boss" (chưa xây) mới là nơi dùng `BattleScene` kiểu "chọn ải → vào thẳng trận" mô tả bên dưới. Phần mô tả `BattleScene`/công thức/đội hình/`StageData` vẫn ĐÚNG nguyên vẹn (chưa đổi gì trong `BattleScene.gd`) - chỉ riêng đường dẫn "Hub → StageSelectPanel" ở đầu bài là lỗi thời.
+
 Thuộc [[Mục lục]]. Liên quan: [[AI chiến đấu]], [[Công thức sát thương]], [[Đội hình cố định (Party)]], [[Camera & Hiệu ứng trận đấu]]. Bản rút gọn RẤT NHIỀU so với "Luồng Vượt ải" của `vrisingDanDon` - xem [[Chuyển thể từ vrisingDanDon]] về những gì bị bỏ.
 
 ## 3 màn hình (so với 4 màn của `vrisingDanDon` - đã bỏ hẳn "màn chuẩn bị quân")

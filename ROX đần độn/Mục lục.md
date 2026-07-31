@@ -23,10 +23,14 @@ Dự án này **fork từ `vrisingDanDon`** (Village Builder Demo - city-builder
 **Kinh tế**
 - [[Vàng (GameState)]]
 
-**Bản đồ / Âm thanh / Cốt truyện** — không có (game không còn map/thành phố, xem [[Chuyển thể từ vrisingDanDon]]).
+**Bản đồ** (mới, xem [[Tiến độ & Việc còn dang dở]] cho ngày thêm)
+- [[Thành phố & Ải AFK-Farm]] - tab Thành phố (đi lại/tương tác cảnh vật) + tab Ải (map AFK-farm, quái hồi sinh)
+
+**Âm thanh / Cốt truyện** — vẫn chưa có gì.
 
 ## Giao diện
-- [[Hub & Quy ước UI chung]]
+- [[Vỏ ứng dụng Portrait (MainShell & Navigation)]] - kiến trúc app portrait 5-tab hiện tại
+- [[Hub & Quy ước UI chung]] — ⚠️ lỗi thời, chỉ giữ làm lịch sử
 
 ## Kiến trúc kỹ thuật
 - [[Quy ước code & Autoload]]

@@ -12,7 +12,7 @@ config_version=5
 
 config/name="ROXdandon"
 config/description="PvE party game - 4 nhan vat co dinh vuot ai, khong PvP. Godot 4."
-run/main_scene="res://scenes/main/Hub.tscn"
+run/main_scene="res://scenes/main/MainShell.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [autoload]
@@ -23,10 +23,11 @@ GameState="*res://scripts/state/GameState.gd"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=540
+window/size/viewport_height=960
 window/stretch/mode="canvas_items"
-window/handheld/orientation="landscape"
+window/stretch/aspect="expand"
+window/handheld/orientation="portrait"
 
 [rendering]
 
