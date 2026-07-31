@@ -1,20 +1,16 @@
 class_name OverworldWorld
 extends Node2D
 
-## Map nhỏ thay Hub tĩnh cũ - 4 thành viên party đi lại được, mỗi người có 1
-## trong 3 trạng thái (lấy cảm hứng Ragnarok X): ĐANG ĐIỀU KHIỂN (đúng 1 người,
-## `leader` - đi theo lệnh chuột phải trên map), ĐANG THEO (`following[unit] =
-## true` - tự bám theo leader mỗi frame), hoặc ĐỘC LẬP (đứng yên tại chỗ).
-## PartyRosterPanel gọi select_leader()/toggle_follow()/recall_all() (nối
-## trong OverworldMap.gd) - OverworldWorld là nguồn sự thật duy nhất, luôn
-## emit state_changed sau khi đổi để panel refresh() lại đúng theo state thật
-## (đổi leader làm leader cũ tự bật "đang theo" - panel không tự đoán được).
-## NPC/nhà/placeholder trong scene chỉ là trang trí - không đưa vào
-## party_units nên không thể điều khiển/theo/chọn được.
+## Map nhỏ thay Hub tĩnh cũ - 4 thành viên party đi lại được, điều khiển theo
+## kiểu "leader + auto-follow": PartyRosterPanel chọn đúng 1 người làm leader
+## (xem select_leader), click trái vào map ra lệnh leader đi tới đó, 3 người
+## còn lại LUÔN tự bám theo leader mỗi frame - không có khái niệm "chọn nhiều
+## unit"/kéo vùng chọn/chuột phải (bỏ hẳn so với bản RTS multi-select trước,
+## đơn giản hơn và hợp mobile hơn - project nhắm handheld/landscape, không có
+## chuột phải trên touch). NPC/nhà/placeholder trong scene chỉ là trang trí -
+## không đưa vào party_units nên không thể chọn/di chuyển được.
 ## Không có combat/AI ở đây - xem BattleScene.gd cho phần chiến đấu (tách biệt
 ## hoàn toàn, OverworldWorld không đụng tới).
-
-signal state_changed
 
 const TROOP_UNIT_SCENE: PackedScene = preload("res://scenes/troop/TroopUnit.tscn")
 
@@ -39,7 +35,6 @@ const FOLLOW_OFFSETS: Array[Vector2] = [
 var interactive: bool = true
 var party_units: Array[TroopUnit] = []
 var leader: TroopUnit = null
-var following: Dictionary = {} ## TroopUnit -> bool, mặc định false (độc lập) nếu chưa có key
 var _leader_target: Vector2 = Vector2.ZERO
 var _has_leader_target: bool = false
 
@@ -66,52 +61,19 @@ func _spawn_party() -> void:
 			offset = Vector2.RIGHT.rotated(TAU * i / ids.size()) * SPAWN_SPREAD_RADIUS
 		unit.position = SPAWN_CENTER + offset
 		party_units.append(unit)
-	select_leader(0) ## mặc định leader = thành viên đầu tiên, khớp icon điều khiển đầu tiên bị disable sẵn trên PartyRosterPanel
+	select_leader(0) ## mặc định leader = thành viên đầu tiên, khớp nút đầu tiên đã bấm sẵn trên PartyRosterPanel
 
-## PartyRosterPanel.control_requested gọi hàm này (nối trong OverworldMap.gd).
-## Leader CŨ tự động chuyển sang "đang theo" leader mới - không bị bỏ rơi đứng
-## yên đột ngột. Huỷ lệnh di chuyển dở của leader mới, chờ lệnh mới.
+## PartyRosterPanel.leader_selected gọi hàm này (nối trong OverworldMap.gd).
+## Huỷ lệnh di chuyển dở của leader cũ - leader mới đứng yên chờ lệnh mới,
+## người vừa mất vai leader tự động chuyển sang bám theo leader mới ngay
+## frame kế tiếp (xem _process).
 func select_leader(index: int) -> void:
-	if index < 0 or index >= party_units.size() or party_units[index] == leader:
-		return
-	var old_leader := leader
-	leader = party_units[index]
-	_has_leader_target = false
-	if old_leader != null:
-		following[old_leader] = true
-	following.erase(leader) ## người đang điều khiển không có khái niệm "đang theo"
-	for unit in party_units:
-		unit.set_selected(unit == leader)
-	state_changed.emit()
-
-## PartyRosterPanel.follow_toggled gọi hàm này - bấm thân thẻ 1 người KHÔNG
-## PHẢI leader để bật/tắt "đang theo", không đụng gì tới ai đang điều khiển.
-func toggle_follow(index: int) -> void:
 	if index < 0 or index >= party_units.size():
 		return
-	var unit := party_units[index]
-	if unit == leader:
-		return
-	following[unit] = not following.get(unit, false)
-	state_changed.emit()
-
-## PartyRosterPanel "Gọi tất cả" - dịch chuyển TỨC THỜI (không đi bộ) mọi
-## người về quanh leader và bật "đang theo" cho tất cả, kể cả người đang độc
-## lập ở xa.
-func recall_all() -> void:
-	if leader == null:
-		return
-	var follower_index := 0
+	leader = party_units[index]
+	_has_leader_target = false
 	for unit in party_units:
-		if unit == leader:
-			follower_index += 1
-			continue
-		var target := _clamp_to_bounds(leader.position + FOLLOW_OFFSETS[follower_index % FOLLOW_OFFSETS.size()])
-		follower_index += 1
-		unit.position = target
-		unit.play_idle()
-		following[unit] = true
-	state_changed.emit()
+		unit.set_selected(unit == leader)
 
 func _process(delta: float) -> void:
 	if leader == null:
@@ -127,12 +89,9 @@ func _process(delta: float) -> void:
 	for unit in party_units:
 		if unit == leader:
 			continue
-		if following.get(unit, false):
-			var target := _clamp_to_bounds(leader.position + FOLLOW_OFFSETS[follower_index % FOLLOW_OFFSETS.size()])
-			_move_toward(unit, target, delta)
-		else:
-			unit.play_idle() ## độc lập - đứng yên tại chỗ, không đụng position
+		var target := _clamp_to_bounds(leader.position + FOLLOW_OFFSETS[follower_index % FOLLOW_OFFSETS.size()])
 		follower_index += 1
+		_move_toward(unit, target, delta)
 
 ## Rút gọn từ nhánh di chuyển của BattleScene._update_unit (seek + arrival
 ## check) - không có tấn công/tầm đánh/AI gì cả, chỉ đi tới điểm rồi dừng.
@@ -152,16 +111,18 @@ func _clamp_to_bounds(pos: Vector2) -> Vector2:
 		clampf(pos.y, MAP_BOUNDS.position.y, MAP_BOUNDS.position.y + MAP_BOUNDS.size.y)
 	)
 
-## Click phải vào map = ra lệnh leader đi tới đó. Dùng event.position tự tính
-## ra world-space qua canvas_transform của viewport, KHÔNG dùng
-## get_global_mouse_position() - hàm đó đọc vị trí chuột "đã lưu" của
-## viewport, giá trị này không đáng tin nếu chưa có sự kiện chuyển động chuột
-## nào trước đó cập nhật nó (xảy ra thật với tap trên touch, project này nhắm
-## handheld/landscape - xem project.godot).
+## Click trái vào map = ra lệnh leader đi tới đó - không còn kéo vùng chọn/
+## chuột phải (bỏ hẳn so với bản RTS trước, chọn leader giờ nằm ở
+## PartyRosterPanel, không phải click trên map nữa).
+## Dùng event.position tự tính ra world-space qua canvas_transform của
+## viewport, KHÔNG dùng get_global_mouse_position() - hàm đó đọc vị trí chuột
+## "đã lưu" của viewport, giá trị này không đáng tin nếu chưa có sự kiện
+## chuyển động chuột nào trước đó cập nhật nó (xảy ra thật với tap trên touch,
+## project này nhắm handheld/landscape - xem project.godot).
 func _unhandled_input(event: InputEvent) -> void:
 	if not interactive or leader == null:
 		return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var world_point: Vector2 = get_viewport().get_canvas_transform().affine_inverse() * event.position
 		_leader_target = _clamp_to_bounds(world_point)
 		_has_leader_target = true
