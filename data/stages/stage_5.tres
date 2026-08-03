@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StageData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/StageData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = 5
+stage_name = "Hang Động - Ải 1"
+time_limit = 120.0
+reward_gold = 110
+enemy_troop_ids = Array[int]([15, 22])
+enemy_troop_counts = Array[int]([2, 1])
+map_id = 2
+floor_number = 1

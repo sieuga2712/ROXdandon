@@ -24,7 +24,11 @@ Dự án này **fork từ `vrisingDanDon`** (Village Builder Demo - city-builder
 - [[Vàng (GameState)]]
 
 **Bản đồ** (mới, xem [[Tiến độ & Việc còn dang dở]] cho ngày thêm)
-- [[Thành phố & Ải AFK-Farm]] - tab Thành phố (đi lại/tương tác cảnh vật) + tab Ải (map AFK-farm, quái hồi sinh)
+- [[Thành phố & Ải AFK-Farm]] - tab Thành phố (thuần cảnh, không điều khiển được) + lịch sử map AFK-farm cũ (đã thay thế)
+- [[Ủy Thác, Boss & Treo máy]] - tab Ải hiện tại (bảng Ủy Thác + Treo máy thật) + tab Ải Boss thật + hệ EXP/Cấp độ
+
+**Nhân vật & Chỉ số** (bổ sung 2026-08-03)
+- Xem [[Ủy Thác, Boss & Treo máy]] mục "Hệ EXP/Cấp độ" cho công thức lên cấp/tăng chỉ số
 
 **Âm thanh / Cốt truyện** — vẫn chưa có gì.
 

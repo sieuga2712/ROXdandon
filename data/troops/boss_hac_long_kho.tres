@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="LinhData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/troop/LinhData.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/troops/elite_orc/EliteOrcIcon.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = 202
+troop_type = 0
+troop_name = "Hắc Long (Khó)"
+damage_type = 0
+sprite = ExtResource("2")
+character_key = "elite_orc"
+skill_name = "Đánh mạnh"
+hp = 2400
+atk = 36
+def = 20
+m_def = 18
+atk_speed = 10.0
+move_speed = 4.5
+spellcast_speed = 0.0
+crit_rate = 0.3
+crit_damage = 1.5
+armor_penetration = 10.0
+life_steal = 0.01
+regen_hp = 10.0
+attack_range = 1.0
+exp_reward = 160

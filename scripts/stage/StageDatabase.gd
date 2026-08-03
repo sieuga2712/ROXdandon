@@ -36,3 +36,15 @@ func get_by_id(stage_id: int) -> StageData:
 		if data.id == stage_id:
 			return data
 	return null
+
+## Tab "Vượt ải": danh sách tầng của 1 map, sort theo floor_number tăng dần -
+## StageBoardScreen dùng để vẽ list tầng + tính khoá/mở theo
+## GameState.get_highest_floor().
+func get_floors_for_map(map_id: int) -> Array[StageData]:
+	## KHÔNG gán trực tiếp kết quả .filter() (Array trần) vào biến Array[StageData]
+	## - lỗi với custom class_name (đã xác nhận thật với TroopUnit, xem "Lỗi đã
+	## gặp & Bài học" trong vault). Dùng append_array() luôn an toàn.
+	var floors: Array[StageData] = []
+	floors.append_array(_stages.filter(func(s: StageData) -> bool: return s.map_id == map_id))
+	floors.sort_custom(func(a: StageData, b: StageData) -> bool: return a.floor_number < b.floor_number)
+	return floors

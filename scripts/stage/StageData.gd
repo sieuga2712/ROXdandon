@@ -9,6 +9,13 @@ extends Resource
 @export var time_limit: float = 120.0 ## giây - "2 phút" mặc định
 @export var reward_gold: int = 1 ## cộng thẳng khi thắng - xem GameState.add_gold
 
+## Tab "Vượt ải" (bảng uỷ thác): mỗi tầng = 1 StageData, thuộc đúng 1 map
+## (khớp MapData.id) và có số tầng riêng - StageDatabase.get_floors_for_map()
+## lọc/sort theo 2 field này, GameState.highest_floor_cleared theo dõi tiến
+## độ mở khoá tầng kế tiếp.
+@export var map_id: int = 0
+@export var floor_number: int = 1 ## đặt tên "floor_number" không phải "floor" - "floor" trùng tên hàm toán học built-in của GDScript, dễ gây shadowing khó lường
+
 ## Quân địch cố định - 2 mảng song song (thay vì Array[Dictionary]) cho dễ sửa
 ## tay trong .tres: enemy_troop_ids[i] con quái loại LinhData.id nào,
 ## enemy_troop_counts[i] số lượng - mỗi con là 1 TroopUnit riêng biệt (không

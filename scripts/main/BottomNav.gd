@@ -26,6 +26,7 @@ const ANIM_DURATION: float = 0.25
 const ACTIVE_TINT: Color = Color(1.0, 0.85, 0.3)
 
 @onready var drag_handle: Control = %DragHandle
+@onready var handle_bar: ColorRect = %HandleBar
 @onready var shortcuts_scroll: ScrollContainer = %ShortcutsScroll
 @onready var shortcuts_list: VBoxContainer = %ShortcutsList
 @onready var tab_row: HBoxContainer = %TabRow
@@ -34,6 +35,7 @@ var is_expanded: bool = false
 var _dragging: bool = false
 var _drag_start_y: float = 0.0
 var _tab_buttons: Dictionary = {} ## id (String) -> Button
+var _has_shortcuts: bool = false ## màn đang active có shortcut nào không - không thì ẩn tay cầm kéo, khỏi mời vuốt lên xem 1 tấm trống
 
 func _ready() -> void:
 	offset_top = -COLLAPSED_HEIGHT
@@ -65,9 +67,16 @@ func refresh_for_screen(active_id: String, active_screen: Node) -> void:
 				button.pressed.connect(shortcut.callback)
 			shortcuts_list.add_child(button)
 
+	_has_shortcuts = shortcuts_list.get_child_count() > 0
+	handle_bar.visible = _has_shortcuts
+	if not _has_shortcuts and is_expanded:
+		set_expanded(false) ## đổi sang tab không có shortcut lúc đang mở rộng - tự thu gọn lại, không để treo 1 tấm trống
+
 ## Kéo trực tiếp theo ngón tay/chuột trong lúc giữ (feedback tức thời), chốt
 ## trạng thái đóng/mở khi thả ra dựa theo tổng khoảng cách đã kéo.
 func _on_drag_handle_input(event: InputEvent) -> void:
+	if not _has_shortcuts:
+		return ## màn hiện tại không có gì để hiện lúc mở rộng - lờ luôn gesture kéo
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			_dragging = true

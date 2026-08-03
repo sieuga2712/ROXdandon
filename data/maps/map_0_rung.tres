@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/MapData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = 0
+map_name = "Rừng Khởi Nguyên"
+card_color = Color(0.2, 0.24, 0.31, 1)
+map_icon = "🌲"
+map_type = "KHU VỰC RỪNG"
+win_condition = "Hạ toàn bộ địch"
+difficulty_label = "★★☆"

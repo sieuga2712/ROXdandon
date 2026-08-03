@@ -28,7 +28,7 @@ extends Control
 ##   cho phe địch. Party 4 người luôn vừa trong 6 vị trí; quái mỗi ải nên giữ
 ##   tổng số <= 6 để đội hình không đè lên nhau (v1 chưa cần > 6).
 
-signal closed
+signal closed(won: bool) ## StageFlowController lắng nghe để biết có mở khoá tầng kế tiếp không (xem tab "Vượt ải")
 
 const TROOP_UNIT_SCENE: PackedScene = preload("res://scenes/troop/TroopUnit.tscn")
 const PROJECTILE_SCENE: PackedScene = preload("res://scenes/troop/Projectile.tscn")
@@ -87,6 +87,7 @@ var _player_units: Array[TroopUnit] = []
 var _enemy_units: Array[TroopUnit] = []
 var _time_left: float = 0.0
 var _active: bool = false ## true = đang chạy AI mỗi frame (xem _process)
+var _last_result_won: bool = false ## lưu lại từ _end_battle() để _on_result_closed() phát kèm signal closed(won)
 
 func _ready() -> void:
 	visible = false
@@ -354,7 +355,7 @@ func _resolve_attack(attacker: TroopUnit, defender: TroopUnit, is_skill: bool = 
 	var base_damage: float = attacker.effective_atk() * (atk_data.crit_damage if is_crit else 1.0)
 	if is_skill:
 		base_damage *= SKILL_DAMAGE_MULT
-	var raw_defense: float = defender.troop_data.m_def if atk_data.damage_type == Enums.DamageType.MAGIC else defender.troop_data.def
+	var raw_defense: float = defender.effective_m_def() if atk_data.damage_type == Enums.DamageType.MAGIC else defender.effective_def()
 	var effective_defense: float = raw_defense * (1.0 - atk_data.armor_penetration / 100.0)
 	var final_damage: float = maxf(base_damage - effective_defense, 1.0)
 
@@ -376,6 +377,12 @@ func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float
 	_spawn_damage_popup(defender, final_damage, is_skill)
 	if attacker.troop_data.life_steal > 0.0:
 		attacker.heal(final_damage * attacker.troop_data.life_steal)
+	if defender.is_dead() and defender.team == Enums.Team.ENEMY:
+		## Hạ quái trong trận đánh tay (Ủy Thác/Boss) - CẢ ĐỘI (luôn đủ 4
+		## người, xem GameState.PARTY_TROOP_IDS) nhận EXP của con đó, cùng quy
+		## ước "giết quái thì cả team nhận EXP" như treo máy (xem
+		## GameState.settle_idle_team).
+		GameState.grant_kill_exp(GameState.PARTY_TROOP_IDS, defender.troop_data.exp_reward)
 
 func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float, is_skill: bool) -> void:
 	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
@@ -427,10 +434,11 @@ func _end_battle(won: bool) -> void:
 	result_title.text = "Thắng!" if won else "Thua!"
 	result_reward.text = "+%d vàng" % _stage.reward_gold if won else "Không có phần thưởng"
 	result_panel.visible = true
+	_last_result_won = won
 	if won:
 		GameState.add_gold(_stage.reward_gold)
 
 func _on_result_closed() -> void:
 	visible = false
 	_clear_units()
-	closed.emit()
+	closed.emit(_last_result_won)

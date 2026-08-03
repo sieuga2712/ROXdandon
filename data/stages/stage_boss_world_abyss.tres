@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StageData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/StageData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = 206
+stage_name = "Ma Vương Abyss"
+time_limit = 180.0
+reward_gold = 1000
+enemy_troop_ids = Array[int]([206])
+enemy_troop_counts = Array[int]([1])
+map_id = 101
+floor_number = 1

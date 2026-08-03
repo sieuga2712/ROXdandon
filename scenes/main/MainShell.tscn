@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/MainShell.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/main/ScreenRouter.gd" id="2"]
@@ -6,7 +6,9 @@
 [ext_resource type="PackedScene" path="res://scenes/stage/BattleScene.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/main/BottomNav.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/main/StageFlowController.gd" id="6"]
-[ext_resource type="PackedScene" path="res://scenes/main/StageFarmMap.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/main/StageBoardScreen.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/main/BossBoardScreen.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/main/CharacterBoardScreen.tscn" id="9"]
 
 [node name="MainShell" type="Control"]
 layout_mode = 3
@@ -35,61 +37,21 @@ layout_mode = 1
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="boss" type="Control" parent="ScreenContainer"]
+[node name="boss" parent="ScreenContainer" instance=ExtResource("8")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="BossLabel" type="Label" parent="ScreenContainer/boss"]
+[node name="character" parent="ScreenContainer" instance=ExtResource("9")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -12.0
-offset_right = 100.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.7)
-text = "Ải Boss - đang phát triển"
-horizontal_alignment = 1
-
-[node name="character" type="Control" parent="ScreenContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CharacterLabel" type="Label" parent="ScreenContainer/character"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -12.0
-offset_right = 100.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.7)
-text = "Nhân vật - đang phát triển"
-horizontal_alignment = 1
 
 [node name="settings" type="Control" parent="ScreenContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 72.0
+offset_bottom = -96.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -194,4 +156,5 @@ unique_name_in_owner = true
 layout_mode = 1
 
 [node name="StageFlowController" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("6")

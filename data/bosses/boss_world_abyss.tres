@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/BossData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = 3
+boss_name = "Ma Vương Abyss"
+boss_icon = "💀"
+level_label = "Boss Khủng"
+is_world_boss = true
+stage_id_easy = -1
+stage_id_normal = -1
+stage_id_hard = -1
+stage_id_world = 206

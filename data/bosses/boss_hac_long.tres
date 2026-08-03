@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/BossData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = 1
+boss_name = "Hắc Long"
+boss_icon = "🐉"
+level_label = "Boss Ngày"
+is_world_boss = false
+stage_id_easy = 200
+stage_id_normal = 201
+stage_id_hard = 202
+stage_id_world = -1

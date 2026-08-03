@@ -25,3 +25,4 @@ armor_penetration = 10.0
 life_steal = 0.01
 regen_hp = 10.0
 attack_range = 1.0
+exp_reward = 12

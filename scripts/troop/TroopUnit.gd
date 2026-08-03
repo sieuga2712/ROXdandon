@@ -114,7 +114,7 @@ var _attack_animations: Array[String] = []
 func setup(data: LinhData, unit_team: Enums.Team) -> void:
 	troop_data = data
 	team = unit_team
-	current_hp = data.hp
+	current_hp = max_hp()
 	var character_key: String = data.character_key if CHARACTER_FRAMES.has(data.character_key) else DEFAULT_CHARACTER_KEY
 	animated_sprite.sprite_frames = CHARACTER_FRAMES[character_key]
 	## "as Array[String]" không tự convert Array thường (kiểu lưu trong
@@ -141,11 +141,28 @@ func set_selected(value: bool) -> void:
 	is_selected = value
 	queue_redraw()
 
+## Chỉ phe mình (PLAYER) mới lên cấp - xem GameState.stat_multiplier/
+## job_atk_bonus (Base Lv +10%/cấp cộng thẳng theo gốc HP/ATK/DEF/M.DEF, Job Lv
+## +1 ATK thẳng/cấp). Phe địch/quái luôn dùng đúng số gốc trong LinhData.
 func max_hp() -> float:
-	return troop_data.hp
+	if team != Enums.Team.PLAYER:
+		return troop_data.hp
+	return GameState.effective_hp(troop_data.id, troop_data.hp)
 
 func effective_atk() -> float:
-	return troop_data.atk
+	if team != Enums.Team.PLAYER:
+		return troop_data.atk
+	return GameState.effective_atk(troop_data.id, troop_data.atk)
+
+func effective_def() -> float:
+	if team != Enums.Team.PLAYER:
+		return troop_data.def
+	return GameState.effective_def(troop_data.id, troop_data.def)
+
+func effective_m_def() -> float:
+	if team != Enums.Team.PLAYER:
+		return troop_data.m_def
+	return GameState.effective_m_def(troop_data.id, troop_data.m_def)
 
 const SELECTION_RING_RADIUS: float = HITBOX_DIAMETER / 2.0 + 4.0
 const SELECTION_RING_COLOR: Color = Color(1.0, 1.0, 0.4, 0.9)
@@ -243,6 +260,25 @@ func take_damage(amount: float) -> void:
 
 const HURT_FLASH_COLOR: Color = Color(1.0, 0.3, 0.3)
 const HURT_FLASH_DURATION: float = 0.15
+
+## Hồi sinh đầy đủ, về lại trạng thái như mới setup() - dùng cho màn xem treo
+## máy (StageFarmWorld) loop vô hạn, không có khái niệm thắng/thua nên chết
+## xong hồi sinh lại đánh tiếp thay vì kết thúc trận như BattleScene.
+func revive() -> void:
+	current_hp = max_hp()
+	animated_sprite.modulate = Color.WHITE
+	animated_sprite.play("idle")
+	hp_bar_bg.visible = true
+	attack_bar_bg.visible = true
+	skill_bar_bg.visible = true
+	attack_cooldown = 0.0
+	skill_cooldown = 0.0
+	skill_windup_timer = -1.0
+	skill_recovery_timer = 0.0
+	attack_windup_timer = -1.0
+	is_engaged = false
+	_update_hp_bar()
+	queue_redraw()
 
 func _flash_hurt() -> void:
 	animated_sprite.modulate = HURT_FLASH_COLOR

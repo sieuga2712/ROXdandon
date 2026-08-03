@@ -10,3 +10,5 @@ time_limit = 120.0
 reward_gold = 50
 enemy_troop_ids = Array[int]([18, 14])
 enemy_troop_counts = Array[int]([2, 2])
+map_id = 0
+floor_number = 1

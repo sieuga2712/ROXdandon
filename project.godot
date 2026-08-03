@@ -19,6 +19,8 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 
 TroopDatabase="*res://scripts/troop/TroopDatabase.gd"
 StageDatabase="*res://scripts/stage/StageDatabase.gd"
+MapDatabase="*res://scripts/stage/MapDatabase.gd"
+BossDatabase="*res://scripts/stage/BossDatabase.gd"
 GameState="*res://scripts/state/GameState.gd"
 
 [display]

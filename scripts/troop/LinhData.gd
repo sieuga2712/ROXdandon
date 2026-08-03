@@ -30,3 +30,9 @@ extends Resource
 @export var life_steal: float = 0.01 ## 1% - hồi máu theo % sát thương gây ra
 @export var regen_hp: float = 10.0 ## hồi mỗi 5 giây
 @export var attack_range: float = 100.0 ## xem công thức quy đổi ra phạm vi tấn công trong TroopUnit.attack_range_px()
+
+## Hạ được 1 con này thì CẢ TEAM (mọi thành viên đang cùng đội - đánh tay hay
+## treo máy) nhận đúng số EXP này, cộng vào cả Base EXP lẫn Job EXP (xem
+## GameState.grant_kill_exp) - chưa phân biệt 2 giá trị Base/Job riêng, cùng 1
+## số cho cả 2 pool để đơn giản.
+@export var exp_reward: int = 5

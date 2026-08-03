@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StageData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/StageData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = 4
+stage_name = "Đồng Bằng - Ải 1"
+time_limit = 120.0
+reward_gold = 80
+enemy_troop_ids = Array[int]([10, 21])
+enemy_troop_counts = Array[int]([2, 1])
+map_id = 1
+floor_number = 1

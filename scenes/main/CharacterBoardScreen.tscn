@@ -1,0 +1,112 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/main/CharacterBoardScreen.gd" id="1"]
+
+[node name="CharacterBoardScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="CharacterListPanel" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 84.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterListMargin" type="MarginContainer" parent="CharacterListPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 0
+
+[node name="CharacterListVBox" type="VBoxContainer" parent="CharacterListPanel/CharacterListMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharacterSearchEdit" type="LineEdit" parent="CharacterListPanel/CharacterListMargin/CharacterListVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Tìm nhân vật..."
+
+[node name="CharacterFilterRow" type="HBoxContainer" parent="CharacterListPanel/CharacterListMargin/CharacterListVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CharacterListScroll" type="ScrollContainer" parent="CharacterListPanel/CharacterListMargin/CharacterListVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CharacterList" type="VBoxContainer" parent="CharacterListPanel/CharacterListMargin/CharacterListVBox/CharacterListScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="CharacterDetailPanel" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 84.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterDetailMargin" type="MarginContainer" parent="CharacterDetailPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 0
+
+[node name="CharacterDetailVBox" type="VBoxContainer" parent="CharacterDetailPanel/CharacterDetailMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CharacterDetailHeader" type="HBoxContainer" parent="CharacterDetailPanel/CharacterDetailMargin/CharacterDetailVBox"]
+layout_mode = 2
+
+[node name="CharacterBackButton" type="Button" parent="CharacterDetailPanel/CharacterDetailMargin/CharacterDetailVBox/CharacterDetailHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "←"
+
+[node name="CharacterDetailTitle" type="Label" parent="CharacterDetailPanel/CharacterDetailMargin/CharacterDetailVBox/CharacterDetailHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "NHÂN VẬT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CharacterDetailScroll" type="ScrollContainer" parent="CharacterDetailPanel/CharacterDetailMargin/CharacterDetailVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CharacterDetailContent" type="VBoxContainer" parent="CharacterDetailPanel/CharacterDetailMargin/CharacterDetailVBox/CharacterDetailScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
