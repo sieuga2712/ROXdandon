@@ -35,8 +35,7 @@ position = Vector2(-360, -640)
 size = Vector2(720, 1280)
 color = Color(0.42, 0.5, 0.22, 1)
 
-[node name="Party" type="Node2D" parent="SubViewportContainer/SubViewport/StageFarmWorld"]
-
-[node name="Monsters" type="Node2D" parent="SubViewportContainer/SubViewport/StageFarmWorld"]
+[node name="Arena" type="Node2D" parent="SubViewportContainer/SubViewport/StageFarmWorld"]
+y_sort_enabled = true
 
 [node name="FarmCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/StageFarmWorld"]
