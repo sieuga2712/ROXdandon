@@ -36,3 +36,10 @@ extends Resource
 ## GameState.grant_kill_exp) - chưa phân biệt 2 giá trị Base/Job riêng, cùng 1
 ## số cho cả 2 pool để đơn giản.
 @export var exp_reward: int = 5
+
+## Hạ được 1 con này (đánh tay hay treo máy) thì cộng thẳng đúng số vàng này
+## vào GameState.gold NGAY LÚC ĐÓ - đúng kiểu "phần thưởng tính riêng theo
+## từng quái hạ được" (Ragnarok X), KHÔNG còn dùng StageData.reward_gold cho
+## treo máy nữa (Ủy Thác/Boss đánh tay vẫn giữ nguyên thưởng cố định theo
+## tầng khi thắng, xem BattleScene._end_battle - 2 hệ không cần khớp nhau).
+@export var gold_reward: int = 5

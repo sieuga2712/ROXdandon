@@ -1,18 +1,21 @@
 class_name StageFarmWorld
 extends Node2D
 
-## Màn "xem treo máy cho vui" - KHÔNG điều khiển được (không leader/không
-## click-di-chuyển), chỉ auto-fight vô hạn giữa party (đúng thành viên đang
-## treo team đó) và quái của đúng StageData đang treo, để xem có gì đó xảy ra
-## trong lúc chờ. PHẦN THƯỞNG THẬT đã tính riêng theo thời gian qua
-## GameState.settle_idle_team() - màn này KHÔNG cộng vàng/EXP gì thêm, chỉ là
-## hình ảnh minh hoạ.
+## "Bãi farm" treo máy THẬT - KHÔNG điều khiển được (không leader/không
+## click-di-chuyển), party (đúng thành viên đang treo team đó) tự đánh nhau vô
+## hạn với quái của đúng StageData đang treo. Đây CHÍNH LÀ trận đấu tạo ra
+## phần thưởng thật - KHÔNG có công thức DPS/thời gian nào cả, quái chết thật
+## thì cộng vàng (LinhData.gold_reward) + EXP (LinhData.exp_reward) NGAY LÚC
+## ĐÓ cho member_troop_ids (xem _resolve_simple_attack). Instance này được
+## GameState giữ sống suốt thời gian treo máy (xem GameState.start_idle_team)
+## - "Xem treo máy" chỉ là NHÚNG (reparent) instance đang chạy này vào UI để
+## nhìn, không tạo bản sao/không tính riêng gì cả.
 ##
-## configure() được gọi ngay sau khi instance (xem StageFarmMap.gd/
-## StageBoardScreen._open_idle_view) - lúc đó @onready đã sẵn sàng (Godot gọi
-## _ready() ngay khi add_child() vào 1 tree đang chạy, trước khi add_child()
-## trả về). Hết 1 phe thì dừng lại RESTART_DELAY giây rồi hồi sinh CẢ 2 PHÊ để
-## đánh lại từ đầu (loop vô hạn, không có khái niệm thắng/thua ở đây).
+## configure() được gọi ngay sau khi instance (xem GameState.start_idle_team) -
+## lúc đó @onready đã sẵn sàng (Godot gọi _ready() ngay khi add_child() vào 1
+## tree đang chạy, trước khi add_child() trả về). Hết 1 phe thì dừng lại
+## RESTART_DELAY giây rồi hồi sinh CẢ 2 PHE để đánh lại từ đầu (loop vô hạn,
+## không có khái niệm thắng/thua - đúng kiểu "bãi farm" quái hồi sinh liên tục).
 ##
 ## PHẠM VI (cắt bớt có chủ đích): chỉ có đòn đánh thường (đúng công thức sát
 ## thương của BattleScene._resolve_attack/_apply_damage - crit/giáp hiệu
@@ -22,6 +25,7 @@ const TROOP_UNIT_SCENE: PackedScene = preload("res://scenes/troop/TroopUnit.tscn
 const DAMAGE_POPUP_SCENE: PackedScene = preload("res://scenes/troop/DamagePopup.tscn")
 const POPUP_SPAWN_OFFSET: Vector2 = Vector2(0, -70)
 const COLOR_DAMAGE: Color = Color.WHITE
+const COLOR_GOLD: Color = Color(1.0, 0.9, 0.3)
 
 const PARTY_CENTER: Vector2 = Vector2(-160.0, 0.0)
 const ENEMY_CENTER: Vector2 = Vector2(160.0, 0.0)
@@ -36,10 +40,12 @@ const RESTART_DELAY: float = 2.0 ## hết 1 phe -> chờ rồi hồi sinh cả 2
 var party_units: Array[TroopUnit] = []
 var enemy_units: Array[TroopUnit] = []
 var _stage: StageData
+var _member_troop_ids: Array[int] = []
 var _restart_timer: float = -1.0
 
 func configure(stage: StageData, member_troop_ids: Array[int]) -> void:
 	_stage = stage
+	_member_troop_ids = member_troop_ids
 	camera.position = Vector2.ZERO
 	camera.zoom = Vector2.ONE
 	_spawn_party(member_troop_ids)
@@ -152,8 +158,9 @@ func _fight_step(attacker: TroopUnit, defender: TroopUnit, delta: float) -> void
 
 ## Copy đúng công thức sát thương của BattleScene._resolve_attack/_apply_damage
 ## (crit, giáp hiệu dụng theo armor penetration, life steal) - KHÔNG nhân
-## SKILL_DAMAGE_MULT vì chưa có skill "đánh mạnh". KHÔNG cộng vàng/EXP thật ở
-## đây (xem ghi chú đầu file) - chỉ hiện số sát thương cho vui.
+## SKILL_DAMAGE_MULT vì chưa có skill "đánh mạnh". Quái (ENEMY) chết THẬT ở
+## đây thì cộng vàng+EXP thật NGAY LÚC ĐÓ - đây chính là nguồn thưởng treo máy
+## duy nhất, không phải hình ảnh minh hoạ (xem ghi chú đầu file).
 func _resolve_simple_attack(attacker: TroopUnit, defender: TroopUnit) -> void:
 	var atk_data := attacker.troop_data
 	var is_crit := randf() < atk_data.crit_rate
@@ -166,6 +173,10 @@ func _resolve_simple_attack(attacker: TroopUnit, defender: TroopUnit) -> void:
 	_spawn_popup(defender.position + POPUP_SPAWN_OFFSET, "-%d" % roundi(final_damage), COLOR_DAMAGE)
 	if attacker.troop_data.life_steal > 0.0:
 		attacker.heal(final_damage * attacker.troop_data.life_steal)
+	if defender.is_dead() and defender.team == Enums.Team.ENEMY:
+		GameState.add_gold(defender.troop_data.gold_reward)
+		GameState.grant_kill_exp(_member_troop_ids, defender.troop_data.exp_reward)
+		_spawn_popup(defender.position + POPUP_SPAWN_OFFSET + Vector2(0, -16), "+%d vàng" % defender.troop_data.gold_reward, COLOR_GOLD)
 
 func _spawn_popup(world_position: Vector2, text: String, color: Color) -> void:
 	var popup: DamagePopup = DAMAGE_POPUP_SCENE.instantiate()

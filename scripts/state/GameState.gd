@@ -79,90 +79,52 @@ func effective_m_def(troop_id: int, base_m_def: float) -> float:
 	return base_m_def * stat_multiplier(troop_id)
 
 ## ============================== Treo máy ==============================
-## Mỗi map tối đa IDLE_MAX_TEAMS_PER_MAP team, 1 nhân vật chỉ thuộc 1 team
-## treo máy tại 1 thời điểm - KHÔNG liên quan gì tới Ủy Thác/Boss (đánh tay
-## dùng party riêng, không bị chặn bởi treo máy, xem StageFlowController). Treo
-## máy KHÔNG giới hạn thời gian - mỗi lần settle_idle_team() được gọi (lúc mở
-## màn treo máy, hoặc tick định kỳ khi đang xem) sẽ cộng dồn gold+exp theo số
-## "chu kỳ" (mỗi chu kỳ = time_limit giây của StageData đó, giống 1 lần thắng
-## tay) đã trôi qua kể từ lần settle trước, dùng Time.get_unix_time_from_system()
-## (giờ hệ thống thật, không phải giờ trong game).
+## CHỈ 1 team treo máy tại 1 thời điểm (đã bỏ hẳn ý tưởng nhiều team/nhiều map
+## + công thức DPS/thời gian trôi qua sau khi thảo luận lại). Treo máy = 1
+## trận đấu THẬT chạy nền liên tục ngay khi bắt đầu (`StageFarmMap`/
+## `StageFarmWorld` - instance được GameState giữ sống suốt thời gian treo,
+## xem `start_idle_team`) - KHÔNG dùng công thức nào cả, quái chết thật trong
+## trận nền đó thì cộng vàng (`LinhData.gold_reward`) + EXP
+## (`LinhData.exp_reward`) NGAY LÚC ĐÓ cho các thành viên trong team (xem
+## `StageFarmWorld._resolve_simple_attack`).
 ##
-## LƯU Ý: GameState hiện KHÔNG lưu file (reset khi tắt app - xem đầu file) nên
-## "treo máy tính cả lúc tắt app" mới đúng về CÔNG THỨC (dựa timestamp thật);
-## tắt app hẳn rồi mở lại vẫn mất tiến độ treo máy do CHƯA có hệ save/load -
-## cần làm riêng 1 tính năng persistence mới xử lý được phần đó.
+## "Farm bao nhiêu được bấy nhiêu" - CHẠY KHI APP ĐANG MỞ (bất kể tab nào,
+## GameState là autoload nên Node này sống suốt vòng đời app), TẮT APP LÀ MẤT
+## LUÔN NODE ĐÓ, không bù giờ, không có/không cần persistence cho phần này -
+## đây là lựa chọn thiết kế, không phải thiếu sót.
+## Treo máy TÁCH BIỆT hoàn toàn với Ủy Thác/Boss (đánh tay dùng party riêng,
+## không bị chặn bởi treo máy) - Ủy Thác chỉ có vai trò mở khoá tầng cao hơn
+## cho treo máy (xem get_highest_floor).
 
-const IDLE_MAX_TEAMS_PER_MAP: int = 3
+const STAGE_FARM_MAP_SCENE: PackedScene = preload("res://scenes/main/StageFarmMap.tscn")
 
-var idle_teams: Array[Dictionary] = []
-var _next_idle_team_id: int = 1
+var idle_team: Dictionary = {} ## {} = không có team nào đang treo; có thì {"stage_id": int, "member_troop_ids": Array[int]}
+var _idle_farm_map: StageFarmMap = null
 
 func is_troop_idling(troop_id: int) -> bool:
-	for team in idle_teams:
-		if troop_id in team["member_troop_ids"]:
-			return true
-	return false
+	return not idle_team.is_empty() and troop_id in idle_team["member_troop_ids"]
 
-func get_idle_team_count_for_map(map_id: int) -> int:
-	var count := 0
-	for team in idle_teams:
-		var stage: StageData = StageDatabase.get_by_id(team["stage_id"])
-		if stage != null and stage.map_id == map_id:
-			count += 1
-	return count
-
-## Trả về team mới tạo, hoặc null nếu vi phạm ràng buộc (map đã đủ
-## IDLE_MAX_TEAMS_PER_MAP team, hoặc có nhân vật đang treo ở team khác).
-func start_idle_team(stage_id: int, member_troop_ids: Array[int]) -> Variant:
+## false nếu đã có team đang treo (phải rút về trước) hoặc stage_id/thành viên không hợp lệ.
+func start_idle_team(stage_id: int, member_troop_ids: Array[int]) -> bool:
+	if not idle_team.is_empty():
+		return false
 	var stage: StageData = StageDatabase.get_by_id(stage_id)
 	if stage == null or member_troop_ids.is_empty():
-		return null
-	if get_idle_team_count_for_map(stage.map_id) >= IDLE_MAX_TEAMS_PER_MAP:
-		return null
-	for troop_id in member_troop_ids:
-		if is_troop_idling(troop_id):
-			return null
-	var team: Dictionary = {
-		"id": _next_idle_team_id,
-		"stage_id": stage_id,
-		"member_troop_ids": member_troop_ids,
-		"last_tick_at": Time.get_unix_time_from_system(),
-	}
-	_next_idle_team_id += 1
-	idle_teams.append(team)
-	return team
+		return false
+	idle_team = {"stage_id": stage_id, "member_troop_ids": member_troop_ids}
+	_idle_farm_map = STAGE_FARM_MAP_SCENE.instantiate()
+	add_child(_idle_farm_map)
+	_idle_farm_map.configure(stage, member_troop_ids)
+	return true
 
-func stop_idle_team(team_id: int) -> void:
-	settle_idle_team_by_id(team_id)
-	idle_teams = idle_teams.filter(func(t: Dictionary) -> bool: return t["id"] != team_id)
+func stop_idle_team() -> void:
+	if _idle_farm_map != null:
+		_idle_farm_map.queue_free()
+		_idle_farm_map = null
+	idle_team = {}
 
-func settle_idle_team_by_id(team_id: int) -> void:
-	for team in idle_teams:
-		if team["id"] == team_id:
-			settle_idle_team(team)
-			return
-
-## Cộng dồn gold+exp theo số chu kỳ đã trôi qua kể từ last_tick_at, dời
-## last_tick_at lên đúng bằng số chu kỳ đó (phần dư giữ lại cho lần sau) - gọi
-## hàm này bất cứ lúc nào cần số liệu mới nhất (mở màn treo máy, tick định kỳ,
-## trước khi rút team về).
-func settle_idle_team(team: Dictionary) -> void:
-	var stage: StageData = StageDatabase.get_by_id(team["stage_id"])
-	if stage == null or stage.time_limit <= 0.0:
-		return
-	var now: float = Time.get_unix_time_from_system()
-	var elapsed: float = now - team["last_tick_at"]
-	var cycles: int = int(elapsed / stage.time_limit)
-	if cycles <= 0:
-		return
-	team["last_tick_at"] += cycles * stage.time_limit
-
-	add_gold(cycles * stage.reward_gold)
-	var exp_per_cycle := 0
-	for i in range(stage.enemy_troop_ids.size()):
-		var enemy: LinhData = TroopDatabase.get_by_id(stage.enemy_troop_ids[i])
-		if enemy != null:
-			exp_per_cycle += enemy.exp_reward * stage.enemy_troop_counts[i]
-	if exp_per_cycle > 0:
-		grant_kill_exp(team["member_troop_ids"], exp_per_cycle * cycles)
+## StageBoardScreen dùng để NHÚNG đúng instance đang chạy vào màn "Xem" (reparent
+## - KHÔNG tạo bản mới, simulation phải tiếp tục chạy y như cũ) - null nếu
+## chưa có team nào đang treo.
+func get_idle_farm_map() -> StageFarmMap:
+	return _idle_farm_map

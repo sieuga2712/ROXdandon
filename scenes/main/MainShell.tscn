@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://d2wdy4ldlhmkx"]
 
 [ext_resource type="Script" path="res://scripts/main/MainShell.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/main/ScreenRouter.gd" id="2"]
@@ -54,6 +54,16 @@ offset_top = 72.0
 offset_bottom = -96.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="ScreenContainer/settings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.16, 0.18, 0.22, 1)
 
 [node name="Margin" type="MarginContainer" parent="ScreenContainer/settings"]
 layout_mode = 1

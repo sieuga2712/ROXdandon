@@ -1,117 +1,117 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1785732026
+::res://::1786008824
 houses.png::CompressedTexture2D::7699319050095551953::1587416697::1785230022::1::::<><>::
 ::res://assets/::1785233366
 ::res://assets/npcs/::1785233366
-::res://assets/npcs/blonde_man/::1785720615
-BlondeManIdleFrames.tres::SpriteFrames::275728511089484912::1785720615::0::1::::<><>::uid://yeedgpi3fa5j::::res://RPG Top Down Characters - Free Version/Blonde Man/blonde_man.png
-::res://assets/npcs/blue_haired_woman/::1785720615
-BlueHairedWomanIdleFrames.tres::SpriteFrames::5455968312590476359::1785720615::0::1::::<><>::uid://da5o550kklo1i::::res://RPG Top Down Characters - Free Version/Blue Haired Woman/blue_haired_woman.png
+::res://assets/npcs/blonde_man/::1785741300
+BlondeManIdleFrames.tres::SpriteFrames::275728511089484912::1785741300::0::1::::<><>::uid://yeedgpi3fa5j::::res://RPG Top Down Characters - Free Version/Blonde Man/blonde_man.png
+::res://assets/npcs/blue_haired_woman/::1785741301
+BlueHairedWomanIdleFrames.tres::SpriteFrames::5455968312590476359::1785741300::0::1::::<><>::uid://da5o550kklo1i::::res://RPG Top Down Characters - Free Version/Blue Haired Woman/blue_haired_woman.png
 ::res://assets/troops/::1785229763
-::res://assets/troops/archer/::1785720614
-ArcherFrames.tres::SpriteFrames::5232044073821300103::1785720614::0::1::::<><>::uid://bemujs5ual0u7::::res://assets/troops/archer/ArcherSheet.png
+::res://assets/troops/archer/::1785741300
+ArcherFrames.tres::SpriteFrames::5232044073821300103::1785741300::0::1::::<><>::uid://bemujs5ual0u7::::res://assets/troops/archer/ArcherSheet.png
 ArcherIcon.tres::AtlasTexture::-1::1785225350::0::1::::<><>::res://assets/troops/archer/ArcherSheet.png
 ArcherSheet.png::CompressedTexture2D::2693179995968026756::1785225350::1785226033::1::::<><>::
 ArcherWeapon.png::CompressedTexture2D::3000162354446087622::1785225350::1785226033::1::::<><>::
 ArrowProjectile.png::CompressedTexture2D::3222758575039384184::1785225350::1785226033::1::::<><>::
-::res://assets/troops/armored_axeman/::1785720614
-ArmoredAxemanFrames.tres::SpriteFrames::7375813883397109623::1785720614::0::1::::<><>::uid://bfukac3d6wefp::::res://assets/troops/armored_axeman/ArmoredAxemanSheet.png
+::res://assets/troops/armored_axeman/::1785741300
+ArmoredAxemanFrames.tres::SpriteFrames::7375813883397109623::1785741300::0::1::::<><>::uid://bfukac3d6wefp::::res://assets/troops/armored_axeman/ArmoredAxemanSheet.png
 ArmoredAxemanIcon.tres::AtlasTexture::-1::1785225350::0::1::::<><>::res://assets/troops/armored_axeman/ArmoredAxemanSheet.png
 ArmoredAxemanSheet.png::CompressedTexture2D::2779259775371949257::1785225350::1785226033::1::::<><>::
 ArmoredAxemanWeapon.png::CompressedTexture2D::2828957323217411267::1785225350::1785226033::1::::<><>::
-::res://assets/troops/armored_orc/::1785720615
-ArmoredOrcFrames.tres::SpriteFrames::6180641197009870534::1785720615::0::1::::<><>::uid://dsuganp4j0n21::::res://assets/troops/armored_orc/ArmoredOrcSheet.png
+::res://assets/troops/armored_orc/::1785741300
+ArmoredOrcFrames.tres::SpriteFrames::6180641197009870534::1785741300::0::1::::<><>::uid://dsuganp4j0n21::::res://assets/troops/armored_orc/ArmoredOrcSheet.png
 ArmoredOrcIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/armored_orc/ArmoredOrcSheet.png
 ArmoredOrcSheet.png::CompressedTexture2D::8464313800907951388::1785229763::1785230022::1::::<><>::
-::res://assets/troops/armored_skeleton/::1785720615
-ArmoredSkeletonFrames.tres::SpriteFrames::583399365436881374::1785720615::0::1::::<><>::uid://ci2wxgrouqy5i::::res://assets/troops/armored_skeleton/ArmoredSkeletonSheet.png
+::res://assets/troops/armored_skeleton/::1785741300
+ArmoredSkeletonFrames.tres::SpriteFrames::583399365436881374::1785741300::0::1::::<><>::uid://ci2wxgrouqy5i::::res://assets/troops/armored_skeleton/ArmoredSkeletonSheet.png
 ArmoredSkeletonIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/armored_skeleton/ArmoredSkeletonSheet.png
 ArmoredSkeletonSheet.png::CompressedTexture2D::5391467505016006180::1785229763::1785230022::1::::<><>::
-::res://assets/troops/bat/::1785720615
-BatFrames.tres::SpriteFrames::4836877259332221461::1785720615::0::1::::<><>::uid://dx4qfelxx4jn8::::res://assets/troops/bat/BatSheet.png
+::res://assets/troops/bat/::1785741300
+BatFrames.tres::SpriteFrames::4836877259332221461::1785741300::0::1::::<><>::uid://dx4qfelxx4jn8::::res://assets/troops/bat/BatSheet.png
 BatIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/bat/BatSheet.png
 BatSheet.png::CompressedTexture2D::8834453038638719735::1785229763::1785230022::1::::<><>::
-::res://assets/troops/elite_orc/::1785720615
-EliteOrcFrames.tres::SpriteFrames::2274143958672574621::1785720615::0::1::::<><>::uid://yln2euqm0gii::::res://assets/troops/elite_orc/EliteOrcSheet.png
+::res://assets/troops/elite_orc/::1785741300
+EliteOrcFrames.tres::SpriteFrames::2274143958672574621::1785741300::0::1::::<><>::uid://yln2euqm0gii::::res://assets/troops/elite_orc/EliteOrcSheet.png
 EliteOrcIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/elite_orc/EliteOrcSheet.png
 EliteOrcSheet.png::CompressedTexture2D::1708078181682312504::1785229763::1785230022::1::::<><>::
-::res://assets/troops/greatsword_skeleton/::1785720615
-GreatswordSkeletonFrames.tres::SpriteFrames::8128350355379128603::1785720615::0::1::::<><>::uid://b78nbjqanrxan::::res://assets/troops/greatsword_skeleton/GreatswordSkeletonSheet.png
+::res://assets/troops/greatsword_skeleton/::1785741300
+GreatswordSkeletonFrames.tres::SpriteFrames::8128350355379128603::1785741300::0::1::::<><>::uid://b78nbjqanrxan::::res://assets/troops/greatsword_skeleton/GreatswordSkeletonSheet.png
 GreatswordSkeletonIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/greatsword_skeleton/GreatswordSkeletonSheet.png
 GreatswordSkeletonSheet.png::CompressedTexture2D::4701379750139067969::1785229763::1785230022::1::::<><>::
-::res://assets/troops/knight/::1785720614
-KnightFrames.tres::SpriteFrames::7664601373733352913::1785720614::0::1::::<><>::uid://b4cfgk1jw65g0::::res://assets/troops/knight/KnightSheet.png
+::res://assets/troops/knight/::1785741300
+KnightFrames.tres::SpriteFrames::7664601373733352913::1785741300::0::1::::<><>::uid://b4cfgk1jw65g0::::res://assets/troops/knight/KnightSheet.png
 KnightIcon.tres::AtlasTexture::-1::1785225349::0::1::::<><>::res://assets/troops/knight/KnightSheet.png
 KnightSheet.png::CompressedTexture2D::4426340770269409237::1785225349::1785226033::1::::<><>::
 KnightWeapon.png::CompressedTexture2D::1937312411775250659::1785225349::1785226033::1::::<><>::
-::res://assets/troops/knight_templar/::1785720614
-KnightTemplarFrames.tres::SpriteFrames::5072336612483539151::1785720614::0::1::::<><>::uid://ct1ve2mmj0qce::::res://assets/troops/knight_templar/KnightTemplarSheet.png
+::res://assets/troops/knight_templar/::1785741300
+KnightTemplarFrames.tres::SpriteFrames::5072336612483539151::1785741300::0::1::::<><>::uid://ct1ve2mmj0qce::::res://assets/troops/knight_templar/KnightTemplarSheet.png
 KnightTemplarIcon.tres::AtlasTexture::-1::1785225349::0::1::::<><>::res://assets/troops/knight_templar/KnightTemplarSheet.png
 KnightTemplarSheet.png::CompressedTexture2D::6161386855364447072::1785225349::1785226033::1::::<><>::
 KnightTemplarWeapon.png::CompressedTexture2D::1455768949438702920::1785225350::1785226033::1::::<><>::
-::res://assets/troops/lancer/::1785720614
-LancerFrames.tres::SpriteFrames::6619811430897397400::1785720614::0::1::::<><>::uid://c3ksu8fn7kt6u::::res://assets/troops/lancer/LancerSheet.png
+::res://assets/troops/lancer/::1785741300
+LancerFrames.tres::SpriteFrames::6619811430897397400::1785741300::0::1::::<><>::uid://c3ksu8fn7kt6u::::res://assets/troops/lancer/LancerSheet.png
 LancerIcon.tres::AtlasTexture::-1::1785225350::0::1::::<><>::res://assets/troops/lancer/LancerSheet.png
 LancerSheet.png::CompressedTexture2D::6759903130168017070::1785225350::1785226033::1::::<><>::
 LancerWeapon.png::CompressedTexture2D::3890423610532876150::1785225350::1785226033::1::::<><>::
-::res://assets/troops/necromancer/::1785720615
-NecromancerFrames.tres::SpriteFrames::4413811904092300157::1785720615::0::1::::<><>::uid://v3a8bnodnbw8::::res://assets/troops/necromancer/NecromancerSheet.png
+::res://assets/troops/necromancer/::1785741300
+NecromancerFrames.tres::SpriteFrames::4413811904092300157::1785741300::0::1::::<><>::uid://v3a8bnodnbw8::::res://assets/troops/necromancer/NecromancerSheet.png
 NecromancerIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/necromancer/NecromancerSheet.png
 NecromancerSheet.png::CompressedTexture2D::1531827297957640745::1785229763::1785230022::1::::<><>::
-::res://assets/troops/orc/::1785720614
-OrcFrames.tres::SpriteFrames::1159386365932326576::1785720614::0::1::::<><>::uid://b3cawqp7ce8uu::::res://assets/troops/orc/OrcSheet.png
+::res://assets/troops/orc/::1785741300
+OrcFrames.tres::SpriteFrames::1159386365932326576::1785741300::0::1::::<><>::uid://b3cawqp7ce8uu::::res://assets/troops/orc/OrcSheet.png
 OrcIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/orc/OrcSheet.png
 OrcSheet.png::CompressedTexture2D::4355877213534505920::1785229763::1785230022::1::::<><>::
-::res://assets/troops/orc_rider/::1785720615
-OrcRiderFrames.tres::SpriteFrames::5560804152594218058::1785720615::0::1::::<><>::uid://1y6ty235bcqs::::res://assets/troops/orc_rider/OrcRiderSheet.png
+::res://assets/troops/orc_rider/::1785741300
+OrcRiderFrames.tres::SpriteFrames::5560804152594218058::1785741300::0::1::::<><>::uid://1y6ty235bcqs::::res://assets/troops/orc_rider/OrcRiderSheet.png
 OrcRiderIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/orc_rider/OrcRiderSheet.png
 OrcRiderSheet.png::CompressedTexture2D::1876372461128676834::1785229763::1785230022::1::::<><>::
-::res://assets/troops/priest/::1785720615
-PriestAttackEffectFrames.tres::SpriteFrames::8051512863684814456::1785720615::0::1::::<><>::uid://82duh4idnmhf::::res://assets/troops/priest/PriestAttackEffectSheet.png
+::res://assets/troops/priest/::1785741300
+PriestAttackEffectFrames.tres::SpriteFrames::8051512863684814456::1785741300::0::1::::<><>::uid://82duh4idnmhf::::res://assets/troops/priest/PriestAttackEffectSheet.png
 PriestAttackEffectSheet.png::CompressedTexture2D::2372188319101876475::1785225350::1785226033::1::::<><>::
-PriestFrames.tres::SpriteFrames::3492669131132662001::1785720614::0::1::::<><>::uid://bikuqr1dfq2iw::::res://assets/troops/priest/PriestSheet.png
-PriestHealEffectFrames.tres::SpriteFrames::8426642656004355534::1785720615::0::1::::<><>::uid://c72u5vnjvtoqb::::res://assets/troops/priest/PriestHealEffectSheet.png
+PriestFrames.tres::SpriteFrames::3492669131132662001::1785741300::0::1::::<><>::uid://bikuqr1dfq2iw::::res://assets/troops/priest/PriestSheet.png
+PriestHealEffectFrames.tres::SpriteFrames::8426642656004355534::1785741300::0::1::::<><>::uid://c72u5vnjvtoqb::::res://assets/troops/priest/PriestHealEffectSheet.png
 PriestHealEffectSheet.png::CompressedTexture2D::7075891600345884321::1785225350::1785226033::1::::<><>::
 PriestIcon.tres::AtlasTexture::-1::1785225350::0::1::::<><>::res://assets/troops/priest/PriestSheet.png
 PriestSheet.png::CompressedTexture2D::2969819056101281090::1785225350::1785226033::1::::<><>::
 PriestWeapon.png::CompressedTexture2D::3363328881058417553::1785225350::1785226033::1::::<><>::
-::res://assets/troops/skeleton/::1785720615
-SkeletonFrames.tres::SpriteFrames::1737215988495753044::1785720615::0::1::::<><>::uid://nthi6fyduuky::::res://assets/troops/skeleton/SkeletonSheet.png
+::res://assets/troops/skeleton/::1785741300
+SkeletonFrames.tres::SpriteFrames::1737215988495753044::1785741300::0::1::::<><>::uid://nthi6fyduuky::::res://assets/troops/skeleton/SkeletonSheet.png
 SkeletonIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/skeleton/SkeletonSheet.png
 SkeletonSheet.png::CompressedTexture2D::952119086965306444::1785229763::1785230021::1::::<><>::
-::res://assets/troops/skeleton_archer/::1785720615
-SkeletonArcherFrames.tres::SpriteFrames::6572588687125975865::1785720615::0::1::::<><>::uid://clvjrc78e5hco::::res://assets/troops/skeleton_archer/SkeletonArcherSheet.png
+::res://assets/troops/skeleton_archer/::1785741300
+SkeletonArcherFrames.tres::SpriteFrames::6572588687125975865::1785741300::0::1::::<><>::uid://clvjrc78e5hco::::res://assets/troops/skeleton_archer/SkeletonArcherSheet.png
 SkeletonArcherIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/skeleton_archer/SkeletonArcherSheet.png
 SkeletonArcherSheet.png::CompressedTexture2D::5588847547657438270::1785229763::1785230021::1::::<><>::
-::res://assets/troops/slime/::1785720615
-SlimeFrames.tres::SpriteFrames::5542925868092295888::1785720615::0::1::::<><>::uid://cjv5youeib45n::::res://assets/troops/slime/SlimeSheet.png
+::res://assets/troops/slime/::1785741300
+SlimeFrames.tres::SpriteFrames::5542925868092295888::1785741300::0::1::::<><>::uid://cjv5youeib45n::::res://assets/troops/slime/SlimeSheet.png
 SlimeIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/slime/SlimeSheet.png
 SlimeSheet.png::CompressedTexture2D::5449758028215956869::1785229763::1785230022::1::::<><>::
-::res://assets/troops/soldier/::1785720614
+::res://assets/troops/soldier/::1785741300
 Arrow.png::CompressedTexture2D::2591014083535463638::1785225349::1785226033::1::::<><>::
-SoldierFrames.tres::SpriteFrames::3583599023372462339::1785720614::0::1::::<><>::uid://c4erin5bbgquy::::res://assets/troops/soldier/SoldierSheet.png
+SoldierFrames.tres::SpriteFrames::3583599023372462339::1785741300::0::1::::<><>::uid://c4erin5bbgquy::::res://assets/troops/soldier/SoldierSheet.png
 SoldierIcon.tres::AtlasTexture::-1::1785225349::0::1::::<><>::res://assets/troops/soldier/SoldierSheet.png
 SoldierSheet.png::CompressedTexture2D::6817622548328360544::1785225349::1785226033::1::::<><>::
 SoldierWeapon.png::CompressedTexture2D::8228766107071526889::1785225349::1785226032::1::::<><>::
-::res://assets/troops/swordsman/::1785720614
-SwordsmanFrames.tres::SpriteFrames::1584007990666520036::1785720614::0::1::::<><>::uid://inrxl7attwd::::res://assets/troops/swordsman/SwordsmanSheet.png
+::res://assets/troops/swordsman/::1785741300
+SwordsmanFrames.tres::SpriteFrames::1584007990666520036::1785741300::0::1::::<><>::uid://inrxl7attwd::::res://assets/troops/swordsman/SwordsmanSheet.png
 SwordsmanIcon.tres::AtlasTexture::-1::1785225349::0::1::::<><>::res://assets/troops/swordsman/SwordsmanSheet.png
 SwordsmanSheet.png::CompressedTexture2D::17335927919430419::1785225349::1785226033::1::::<><>::
 SwordsmanWeapon.png::CompressedTexture2D::8440033114863141676::1785225349::1785226032::1::::<><>::
-::res://assets/troops/werebear/::1785720615
-WerebearFrames.tres::SpriteFrames::3906850876154440227::1785720615::0::1::::<><>::uid://bk2bvbty1ciuv::::res://assets/troops/werebear/WerebearSheet.png
+::res://assets/troops/werebear/::1785741300
+WerebearFrames.tres::SpriteFrames::3906850876154440227::1785741300::0::1::::<><>::uid://bk2bvbty1ciuv::::res://assets/troops/werebear/WerebearSheet.png
 WerebearIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/werebear/WerebearSheet.png
 WerebearSheet.png::CompressedTexture2D::3144145621097725645::1785229763::1785230022::1::::<><>::
-::res://assets/troops/werewolf/::1785720615
-WerewolfFrames.tres::SpriteFrames::7158165177884103794::1785720615::0::1::::<><>::uid://bs1urwf20y4pn::::res://assets/troops/werewolf/WerewolfSheet.png
+::res://assets/troops/werewolf/::1785741300
+WerewolfFrames.tres::SpriteFrames::7158165177884103794::1785741300::0::1::::<><>::uid://bs1urwf20y4pn::::res://assets/troops/werewolf/WerewolfSheet.png
 WerewolfIcon.tres::AtlasTexture::-1::1785229763::0::1::::<><>::res://assets/troops/werewolf/WerewolfSheet.png
 WerewolfSheet.png::CompressedTexture2D::3704739553633818095::1785229763::1785230022::1::::<><>::
-::res://assets/troops/wizard/::1785720615
-MagicProjectileFrames.tres::SpriteFrames::290150875998794272::1785720615::0::1::::<><>::uid://b5jeb2r10inpa::::res://assets/troops/wizard/MagicProjectileSheet.png
+::res://assets/troops/wizard/::1785741300
+MagicProjectileFrames.tres::SpriteFrames::290150875998794272::1785741300::0::1::::<><>::uid://b5jeb2r10inpa::::res://assets/troops/wizard/MagicProjectileSheet.png
 MagicProjectileSheet.png::CompressedTexture2D::4510911491992769666::1785225350::1785226033::1::::<><>::
-MagicSkillProjectileFrames.tres::SpriteFrames::1450037580375226730::1785720615::0::1::::<><>::uid://tbn6pem561ry::::res://assets/troops/wizard/MagicSkillProjectileSheet.png
+MagicSkillProjectileFrames.tres::SpriteFrames::1450037580375226730::1785741300::0::1::::<><>::uid://tbn6pem561ry::::res://assets/troops/wizard/MagicSkillProjectileSheet.png
 MagicSkillProjectileSheet.png::CompressedTexture2D::1336497882009724954::1785225350::1785226033::1::::<><>::
-WizardFrames.tres::SpriteFrames::1719104220293489791::1785720614::0::1::::<><>::uid://cfmae8nnwpe8p::::res://assets/troops/wizard/WizardSheet.png
+WizardFrames.tres::SpriteFrames::1719104220293489791::1785741300::0::1::::<><>::uid://cfmae8nnwpe8p::::res://assets/troops/wizard/WizardSheet.png
 WizardIcon.tres::AtlasTexture::-1::1785225350::0::1::::<><>::res://assets/troops/wizard/WizardSheet.png
 WizardSheet.png::CompressedTexture2D::5148567015774368313::1785225350::1785226033::1::::<><>::
 WizardWeapon.png::CompressedTexture2D::8202929112861900813::1785225350::1785226032::1::::<><>::
@@ -141,36 +141,36 @@ stage_boss_ma_tuong_de.tres::Resource/StageData::-1::1785731829::0::1::::<><>::r
 stage_boss_ma_tuong_kho.tres::Resource/StageData::-1::1785731839::0::1::::<><>::res://scripts/stage/StageData.gd
 stage_boss_ma_tuong_thuong.tres::Resource/StageData::-1::1785731834::0::1::::<><>::res://scripts/stage/StageData.gd
 stage_boss_world_abyss.tres::Resource/StageData::-1::1785731848::0::1::::<><>::res://scripts/stage/StageData.gd
-::res://data/troops/::1785731802
-archer.tres::Resource/LinhData::-1::1785225400::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/archer/ArcherIcon.tres
-armored_axeman.tres::Resource/LinhData::-1::1785225448::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_axeman/ArmoredAxemanIcon.tres
-armored_orc.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-armored_skeleton.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-bat.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-boss_hac_long_de.tres::Resource/LinhData::-1::1785731756::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
-boss_hac_long_kho.tres::Resource/LinhData::-1::1785731779::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
-boss_hac_long_thuong.tres::Resource/LinhData::-1::1785731774::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
-boss_ma_tuong_de.tres::Resource/LinhData::-1::1785731785::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
-boss_ma_tuong_kho.tres::Resource/LinhData::-1::1785731797::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
-boss_ma_tuong_thuong.tres::Resource/LinhData::-1::1785731791::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
-boss_world_abyss.tres::Resource/LinhData::-1::1785731802::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/greatsword_skeleton/GreatswordSkeletonIcon.tres
-elite_orc.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-greatsword_skeleton.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-knight.tres::Resource/LinhData::-1::1785225410::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/knight/KnightIcon.tres
-knight_templar.tres::Resource/LinhData::-1::1785225416::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/knight_templar/KnightTemplarIcon.tres
-lancer.tres::Resource/LinhData::-1::1785225442::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/lancer/LancerIcon.tres
-necromancer.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-orc.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-orc_rider.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-priest.tres::Resource/LinhData::-1::1785225454::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/priest/PriestIcon.tres
-skeleton.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-skeleton_archer.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-slime.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-soldier.tres::Resource/LinhData::-1::1785225387::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/soldier/SoldierIcon.tres
-swordsman.tres::Resource/LinhData::-1::1785225393::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/swordsman/SwordsmanIcon.tres
-werebear.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-werewolf.tres::Resource/LinhData::-1::1785229857::0::1::::<><>::
-wizard.tres::Resource/LinhData::-1::1785225405::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/wizard/WizardIcon.tres
+::res://data/troops/::1786008490
+archer.tres::Resource/LinhData::-1::1786008462::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/archer/ArcherIcon.tres
+armored_axeman.tres::Resource/LinhData::-1::1786008469::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_axeman/ArmoredAxemanIcon.tres
+armored_orc.tres::Resource/LinhData::-1::1786008477::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
+armored_skeleton.tres::Resource/LinhData::-1::1786008475::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_skeleton/ArmoredSkeletonIcon.tres
+bat.tres::Resource/LinhData::-1::1786008471::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/bat/BatIcon.tres
+boss_hac_long_de.tres::Resource/LinhData::-1::1786008484::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
+boss_hac_long_kho.tres::Resource/LinhData::-1::1786008486::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
+boss_hac_long_thuong.tres::Resource/LinhData::-1::1786008485::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
+boss_ma_tuong_de.tres::Resource/LinhData::-1::1786008487::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
+boss_ma_tuong_kho.tres::Resource/LinhData::-1::1786008489::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
+boss_ma_tuong_thuong.tres::Resource/LinhData::-1::1786008488::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/armored_orc/ArmoredOrcIcon.tres
+boss_world_abyss.tres::Resource/LinhData::-1::1786008490::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/greatsword_skeleton/GreatswordSkeletonIcon.tres
+elite_orc.tres::Resource/LinhData::-1::1786008482::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/elite_orc/EliteOrcIcon.tres
+greatsword_skeleton.tres::Resource/LinhData::-1::1786008478::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/greatsword_skeleton/GreatswordSkeletonIcon.tres
+knight.tres::Resource/LinhData::-1::1786008466::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/knight/KnightIcon.tres
+knight_templar.tres::Resource/LinhData::-1::1786008467::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/knight_templar/KnightTemplarIcon.tres
+lancer.tres::Resource/LinhData::-1::1786008468::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/lancer/LancerIcon.tres
+necromancer.tres::Resource/LinhData::-1::1786008483::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/necromancer/NecromancerIcon.tres
+orc.tres::Resource/LinhData::-1::1786008480::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/orc/OrcIcon.tres
+orc_rider.tres::Resource/LinhData::-1::1786008479::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/orc_rider/OrcRiderIcon.tres
+priest.tres::Resource/LinhData::-1::1786008464::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/priest/PriestIcon.tres
+skeleton.tres::Resource/LinhData::-1::1786008472::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/skeleton/SkeletonIcon.tres
+skeleton_archer.tres::Resource/LinhData::-1::1786008473::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/skeleton_archer/SkeletonArcherIcon.tres
+slime.tres::Resource/LinhData::-1::1786008470::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/slime/SlimeIcon.tres
+soldier.tres::Resource/LinhData::-1::1786008461::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/soldier/SoldierIcon.tres
+swordsman.tres::Resource/LinhData::-1::1786008465::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/swordsman/SwordsmanIcon.tres
+werebear.tres::Resource/LinhData::-1::1786008476::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/werebear/WerebearIcon.tres
+werewolf.tres::Resource/LinhData::-1::1786008474::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/werewolf/WerewolfIcon.tres
+wizard.tres::Resource/LinhData::-1::1786008463::0::1::::<><>::res://scripts/troop/LinhData.gd<>res://assets/troops/wizard/WizardIcon.tres
 ::res://Minifantasy_ForgottenPlains_v3.6_Free_Version/::1723041080
 FreeLicense.txt::TextFile::-1::1655177833::0::1::::<><>::
 ::res://Minifantasy_ForgottenPlains_v3.6_Free_Version/_Legacy_Assets/::1785230022
@@ -200,8 +200,8 @@ Minifantasy_ForgottenPlainsWaterfallGroundLayer.png::CompressedTexture2D::672090
 Minifantasy_ForgottenPlainsWaterfallSplashEffectLayer.png::CompressedTexture2D::3219590508345818925::1621494812::1785230022::1::::<><>::
 WaterfalTilesInfo.txt::TextFile::-1::1624940936::0::1::::<><>::
 ::res://mockups/::1785731374
-::res://ROX đần độn/::1785491548
-Mục lục.md::TextFile::-1::1785491548::0::1::::<><>::
+::res://ROX đần độn/::1785740819
+Mục lục.md::TextFile::-1::1785740819::0::1::::<><>::
 ::res://ROX đần độn/Giao diện/::1785491527
 Hub & Quy ước UI chung.md::TextFile::-1::1785491527::0::1::::<><>::
 Vỏ ứng dụng Portrait (MainShell & Navigation).md::TextFile::-1::1785491477::0::1::::<><>::
@@ -209,13 +209,14 @@ Vỏ ứng dụng Portrait (MainShell & Navigation).md::TextFile::-1::1785491477
 Chuyển thể từ vrisingDanDon.md::TextFile::-1::1785230892::0::1::::<><>::
 Lỗi đã gặp & Bài học.md::TextFile::-1::1785491649::0::1::::<><>::
 Quy ước code & Autoload.md::TextFile::-1::1785230820::0::1::::<><>::
-::res://ROX đần độn/Quản lý dự án/::1785491699
+::res://ROX đần độn/Quản lý dự án/::1785740945
 Cách build & chạy game.md::TextFile::-1::1785230456::0::1::::<><>::
-Tiến độ & Việc còn dang dở.md::TextFile::-1::1785491699::0::1::::<><>::
-Tóm tắt dự án.md::TextFile::-1::1785491591::0::1::::<><>::
+Tiến độ & Việc còn dang dở.md::TextFile::-1::1785740883::0::1::::<><>::
+Tóm tắt dự án.md::TextFile::-1::1785740945::0::1::::<><>::
 ::res://ROX đần độn/Thiết kế Game/::1785491517
-::res://ROX đần độn/Thiết kế Game/Bản đồ/::1785491517
-Thành phố & Ải AFK-Farm.md::TextFile::-1::1785491517::0::1::::<><>::
+::res://ROX đần độn/Thiết kế Game/Bản đồ/::1785740808
+Thành phố & Ải AFK-Farm.md::TextFile::-1::1785740808::0::1::::<><>::
+Ủy Thác, Boss & Treo máy.md::TextFile::-1::1785740777::0::1::::<><>::
 ::res://ROX đần độn/Thiết kế Game/Chiến đấu/::1785491538
 AI chiến đấu.md::TextFile::-1::1785230716::0::1::::<><>::
 Camera & Hiệu ứng trận đấu.md::TextFile::-1::1785230741::0::1::::<><>::
@@ -238,15 +239,15 @@ blonde_man_shadow.png::CompressedTexture2D::5663364212376999449::1747747214::178
 blue_haired_woman.png::CompressedTexture2D::7222098610205755564::1747908724::1785230022::1::::<><>::
 blue_haired_woman_shadow.png::CompressedTexture2D::5549783553051701074::1747908713::1785230022::1::::<><>::
 ::res://scenes/::1785225872
-::res://scenes/main/::1785732045
+::res://scenes/main/::1786008685
 BossBoardScreen.tscn::PackedScene::-1::1785731948::0::1::::<><>::res://scripts/main/BossBoardScreen.gd
 BottomNav.tscn::PackedScene::-1::1785727160::0::1::::<><>::res://scripts/main/BottomNav.gd
 CharacterBoardScreen.tscn::PackedScene::-1::1785732020::0::1::::<><>::res://scripts/main/CharacterBoardScreen.gd
 Hub.tscn::PackedScene::7978648398361899120::1785724810::0::1::::<><>::res://scripts/main/Hub.gd<>res://scenes/stage/StageSelectPanel.tscn<>res://scenes/stage/BattleScene.tscn<>res://scripts/main/StageFlowController.gd<>res://scenes/main/OverworldMap.tscn
-MainShell.tscn::PackedScene::-1::1785732045::0::1::::<><>::res://scripts/main/MainShell.gd<>res://scripts/main/ScreenRouter.gd<>res://scenes/main/OverworldMap.tscn<>res://scenes/stage/BattleScene.tscn<>res://scenes/main/BottomNav.tscn<>res://scripts/main/StageFlowController.gd<>res://scenes/main/StageBoardScreen.tscn<>res://scenes/main/BossBoardScreen.tscn<>res://scenes/main/CharacterBoardScreen.tscn
+MainShell.tscn::PackedScene::9100003690248807587::1785741300::0::1::::<><>::res://scripts/main/MainShell.gd<>res://scripts/main/ScreenRouter.gd<>res://scenes/main/OverworldMap.tscn<>res://scenes/stage/BattleScene.tscn<>res://scenes/main/BottomNav.tscn<>res://scripts/main/StageFlowController.gd<>res://scenes/main/StageBoardScreen.tscn<>res://scenes/main/BossBoardScreen.tscn<>res://scenes/main/CharacterBoardScreen.tscn
 OverworldMap.tscn::PackedScene::-1::1785724123::0::1::::<><>::res://houses.png<>res://assets/npcs/blonde_man/BlondeManIdleFrames.tres<>res://assets/npcs/blue_haired_woman/BlueHairedWomanIdleFrames.tres
-StageBoardScreen.tscn::PackedScene::-1::1785728522::0::1::::<><>::res://scripts/main/StageBoardScreen.gd
-StageFarmMap.tscn::PackedScene::-1::1785490687::0::1::::<><>::res://scripts/main/StageFarmMap.gd<>res://scripts/main/StageFarmWorld.gd<>res://scripts/main/PartyRosterPanel.gd
+StageBoardScreen.tscn::PackedScene::-1::1786008685::0::1::::<><>::res://scripts/main/StageBoardScreen.gd
+StageFarmMap.tscn::PackedScene::-1::1785740429::0::1::::<><>::res://scripts/main/StageFarmMap.gd<>res://scripts/main/StageFarmWorld.gd
 ::res://scenes/stage/::1785489805
 BattleScene.tscn::PackedScene::-1::1785489805::0::1::::<><>::res://scripts/stage/BattleScene.gd
 StageSelectPanel.tscn::PackedScene::-1::1785225607::0::1::::<><>::res://scripts/stage/StageSelectPanel.gd<>res://assets/ui/panel.svg
@@ -255,22 +256,21 @@ DamagePopup.tscn::PackedScene::-1::1785225483::0::1::::<><>::res://scripts/troop
 ImpactEffect.tscn::PackedScene::-1::1785225483::0::1::::<><>::res://scripts/troop/ImpactEffect.gd
 Projectile.tscn::PackedScene::-1::1785225483::0::1::::<><>::res://scripts/troop/Projectile.gd
 TroopUnit.tscn::PackedScene::-1::1785225547::0::1::::<><>::res://scripts/troop/TroopUnit.gd
-::res://scripts/::1785728336
+::res://scripts/::1786008764
 ::res://scripts/data/::1785225159
 Enums.gd::GDScript::-1::1785225159::0::1::::Enums<>RefCounted<>::
-::res://scripts/main/::1785732055
+::res://scripts/main/::1786008665
 BossBoardScreen.gd::GDScript::-1::1785731936::0::1::::BossBoardScreen<>Control<>::
 BottomNav.gd::GDScript::-1::1785727190::0::1::::BottomNav<>Control<>::
-CharacterBoardScreen.gd::GDScript::-1::1785732005::0::1::::CharacterBoardScreen<>Control<>::
+CharacterBoardScreen.gd::GDScript::-1::1785739100::0::1::::CharacterBoardScreen<>Control<>::
 MainShell.gd::GDScript::-1::1785732055::0::1::::MainShell<>Control<>::
-PartyRosterPanel.gd::GDScript::-1::1785463828::0::1::::PartyRosterPanel<>HBoxContainer<>::
 ScreenRouter.gd::GDScript::-1::1785488087::0::1::::ScreenRouter<>Control<>::
-StageBoardScreen.gd::GDScript::-1::1785728228::0::1::::StageBoardScreen<>Control<>::
-StageFarmMap.gd::GDScript::-1::1785490580::0::1::::StageFarmMap<>Control<>::
-StageFarmWorld.gd::GDScript::-1::1785491043::0::1::::StageFarmWorld<>Node2D<>::
+StageBoardScreen.gd::GDScript::-1::1786008665::0::1::::StageBoardScreen<>Control<>::
+StageFarmMap.gd::GDScript::-1::1785740414::0::1::::StageFarmMap<>Control<>::
+StageFarmWorld.gd::GDScript::-1::1786008548::0::1::::StageFarmWorld<>Node2D<>::
 StageFlowController.gd::GDScript::-1::1785726011::0::1::::StageFlowController<>Node<>::
-::res://scripts/stage/::1785731749
-BattleScene.gd::GDScript::-1::1785725990::0::1::::BattleScene<>Control<>::
+::res://scripts/stage/::1785739011
+BattleScene.gd::GDScript::-1::1785739011::0::1::::BattleScene<>Control<>::
 BossData.gd::GDScript::-1::1785731742::0::1::::BossData<>Resource<>::
 BossDatabase.gd::GDScript::-1::1785731749::0::1::::<>Node<>::
 MapData.gd::GDScript::-1::1785728135::0::1::::MapData<>Resource<>::
@@ -278,15 +278,16 @@ MapDatabase.gd::GDScript::-1::1785725762::0::1::::<>Node<>::
 StageData.gd::GDScript::-1::1785725840::0::1::::StageData<>Resource<>::
 StageDatabase.gd::GDScript::-1::1785725866::0::1::::<>Node<>::
 StageSelectPanel.gd::GDScript::-1::1785225597::0::1::::StageSelectPanel<>Control<>::
-::res://scripts/state/::1785725944
-GameState.gd::GDScript::-1::1785725944::0::1::::<>Node<>::
-::res://scripts/troop/::1785233425
+::res://scripts/state/::1786008432
+ExpTables.gd::GDScript::-1::1785738847::0::1::::ExpTables<>RefCounted<>::
+GameState.gd::GDScript::-1::1786008432::0::1::::<>Node<>::
+::res://scripts/troop/::1786008449
 DamagePopup.gd::GDScript::-1::1785225483::0::1::::DamagePopup<>Node2D<>::
 ImpactEffect.gd::GDScript::-1::1785225483::0::1::::ImpactEffect<>Node2D<>::
-LinhData.gd::GDScript::-1::1785225171::0::1::::LinhData<>Resource<>::
+LinhData.gd::GDScript::-1::1786008449::0::1::::LinhData<>Resource<>::
 Projectile.gd::GDScript::-1::1785225483::0::1::::Projectile<>Node2D<>::
 TroopDatabase.gd::GDScript::-1::1785225201::0::1::::<>Node<>::
-TroopUnit.gd::GDScript::-1::1785233425::0::1::::TroopUnit<>Node2D<>::
+TroopUnit.gd::GDScript::-1::1785740404::0::1::::TroopUnit<>Node2D<>::
 ::res://scripts/ui/::1785225569
 UIBuilders.gd::GDScript::-1::1785225564::0::1::::UIBuilders<>RefCounted<>::
 UIConstants.gd::GDScript::-1::1785225569::0::1::::UIConstants<>RefCounted<>::

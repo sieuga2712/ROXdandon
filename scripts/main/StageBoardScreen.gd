@@ -8,10 +8,11 @@ extends Control
 ##   KHÔNG có bước chọn tầng riêng (đã chốt - nút chỉ đổi TÊN so với mockup
 ##   gốc "CHỌN TẦNG TREO", hành vi vẫn là vào trận thật). Vai trò DUY NHẤT của
 ##   tab này với treo máy: mở khoá tầng cao hơn (xem GameState.highest_floor_cleared).
-## - "Treo máy": hệ treo máy THẬT (xem GameState.start_idle_team/settle_idle_team) -
-##   danh sách team đang treo (map/tầng/thành viên/thưởng mỗi chu kỳ) + thẻ
-##   "+" mở màn tạo team mới (chọn map, tầng trong giới hạn đã thắng tay, tối
-##   đa 4 thành viên không trùng người đang treo team khác, tối đa 3 team/map).
+## - "Treo máy": hệ treo máy THẬT (xem GameState.start_idle_team) - CHỈ 1 team
+##   tại 1 thời điểm (đơn giản hoá sau khi thảo luận lại, bỏ hẳn nhiều
+##   team/nhiều map + công thức DPS/thời gian trôi qua). Còn trống thì hiện thẻ
+##   "+" mở màn tạo team; có rồi thì hiện đúng 1 thẻ team đó (map/tầng/thành
+##   viên) + nút XEM (nhúng thẳng trận đang chạy nền vào màn hình)/RÚT VỀ.
 ##
 ## MainShell làm trung gian nối stage_selected -> StageFlowController.start_stage
 ## và ngược lại StageFlowController.stage_finished -> on_stage_finished (đúng
@@ -19,8 +20,6 @@ extends Control
 ## giới scene con nên không tự gọi thẳng StageFlowController từ đây được).
 
 signal stage_selected(stage: StageData)
-
-const STAGE_FARM_MAP_SCENE: PackedScene = preload("res://scenes/main/StageFarmMap.tscn")
 
 const CARD_BG: Color = Color(0.19, 0.22, 0.29, 1)
 const CARD_BORDER: Color = Color(0.3, 0.34, 0.43, 1)
@@ -39,7 +38,6 @@ const EMPTY_BORDER: Color = Color(0.4, 0.43, 0.51)
 @onready var idle_list: VBoxContainer = %IdleList
 @onready var create_idle_panel: Control = %CreateIdlePanel
 @onready var create_idle_content: VBoxContainer = %CreateIdleContent
-@onready var idle_settle_timer: Timer = %IdleSettleTimer
 @onready var idle_view_panel: Control = %IdleViewPanel
 @onready var idle_view_host: Control = %IdleViewHost
 @onready var idle_view_back_button: Button = %IdleViewBackButton
@@ -48,7 +46,6 @@ func _ready() -> void:
 	_build_sub_tab_buttons()
 	_build_map_cards()
 	_build_idle_list()
-	idle_settle_timer.timeout.connect(_on_idle_settle_timer_timeout)
 	idle_view_back_button.pressed.connect(_close_idle_view)
 
 func _build_sub_tab_buttons() -> void:
@@ -219,34 +216,28 @@ func on_stage_finished(_stage: StageData, _won: bool) -> void:
 ## Treo máy TÁCH BIỆT hoàn toàn với Ủy Thác/Boss - 1 nhân vật chỉ không được
 ## thuộc 2 team treo máy cùng lúc (xem GameState.is_troop_idling), nhưng vẫn
 ## đánh Ủy Thác/Boss bình thường dù đang treo máy ở đâu. Ủy Thác chỉ có vai
-## trò MỞ KHOÁ tầng cao hơn để treo (xem GameState.get_highest_floor) - tầng
-## treo máy tối đa = tầng cao nhất đã thắng tay, KHÔNG tính riêng.
+## trò MỞ KHOÁ tầng cao hơn để treo (xem GameState.get_highest_floor).
 ##
-## Mỗi lần vẽ lại list đều settle_idle_team() hết các team trước - vừa để số
-## vàng/EXP luôn mới nhất, vừa để timer %IdleSettleTimer (mỗi 4s) tự làm mới
-## trong lúc người chơi đang xem tab này. Xem GameState.settle_idle_team() để
-## rõ vì sao tắt app hẳn rồi mở lại CHƯA cộng dồn được (chưa có hệ save/load).
+## CHỈ 1 team tại 1 thời điểm (GameState.idle_team, không phải Array nữa) -
+## thẻ "+" chỉ hiện khi CHƯA có team nào, có rồi thì hiện đúng 1 thẻ. Không
+## còn công thức/chu kỳ gì để hiển thị - vàng/EXP cộng thẳng vào GameState
+## ngay lúc quái chết thật trong trận nền (xem StageFarmWorld), số dư chỉ cần
+## nhìn thanh Vàng ở top bar hoặc mở "XEM" ra coi trực tiếp.
 
 var _create_map_id: int = -1
 var _create_floor: int = 1
 var _create_selected: Array[int] = []
 
-func _on_idle_settle_timer_timeout() -> void:
-	for team in GameState.idle_teams:
-		GameState.settle_idle_team(team)
-	if idle_panel.visible:
-		_build_idle_list()
-
 func _build_idle_list() -> void:
-	for team in GameState.idle_teams:
-		GameState.settle_idle_team(team)
 	for child in idle_list.get_children():
 		child.queue_free()
-	for team in GameState.idle_teams:
-		idle_list.add_child(_build_idle_team_card(team))
-	idle_list.add_child(_build_empty_idle_card())
+	if GameState.idle_team.is_empty():
+		idle_list.add_child(_build_empty_idle_card())
+	else:
+		idle_list.add_child(_build_idle_team_card())
 
-func _build_idle_team_card(team: Dictionary) -> PanelContainer:
+func _build_idle_team_card() -> PanelContainer:
+	var team := GameState.idle_team
 	var stage: StageData = StageDatabase.get_by_id(team["stage_id"])
 	var map_data: MapData = MapDatabase.get_by_id(stage.map_id) if stage != null else null
 
@@ -294,13 +285,12 @@ func _build_idle_team_card(team: Dictionary) -> PanelContainer:
 	header.add_child(name_col)
 	vbox.add_child(header)
 
-	if stage != null:
-		var exp_per_cycle := 0
-		for i in range(stage.enemy_troop_ids.size()):
-			var enemy: LinhData = TroopDatabase.get_by_id(stage.enemy_troop_ids[i])
-			if enemy != null:
-				exp_per_cycle += enemy.exp_reward * stage.enemy_troop_counts[i]
-		vbox.add_child(_build_row_line("Mỗi %ds" % int(stage.time_limit), "+%d vàng, +%d EXP" % [stage.reward_gold, exp_per_cycle]))
+	var note := Label.new()
+	note.text = "Đang farm thật - vàng/EXP cộng ngay khi hạ được quái, xem trực tiếp bằng nút XEM. Chỉ tính khi app đang mở."
+	note.add_theme_color_override("font_color", MUTED)
+	note.add_theme_font_size_override("font_size", 9)
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD
+	vbox.add_child(note)
 
 	var button_row := HBoxContainer.new()
 	button_row.add_theme_constant_override("separation", 8)
@@ -311,7 +301,7 @@ func _build_idle_team_card(team: Dictionary) -> PanelContainer:
 	watch_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	watch_button.add_theme_color_override("font_color", GOLD)
 	watch_button.add_theme_stylebox_override("normal", _flat_style(Color(0.16, 0.18, 0.22), CARD_BORDER, 1, 6))
-	watch_button.pressed.connect(_open_idle_view.bind(team))
+	watch_button.pressed.connect(_open_idle_view)
 	button_row.add_child(watch_button)
 
 	var recall_button := Button.new()
@@ -320,31 +310,28 @@ func _build_idle_team_card(team: Dictionary) -> PanelContainer:
 	recall_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	recall_button.add_theme_color_override("font_color", Color(0.85, 0.6, 0.6))
 	recall_button.add_theme_stylebox_override("normal", _flat_style(Color(0.16, 0.18, 0.22), EMPTY_BORDER, 1, 6))
-	recall_button.pressed.connect(_on_recall_pressed.bind(team["id"]))
+	recall_button.pressed.connect(_on_recall_pressed)
 	button_row.add_child(recall_button)
 
 	vbox.add_child(button_row)
 
 	return card
 
-func _on_recall_pressed(team_id: int) -> void:
-	GameState.stop_idle_team(team_id)
+func _on_recall_pressed() -> void:
+	GameState.stop_idle_team()
 	_build_idle_list()
 
 ## ============================== Màn "Xem treo máy" ==============================
+## KHÔNG tạo bản mới - nhúng (reparent) đúng instance GameState đang giữ sống
+## vào idle_view_host để nhìn, simulation vẫn chạy y hệt lúc không xem. Đóng
+## lại thì reparent VỀ lại GameState (KHÔNG queue_free - phải tiếp tục chạy).
 
-func _open_idle_view(team: Dictionary) -> void:
-	var stage: StageData = StageDatabase.get_by_id(team["stage_id"])
-	if stage == null:
+func _open_idle_view() -> void:
+	var farm_map: StageFarmMap = GameState.get_idle_farm_map()
+	if farm_map == null:
 		return
-	for child in idle_view_host.get_children():
-		child.queue_free()
-	var farm_map: StageFarmMap = STAGE_FARM_MAP_SCENE.instantiate()
+	farm_map.reparent(idle_view_host, false)
 	farm_map.set_anchors_preset(Control.PRESET_FULL_RECT)
-	idle_view_host.add_child(farm_map)
-	var members: Array[int] = []
-	members.append_array(team["member_troop_ids"])
-	farm_map.configure(stage, members)
 
 	sub_tab_row.visible = false
 	conquer_panel.visible = false
@@ -352,8 +339,9 @@ func _open_idle_view(team: Dictionary) -> void:
 	idle_view_panel.visible = true
 
 func _close_idle_view() -> void:
-	for child in idle_view_host.get_children():
-		child.queue_free() ## dừng luôn simulation (StageFarmWorld._process không còn chạy)
+	var farm_map: StageFarmMap = GameState.get_idle_farm_map()
+	if farm_map != null:
+		farm_map.reparent(GameState, false) ## về lại "nhà" ẩn, simulation vẫn tiếp tục chạy nền
 	idle_view_panel.visible = false
 	sub_tab_row.visible = true
 	_set_sub_tab(false)
@@ -405,6 +393,8 @@ func _build_empty_idle_card() -> PanelContainer:
 ## ============================== Màn "Tạo đội treo" ==============================
 
 func _open_create_idle() -> void:
+	if not GameState.idle_team.is_empty():
+		return ## đã có 1 team đang treo - phải rút về trước (nút "+" không hiện trong trường hợp này, đây chỉ là chốt an toàn)
 	var maps := MapDatabase.get_all()
 	if maps.is_empty():
 		return
@@ -512,15 +502,6 @@ func _build_create_idle_content() -> void:
 	start_button.pressed.connect(_on_start_idle_pressed)
 	create_idle_content.add_child(start_button)
 
-	var map_count: int = GameState.get_idle_team_count_for_map(_create_map_id)
-	if map_count >= GameState.IDLE_MAX_TEAMS_PER_MAP:
-		var warning := Label.new()
-		warning.text = "(Map này đã đủ %d team treo máy - rút 1 team về trước.)" % GameState.IDLE_MAX_TEAMS_PER_MAP
-		warning.add_theme_color_override("font_color", Color(0.85, 0.6, 0.6))
-		warning.add_theme_font_size_override("font_size", 10)
-		warning.autowrap_mode = TextServer.AUTOWRAP_WORD
-		create_idle_content.add_child(warning)
-
 func _section_label(text: String) -> Label:
 	var label := Label.new()
 	label.text = text
@@ -552,8 +533,7 @@ func _on_start_idle_pressed() -> void:
 	var stage: StageData = matches[0]
 	var members: Array[int] = []
 	members.append_array(_create_selected)
-	var team = GameState.start_idle_team(stage.id, members)
-	if team == null:
+	if not GameState.start_idle_team(stage.id, members):
 		return
 	_close_create_idle()
 
