@@ -1,6 +1,9 @@
 extends Node
 
-## Autoload singleton: trạng thái phiên chơi tối giản - vàng + party cố định.
+## Autoload singleton: trạng thái phiên chơi (vàng + party cố định) CỘNG với
+## việc giữ sống scene treo máy đang chạy nền (xem mục "Treo máy" bên dưới) -
+## KHÔNG còn thuần data nữa (đổi từ lúc thêm treo máy chạy nền thật), do
+## GameState là autoload duy nhất sống suốt vòng đời app nên tiện giữ luôn.
 ## Không lưu file (chưa cần persistence ở bản này) - reset mỗi lần mở game.
 
 ## Party cố định 4 người (mở rộng sau) - id khớp LinhData.id trong
@@ -98,20 +101,21 @@ func effective_m_def(troop_id: int, base_m_def: float) -> float:
 
 const STAGE_FARM_MAP_SCENE: PackedScene = preload("res://scenes/main/StageFarmMap.tscn")
 
-var idle_team: Dictionary = {} ## {} = không có team nào đang treo; có thì {"stage_id": int, "member_troop_ids": Array[int]}
-var _idle_farm_map: StageFarmMap = null
+var _idle_farm_map: StageFarmMap = null ## nguồn thật duy nhất cho team đang treo (stage/thành viên) - xem get_stage()/get_member_troop_ids() trên StageFarmMap/StageFarmWorld, không lưu trùng 1 bản riêng ở đây
+
+func has_idle_team() -> bool:
+	return _idle_farm_map != null
 
 func is_troop_idling(troop_id: int) -> bool:
-	return not idle_team.is_empty() and troop_id in idle_team["member_troop_ids"]
+	return _idle_farm_map != null and troop_id in _idle_farm_map.get_member_troop_ids()
 
 ## false nếu đã có team đang treo (phải rút về trước) hoặc stage_id/thành viên không hợp lệ.
 func start_idle_team(stage_id: int, member_troop_ids: Array[int]) -> bool:
-	if not idle_team.is_empty():
+	if _idle_farm_map != null:
 		return false
 	var stage: StageData = StageDatabase.get_by_id(stage_id)
 	if stage == null or member_troop_ids.is_empty():
 		return false
-	idle_team = {"stage_id": stage_id, "member_troop_ids": member_troop_ids}
 	_idle_farm_map = STAGE_FARM_MAP_SCENE.instantiate()
 	add_child(_idle_farm_map)
 	_idle_farm_map.configure(stage, member_troop_ids)
@@ -121,7 +125,6 @@ func stop_idle_team() -> void:
 	if _idle_farm_map != null:
 		_idle_farm_map.queue_free()
 		_idle_farm_map = null
-	idle_team = {}
 
 ## StageBoardScreen dùng để NHÚNG đúng instance đang chạy vào màn "Xem" (reparent
 ## - KHÔNG tạo bản mới, simulation phải tiếp tục chạy y như cũ) - null nếu

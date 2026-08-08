@@ -170,5 +170,5 @@ clip_contents = true
 
 [node name="IdleViewNote" type="Label" parent="IdleViewPanel/IdleViewVBox"]
 layout_mode = 2
-text = "(Chỉ xem cho vui - phần thưởng thật đã tính theo thời gian, không phụ thuộc màn này)"
+text = "(Đây là trận đang chạy thật - vàng/EXP cộng ngay khi hạ được quái, chỉ tính khi app đang mở)"
 autowrap_mode = 2

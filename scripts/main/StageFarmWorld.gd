@@ -47,6 +47,7 @@ const CORPSE_VANISH_DELAY: float = 2.0 ## xác đơn vị chết ẩn đi sau ch
 
 var party_units: Array[TroopUnit] = []
 var enemy_units: Array[TroopUnit] = []
+var _all_units: Array[TroopUnit] = [] ## party_units + enemy_units, gộp 1 lần lúc configure() xong - xem configure()
 var _stage: StageData
 var _member_troop_ids: Array[int] = []
 var _restart_timer: float = -1.0
@@ -59,6 +60,17 @@ func configure(stage: StageData, member_troop_ids: Array[int]) -> void:
 	camera.zoom = Vector2.ONE
 	_spawn_party(member_troop_ids)
 	_spawn_enemies(stage)
+	## Thành phần 2 mảng cố định sau khi spawn xong (không ai bị xoá khỏi mảng
+	## sau đó, chết chỉ đổi is_dead()) - gộp 1 lần ở đây, dùng lại mỗi frame
+	## thay vì `party_units + enemy_units` cấp phát mảng mới ở từng vòng lặp.
+	_all_units.append_array(party_units)
+	_all_units.append_array(enemy_units)
+
+func get_stage() -> StageData:
+	return _stage
+
+func get_member_troop_ids() -> Array[int]:
+	return _member_troop_ids
 
 func _spawn_party(member_troop_ids: Array[int]) -> void:
 	for i in range(member_troop_ids.size()):
@@ -117,7 +129,7 @@ func _process(delta: float) -> void:
 ## lại liên tục mới bắt đúng lúc animation đó tự kết thúc rồi chuyển hẳn về
 ## idle, thay vì đứng hình ở khung hình cuối cho tới hết cả 2 giây chờ.
 func _hold_survivors_idle() -> void:
-	for unit in party_units + enemy_units:
+	for unit in _all_units:
 		if not unit.is_dead():
 			unit.is_engaged = false
 			unit.play_idle()
@@ -126,17 +138,19 @@ func _hold_survivors_idle() -> void:
 ## _restart_timer (kể cả lúc đang chờ hồi sinh) để xác luôn biến mất đúng hẹn.
 ## revive() sẽ set lại visible = true khi hồi sinh, xem TroopUnit.revive().
 func _update_corpses(delta: float) -> void:
-	for unit in party_units + enemy_units:
+	for unit in _all_units:
 		if not unit.is_dead():
 			_death_timers.erase(unit)
 			continue
+		if not unit.visible:
+			continue ## đã ẩn rồi - khỏi cập nhật/ghi lại timer mỗi frame cho tới lúc hồi sinh
 		var elapsed: float = _death_timers.get(unit, 0.0) + delta
 		_death_timers[unit] = elapsed
 		if elapsed >= CORPSE_VANISH_DELAY:
 			unit.visible = false
 
 func _update_regen(delta: float) -> void:
-	for unit in party_units + enemy_units:
+	for unit in _all_units:
 		if unit.is_dead():
 			continue
 		unit.regen_cooldown += delta
@@ -148,16 +162,7 @@ func _update_regen(delta: float) -> void:
 ## nguyên animation cuối cùng (thường đang giữa chừng 1 đòn tấn công) - trước
 ## đây _fight_step chỉ được gọi khi CÓ mục tiêu nên animation bị đứng hình.
 func _update_fight(delta: float) -> void:
-	for unit in party_units:
-		if unit.is_dead():
-			continue
-		var target := _find_nearest_enemy_of(unit)
-		if target != null:
-			_fight_step(unit, target, delta)
-		else:
-			unit.is_engaged = false
-			unit.play_idle()
-	for unit in enemy_units:
+	for unit in _all_units:
 		if unit.is_dead():
 			continue
 		var target := _find_nearest_enemy_of(unit)
@@ -273,7 +278,7 @@ func _check_wipe() -> void:
 		_restart_timer = RESTART_DELAY
 
 func _revive_all() -> void:
-	for unit in party_units + enemy_units:
+	for unit in _all_units:
 		unit.revive()
 		unit.attack_bar_bg.visible = false
 		unit.skill_bar_bg.visible = false

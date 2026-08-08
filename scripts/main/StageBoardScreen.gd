@@ -218,8 +218,8 @@ func on_stage_finished(_stage: StageData, _won: bool) -> void:
 ## đánh Ủy Thác/Boss bình thường dù đang treo máy ở đâu. Ủy Thác chỉ có vai
 ## trò MỞ KHOÁ tầng cao hơn để treo (xem GameState.get_highest_floor).
 ##
-## CHỈ 1 team tại 1 thời điểm (GameState.idle_team, không phải Array nữa) -
-## thẻ "+" chỉ hiện khi CHƯA có team nào, có rồi thì hiện đúng 1 thẻ. Không
+## CHỈ 1 team tại 1 thời điểm (GameState.has_idle_team(), không phải Array
+## nữa) - thẻ "+" chỉ hiện khi CHƯA có team nào, có rồi thì hiện đúng 1 thẻ. Không
 ## còn công thức/chu kỳ gì để hiển thị - vàng/EXP cộng thẳng vào GameState
 ## ngay lúc quái chết thật trong trận nền (xem StageFarmWorld), số dư chỉ cần
 ## nhìn thanh Vàng ở top bar hoặc mở "XEM" ra coi trực tiếp.
@@ -231,14 +231,15 @@ var _create_selected: Array[int] = []
 func _build_idle_list() -> void:
 	for child in idle_list.get_children():
 		child.queue_free()
-	if GameState.idle_team.is_empty():
-		idle_list.add_child(_build_empty_idle_card())
-	else:
+	if GameState.has_idle_team():
 		idle_list.add_child(_build_idle_team_card())
+	else:
+		idle_list.add_child(_build_empty_idle_card())
 
 func _build_idle_team_card() -> PanelContainer:
-	var team := GameState.idle_team
-	var stage: StageData = StageDatabase.get_by_id(team["stage_id"])
+	var farm_map: StageFarmMap = GameState.get_idle_farm_map()
+	var stage: StageData = farm_map.get_stage()
+	var member_troop_ids: Array[int] = farm_map.get_member_troop_ids()
 	var map_data: MapData = MapDatabase.get_by_id(stage.map_id) if stage != null else null
 
 	var card := _styled_panel(CARD_BG, CARD_BORDER, 1, 10)
@@ -272,7 +273,7 @@ func _build_idle_team_card() -> PanelContainer:
 	name_label.add_theme_color_override("font_color", GOLD)
 	name_label.add_theme_font_size_override("font_size", 14)
 	var member_names: PackedStringArray = []
-	for troop_id in team["member_troop_ids"]:
+	for troop_id in member_troop_ids:
 		var troop: LinhData = TroopDatabase.get_by_id(troop_id)
 		if troop != null:
 			member_names.append(troop.troop_name)
@@ -393,7 +394,7 @@ func _build_empty_idle_card() -> PanelContainer:
 ## ============================== Màn "Tạo đội treo" ==============================
 
 func _open_create_idle() -> void:
-	if not GameState.idle_team.is_empty():
+	if GameState.has_idle_team():
 		return ## đã có 1 team đang treo - phải rút về trước (nút "+" không hiện trong trường hợp này, đây chỉ là chốt an toàn)
 	var maps := MapDatabase.get_all()
 	if maps.is_empty():

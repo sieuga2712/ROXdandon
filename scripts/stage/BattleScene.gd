@@ -381,7 +381,7 @@ func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float
 		## Hạ quái trong trận đánh tay (Ủy Thác/Boss) - CẢ ĐỘI (luôn đủ 4
 		## người, xem GameState.PARTY_TROOP_IDS) nhận EXP của con đó, cùng quy
 		## ước "giết quái thì cả team nhận EXP" như treo máy (xem
-		## GameState.settle_idle_team).
+		## StageFarmWorld._apply_damage).
 		GameState.grant_kill_exp(GameState.PARTY_TROOP_IDS, defender.troop_data.exp_reward)
 
 func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float, is_skill: bool) -> void:

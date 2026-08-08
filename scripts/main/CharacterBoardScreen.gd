@@ -8,7 +8,7 @@ extends Control
 ## (đã cộng bonus theo Base Lv/Job Lv - xem GameState.effective_*); Base
 ## Lv/Job Lv + thanh EXP cũng là số THẬT (xem GameState.get_base_level_info/
 ## get_job_level_info) - giết quái (đánh tay hay treo máy) cộng EXP thật cho
-## cả team, xem BattleScene._apply_damage/GameState.settle_idle_team. Chỉ ô
+## cả team, xem BattleScene._apply_damage/StageFarmWorld._apply_damage. Chỉ ô
 ## trang bị vẫn TƯỢNG TRƯNG (chưa có hệ trang bị/item thật - xem ghi chú cuối
 ## _build_detail()).
 ##
