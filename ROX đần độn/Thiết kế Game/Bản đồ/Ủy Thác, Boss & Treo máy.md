@@ -2,11 +2,14 @@
 
 Thuộc [[Mục lục]]. **THAY THẾ hoàn toàn** phần "Tab Ải AFK-farm" cũ trong [[Thành phố & Ải AFK-Farm]] (đã đánh dấu SUPERSEDED trong note đó, xem note đó cho lịch sử tại sao đổi). Cập nhật lớn **2026-08-03**: đổi hẳn tab "Ải" từ map AFK-farm điều khiển được sang bảng kiểu "Ủy Thác" (không map, không điều khiển) + xây thật tab "Ải Boss" + xây thật hệ "Treo máy" (idle) + hệ EXP/Cấp độ đầu tiên của game.
 
+> Cập nhật lớn **2026-08-08**: đổi HẲN cách tính thưởng Treo máy - bỏ công thức "chu kỳ theo thời gian trôi qua" (`settle_idle_team`), chuyển sang **1 trận đấu thật chạy nền liên tục**, quái chết thật thì cộng vàng/EXP thật ngay lúc đó. Đồng thời bỏ hẳn nhiều-team/nhiều-map (`idle_teams`), chỉ còn ĐÚNG 1 team treo máy tại 1 thời điểm. Xem mục "Treo máy" bên dưới đã viết lại hoàn toàn.
+
 ## Vì sao đổi (tóm tắt quyết định thiết kế)
 - Người dùng muốn mô hình giống AFK Arena: 4 map, mỗi map nhiều tầng tăng dần, xem bằng bảng thẻ chứ không phải đi lại trên map.
-- Sau đó quyết định: **Ủy Thác (đánh tay) và Treo máy là 2 hệ HOÀN TOÀN TÁCH BIỆT** - nhân vật đang treo máy vẫn đánh Ủy Thác/Boss bình thường, không bị "bận". Ràng buộc DUY NHẤT: 1 nhân vật không thuộc 2 team treo máy cùng lúc.
-- Vai trò của Ủy Thác/Boss thu hẹp lại: **chỉ để mở khoá tầng cao hơn cho Treo máy** (`GameState.highest_floor_cleared`), không còn là nguồn thưởng chính - nguồn thưởng chính giờ là Treo máy (tính theo thời gian trôi qua) + EXP giết quái.
+- Sau đó quyết định: **Ủy Thác (đánh tay) và Treo máy là 2 hệ HOÀN TOÀN TÁCH BIỆT** - nhân vật đang treo máy vẫn đánh Ủy Thác/Boss bình thường, không bị "bận".
+- Vai trò của Ủy Thác/Boss thu hẹp lại: **chỉ để mở khoá tầng cao hơn cho Treo máy** (`GameState.highest_floor_cleared`), không còn là nguồn thưởng chính.
 - Giết quái (đánh tay HAY treo máy) → cả team liên quan nhận EXP → có Base Lv/Job Lv thật, ảnh hưởng chỉ số chiến đấu thật.
+- **2026-08-08**: sau khi thảo luận lại, bỏ hẳn ý tưởng nhiều team/nhiều map treo máy cùng lúc + công thức DPS/thời gian trôi qua - đổi sang "Farm bao nhiêu được bấy nhiêu": chỉ 1 team treo máy, nhưng đó là 1 trận đấu THẬT chạy nền, quái chết thật mới tính thưởng thật (xem mục "Treo máy" bên dưới).
 
 ## Tab "Ải" (`stage`) = `StageBoardScreen.tscn`/`.gd` - bảng thẻ, KHÔNG có map
 2 sub-tab (nút bấm thường, không phải `TabContainer`):
@@ -16,19 +19,17 @@ Thuộc [[Mục lục]]. **THAY THẾ hoàn toàn** phần "Tab Ải AFK-farm" c
 - Mỗi map 1 thẻ (icon/tên/loại khu vực/điều kiện thắng/độ khó/tầng hiện tại) + nút "VÀO TRẬN" - bấm là **vào thẳng tầng tiếp theo** (`highest_floor_cleared[map_id] + 1`) qua `BattleScene` thật, KHÔNG có bước chọn tầng riêng.
 - Thắng → `StageFlowController.stage_finished` → `GameState.report_floor_cleared()` → mở khoá tầng kế cho CẢ Ủy Thác lẫn giới hạn tầng của Treo máy.
 
-### Sub-tab "Treo máy" - hệ treo máy THẬT (không còn placeholder)
-- `GameState.idle_teams: Array[Dictionary]` - mỗi team: `id`, `stage_id`, `member_troop_ids` (1-4 người, không cần đủ 4), `last_tick_at` (unix time thật).
-- **Không giới hạn thời gian** - `GameState.settle_idle_team(team)` mỗi lần gọi tính `cycles = floor((now - last_tick_at) / stage.time_limit)`, cộng `cycles * reward_gold` vào vàng + `cycles * tổng_exp_reward_quái` vào EXP của các thành viên, dời `last_tick_at` lên đúng số chu kỳ đó (phần dư giữ lại). Gọi lúc mở tab + mỗi 4s qua `%IdleSettleTimer` khi đang xem.
-- Ràng buộc: tối đa `GameState.IDLE_MAX_TEAMS_PER_MAP` (= 3) team/map, 1 nhân vật không thuộc 2 team treo máy cùng lúc (`GameState.is_troop_idling()`).
-- Tầng tối đa được chọn khi tạo team = `GameState.get_highest_floor(map_id)` (tầng 1 luôn mở sẵn dù chưa thắng gì) - **đây là lý do Ủy Thác vẫn cần tồn tại**.
-- Màn "Tạo đội treo" (nội bộ trong `StageBoardScreen`, không phải scene riêng): chọn map (`OptionButton`) → chọn tầng (stepper -/+) → chọn 1-4 thành viên (ẩn/khoá người đang bận team khác) → "BẮT ĐẦU TREO".
-- **⚠️ CHƯA có save/load** - "treo máy tính cả lúc tắt app" mới đúng về CÔNG THỨC (dùng `Time.get_unix_time_from_system()`, giờ hệ thống thật), nhưng `GameState` reset hoàn toàn mỗi lần mở lại game (xem đầu `GameState.gd`) nên tắt app hẳn hiện tại VẪN mất tiến độ. Muốn thật sự "tắt app vẫn cộng dồn" phải làm thêm 1 tính năng persistence riêng (lưu `idle_teams`/`base_exp_total`/`job_exp_total`/`gold` ra file + đọc lại lúc khởi động).
+### Sub-tab "Treo máy" - viết lại hoàn toàn 2026-08-08, KHÔNG còn công thức nào
+- **CHỈ 1 team treo máy tại 1 thời điểm** (đã bỏ hẳn `idle_teams` Array/nhiều-team/nhiều-map/`IDLE_MAX_TEAMS_PER_MAP` của bản 08-03) - `GameState._idle_farm_map: StageFarmMap` giữ sống 1 instance duy nhất, `GameState.has_idle_team()`/`is_troop_idling()`/`get_idle_farm_map()` truy vấn thẳng instance đó (không còn Dictionary `idle_team` riêng lưu trùng `stage_id`/`member_troop_ids` - đã dọn dẹp 2026-08-08, `StageFarmMap.get_stage()`/`get_member_troop_ids()` là nguồn thật duy nhất).
+- **Treo máy = 1 trận đấu THẬT chạy nền liên tục** ngay khi bấm "BẮT ĐẦU TREO" (`GameState.start_idle_team()` instance `StageFarmMap.tscn`, `add_child()` vào chính `GameState` - autoload nên sống suốt vòng đời app, KHÔNG phụ thuộc đang ở tab nào). Quái chết THẬT trong trận nền đó (`StageFarmWorld._apply_damage()`) thì cộng `LinhData.gold_reward` + `LinhData.exp_reward` **NGAY LÚC ĐÓ** cho các thành viên team - KHÔNG qua công thức/chu kỳ/thời gian trôi qua nào cả.
+- "Farm bao nhiêu được bấy nhiêu" - **CHẠY KHI APP ĐANG MỞ**, tắt app là mất luôn node đó (không bù giờ) - đây là **lựa chọn thiết kế có chủ đích**, không phải thiếu sót (khác hẳn cách nghĩ "tính cả lúc tắt app" của bản 08-03 cũ).
+- Ràng buộc còn lại: 1 nhân vật không thuộc 2 team treo máy cùng lúc, tầng tối đa được chọn khi tạo team vẫn = `GameState.get_highest_floor(map_id)` - **đây vẫn là lý do Ủy Thác cần tồn tại**.
+- Màn "Tạo đội treo" (nội bộ trong `StageBoardScreen`, không phải scene riêng): chọn map (`OptionButton`) → chọn tầng (stepper -/+) → chọn 1-4 thành viên → "BẮT ĐẦU TREO". Nút "+" chỉ hiện khi CHƯA có team nào đang treo (phải "RÚT VỀ" trước khi tạo team khác, vì giờ chỉ 1 team).
 
-### Màn "Xem treo máy" - tái dùng `StageFarmMap.tscn`/`StageFarmWorld.gd`
-- File này TỪNG LÀ toàn bộ nội dung tab Ải (map AFK-farm điều khiển được, xem [[Thành phố & Ải AFK-Farm]] cho lịch sử) - giờ viết lại thành **màn xem thuần cảnh, không điều khiển được**: bỏ hết `PartyRosterPanel`/leader/click-di-chuyển (file `PartyRosterPanel.gd` đã XOÁ - hết chỗ dùng).
-- `configure(stage, member_troop_ids)` spawn ĐÚNG các thành viên đang treo team đó (không phải luôn đủ 4) bên trái, quái của đúng `StageData` đang treo bên phải, 2 bên tự đánh nhau bằng công thức sát thương giống `BattleScene` (đã sửa dùng `effective_def()`/`effective_m_def()` cho đúng chỉ số đã lên cấp). Hết 1 phe → chờ 2s → `TroopUnit.revive()` cả 2 phe → đánh lại - loop vô hạn, không có thắng/thua.
-- **KHÔNG cộng vàng/EXP gì ở đây** - đây thuần là hình ảnh minh hoạ, phần thưởng thật đã tính riêng qua `settle_idle_team()` bất kể có đang xem hay không. Có ghi chú ngay trên UI để khỏi hiểu lầm 2 nguồn thưởng cộng dồn.
-- Mở từ nút "XEM" trên mỗi thẻ team treo máy (bên cạnh "RÚT VỀ") → `StageBoardScreen._open_idle_view()` tự instance `StageFarmMap.tscn`, gọi `configure()`, nhúng vào `%IdleViewHost`; đóng lại (nút "←") thì `queue_free()` để dừng simulation.
+### Màn "Xem treo máy" - giờ CHÍNH LÀ trận đấu thật, không còn là hình minh hoạ riêng
+- Viết lại hoàn toàn tư duy so với bản 08-03: **KHÔNG tạo bản mới lúc bấm "XEM"** - `StageBoardScreen._open_idle_view()` chỉ **`reparent()`** đúng instance `StageFarmMap` đang chạy sống trong `GameState` vào `%IdleViewHost` để nhìn; đóng lại (nút "←") thì `reparent()` NGƯỢC VỀ `GameState` (KHÔNG `queue_free()` - phải tiếp tục chạy nền, khác hẳn bản cũ vốn `queue_free()` để "dừng simulation" khi đóng).
+- Vì đây chính là trận thật nên xem hay không xem KHÔNG ảnh hưởng gì tới thưởng - quái vẫn chết và cộng thưởng y hệt lúc không mở màn này. Dòng ghi chú trên UI (`IdleViewNote`) đã sửa lại đúng nội dung này (trước đó còn sót câu "chỉ xem cho vui" của bản 08-03, gây hiểu lầm - đã sửa 2026-08-08).
+- `StageFarmWorld.gd` (file TỪNG LÀ toàn bộ nội dung tab Ải cũ - map AFK-farm điều khiển được, xem [[Thành phố & Ải AFK-Farm]] cho lịch sử) chỉ có đòn đánh thường (chưa có skill "đánh mạnh"), nhưng ĐÃ có đạn bay Cung/Pháp + hiệu ứng Tu sĩ dùng chung asset với `BattleScene` (thêm 2026-08-08, trước đó Cung/Pháp chỉ đổi tư thế đánh mà không có hiệu ứng gì bay tới mục tiêu). Hết 1 phe → chờ 2s (`RESTART_DELAY`) → hồi sinh cả 2 phe → đánh lại, loop vô hạn, không có thắng/thua. Trong lúc chờ hồi sinh, các đơn vị còn sống được ép về idle mỗi frame (`_hold_survivors_idle`) để không đứng hình ở tư thế đánh dở dang; xác chết tự ẩn sau 2s (`CORPSE_VANISH_DELAY`) thay vì nằm lại tới khi cả phe chết sạch (2 fix thêm 2026-08-08).
 
 ## Tab "Ải Boss" (`boss`) = `BossBoardScreen.tscn`/`.gd` - xây THẬT, không còn placeholder
 - Data mới: `BossData`/`BossDatabase` (`data/bosses/*.tres`) - mỗi boss trỏ tới 1-4 `StageData` có sẵn (KHÔNG có bộ số liệu riêng, HP/ATK/DEF hiện trên thẻ lấy thẳng từ `LinhData` của quái trong `StageData` đó, tránh 2 nơi giữ cùng dữ liệu).
@@ -44,7 +45,7 @@ Thuộc [[Mục lục]]. **THAY THẾ hoàn toàn** phần "Tab Ải AFK-farm" c
 ## Hệ EXP/Cấp độ (mới, dùng CHUNG cho cả đánh tay và treo máy)
 - `scripts/state/ExpTables.gd` - 2 bảng const `BASE_REQUIRED` (129 cấp) + `JOB_REQUIRED` (49 cấp, chỉ "First Job" - CHƯA có cơ chế chuyển job) lấy ĐÚNG số trong `ROX_EXP_Goc_Base_Job_DayDu.xlsx` (chia 1/10, quy ước đã dùng từ lúc làm mockup HTML - xem `mockups/giao-dien-hien-tai.html`). `ExpTables.level_from_total_exp(total_exp, table)` suy ra cấp + tiến độ EXP từ tổng EXP đã tích (không lưu cấp riêng, luôn tính lại từ tổng - đơn giản, không lệch).
 - `LinhData` thêm field `exp_reward: int` - hạ 1 quái/boss loại này thì CẢ TEAM (đánh tay = `GameState.PARTY_TROOP_IDS` đủ 4, treo máy = đúng `member_troop_ids` của team đó) nhận đúng số này, cộng vào CẢ Base EXP lẫn Job EXP (dùng chung 1 số, chưa tách riêng 2 giá trị khác nhau).
-- Giết quái trong `BattleScene` (đánh tay) → `_apply_damage()` gọi `GameState.grant_kill_exp()` ngay khi quái chết. Giết quái trong Treo máy → `GameState.settle_idle_team()` cộng theo số chu kỳ.
+- Giết quái trong `BattleScene` (đánh tay) HAY `StageFarmWorld` (treo máy) đều gọi `_apply_damage()` của chính scene đó → `GameState.grant_kill_exp()` ngay khi quái chết thật - CÙNG 1 thời điểm với lúc cộng vàng, không còn tách riêng "cộng theo chu kỳ" như bản 08-03 cũ.
 - **Công thức tăng chỉ số theo cấp (chốt với người dùng, KHÔNG suy diễn)**: Base Lv +10%/cấp CỘNG THẲNG theo gốc cho HP/ATK/DEF/M.DEF (không dồn lãi kép - Lv.50 = +490%, không phải nhân dồn 1.1^49 lần). Job Lv +1 ATK THẲNG/cấp, cộng sau khi ATK đã +10%/Base Lv. Các chỉ số khác (tốc đánh/chí mạng/né/hồi máu/xuyên giáp/hút máu) KHÔNG scale theo cấp.
 - Áp trực tiếp vào combat thật qua `GameState.effective_hp/atk/def/m_def(troop_id, base_value)` - `TroopUnit.max_hp()/effective_atk()/effective_def()/effective_m_def()` tự gọi các hàm này CHỈ khi `team == Enums.Team.PLAYER` (quái/boss không lên cấp, luôn dùng số gốc trong `LinhData`).
 
