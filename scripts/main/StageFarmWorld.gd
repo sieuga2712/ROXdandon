@@ -6,10 +6,10 @@ extends Node2D
 ## hạn với quái của đúng StageData đang treo. Đây CHÍNH LÀ trận đấu tạo ra
 ## phần thưởng thật - KHÔNG có công thức DPS/thời gian nào cả, quái chết thật
 ## thì cộng vàng (LinhData.gold_reward) + EXP (LinhData.exp_reward) NGAY LÚC
-## ĐÓ cho member_troop_ids (xem _resolve_simple_attack). Instance này được
-## GameState giữ sống suốt thời gian treo máy (xem GameState.start_idle_team)
-## - "Xem treo máy" chỉ là NHÚNG (reparent) instance đang chạy này vào UI để
-## nhìn, không tạo bản sao/không tính riêng gì cả.
+## ĐÓ cho member_troop_ids (xem _apply_damage). Instance này được GameState
+## giữ sống suốt thời gian treo máy (xem GameState.start_idle_team) - "Xem
+## treo máy" chỉ là NHÚNG (reparent) instance đang chạy này vào UI để nhìn,
+## không tạo bản sao/không tính riêng gì cả.
 ##
 ## configure() được gọi ngay sau khi instance (xem GameState.start_idle_team) -
 ## lúc đó @onready đã sẵn sàng (Godot gọi _ready() ngay khi add_child() vào 1
@@ -19,10 +19,18 @@ extends Node2D
 ##
 ## PHẠM VI (cắt bớt có chủ đích): chỉ có đòn đánh thường (đúng công thức sát
 ## thương của BattleScene._resolve_attack/_apply_damage - crit/giáp hiệu
-## dụng/life steal), CHƯA có skill "đánh mạnh"/đạn bay Projectile.
+## dụng/life steal), CHƯA có skill "đánh mạnh". Đạn bay Archer/Wizard + hiệu
+## ứng Priest DÙNG CHUNG asset với BattleScene (chỉ bản đòn thường, không có
+## bản "skill" phóng to) để đòn đánh tầm xa có hiệu ứng nhìn thấy được, không
+## chỉ đổi tư thế đánh suông.
 
 const TROOP_UNIT_SCENE: PackedScene = preload("res://scenes/troop/TroopUnit.tscn")
 const DAMAGE_POPUP_SCENE: PackedScene = preload("res://scenes/troop/DamagePopup.tscn")
+const PROJECTILE_SCENE: PackedScene = preload("res://scenes/troop/Projectile.tscn")
+const IMPACT_EFFECT_SCENE: PackedScene = preload("res://scenes/troop/ImpactEffect.tscn")
+const ARROW_TEXTURE: Texture2D = preload("res://assets/troops/archer/ArrowProjectile.png")
+const MAGIC_PROJECTILE_FRAMES: SpriteFrames = preload("res://assets/troops/wizard/MagicProjectileFrames.tres")
+const PRIEST_ATTACK_EFFECT_FRAMES: SpriteFrames = preload("res://assets/troops/priest/PriestAttackEffectFrames.tres")
 const POPUP_SPAWN_OFFSET: Vector2 = Vector2(0, -70)
 const COLOR_DAMAGE: Color = Color.WHITE
 const COLOR_GOLD: Color = Color(1.0, 0.9, 0.3)
@@ -32,9 +40,9 @@ const ENEMY_CENTER: Vector2 = Vector2(160.0, 0.0)
 const SPREAD_RADIUS: float = 44.0
 const REGEN_INTERVAL: float = 5.0 ## giống BattleScene.REGEN_INTERVAL
 const RESTART_DELAY: float = 2.0 ## hết 1 phe -> chờ rồi hồi sinh cả 2 phe, đánh lại vòng mới
+const CORPSE_VANISH_DELAY: float = 2.0 ## xác đơn vị chết ẩn đi sau chừng này giây (dù phe kia còn đang đánh tiếp, không đợi tới lúc cả phe bị xoá sạch mới ẩn)
 
-@onready var party: Node2D = $Party
-@onready var monsters: Node2D = $Monsters
+@onready var arena: Node2D = $Arena
 @onready var camera: Camera2D = $FarmCamera
 
 var party_units: Array[TroopUnit] = []
@@ -42,6 +50,7 @@ var enemy_units: Array[TroopUnit] = []
 var _stage: StageData
 var _member_troop_ids: Array[int] = []
 var _restart_timer: float = -1.0
+var _death_timers: Dictionary = {} ## TroopUnit đã chết -> số giây đã trôi qua kể từ lúc chết, xem _update_corpses
 
 func configure(stage: StageData, member_troop_ids: Array[int]) -> void:
 	_stage = stage
@@ -57,7 +66,7 @@ func _spawn_party(member_troop_ids: Array[int]) -> void:
 		if troop == null:
 			continue
 		var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
-		party.add_child(unit)
+		arena.add_child(unit)
 		unit.setup(troop, Enums.Team.PLAYER)
 		unit.attack_bar_bg.visible = false
 		unit.skill_bar_bg.visible = false
@@ -78,7 +87,7 @@ func _spawn_enemies(stage: StageData) -> void:
 			continue
 		for _n in range(stage.enemy_troop_counts[i]):
 			var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
-			monsters.add_child(unit)
+			arena.add_child(unit)
 			unit.setup(troop, Enums.Team.ENEMY)
 			unit.attack_bar_bg.visible = false
 			unit.skill_bar_bg.visible = false
@@ -90,7 +99,9 @@ func _spawn_enemies(stage: StageData) -> void:
 func _process(delta: float) -> void:
 	if _stage == null:
 		return
+	_update_corpses(delta)
 	if _restart_timer >= 0.0:
+		_hold_survivors_idle()
 		_restart_timer -= delta
 		if _restart_timer <= 0.0:
 			_restart_timer = -1.0
@@ -99,6 +110,30 @@ func _process(delta: float) -> void:
 	_update_regen(delta)
 	_update_fight(delta)
 	_check_wipe()
+
+## Trong lúc chờ RESTART_DELAY, _update_fight không còn chạy nên phải tự gọi
+## play_idle() MỖI FRAME ở đây thay vì 1 lần duy nhất - play_idle() cố ý
+## không ngắt animation đánh đang chạy dở (xem TroopUnit._is_busy()), nên gọi
+## lại liên tục mới bắt đúng lúc animation đó tự kết thúc rồi chuyển hẳn về
+## idle, thay vì đứng hình ở khung hình cuối cho tới hết cả 2 giây chờ.
+func _hold_survivors_idle() -> void:
+	for unit in party_units + enemy_units:
+		if not unit.is_dead():
+			unit.is_engaged = false
+			unit.play_idle()
+
+## Ẩn xác sau CORPSE_VANISH_DELAY giây kể từ lúc chết - chạy độc lập với
+## _restart_timer (kể cả lúc đang chờ hồi sinh) để xác luôn biến mất đúng hẹn.
+## revive() sẽ set lại visible = true khi hồi sinh, xem TroopUnit.revive().
+func _update_corpses(delta: float) -> void:
+	for unit in party_units + enemy_units:
+		if not unit.is_dead():
+			_death_timers.erase(unit)
+			continue
+		var elapsed: float = _death_timers.get(unit, 0.0) + delta
+		_death_timers[unit] = elapsed
+		if elapsed >= CORPSE_VANISH_DELAY:
+			unit.visible = false
 
 func _update_regen(delta: float) -> void:
 	for unit in party_units + enemy_units:
@@ -109,6 +144,9 @@ func _update_regen(delta: float) -> void:
 			unit.regen_cooldown = 0.0
 			unit.heal(unit.troop_data.regen_hp)
 
+## Hết mục tiêu (phe kia đã chết sạch) -> đứng yên tư thế idle thay vì giữ
+## nguyên animation cuối cùng (thường đang giữa chừng 1 đòn tấn công) - trước
+## đây _fight_step chỉ được gọi khi CÓ mục tiêu nên animation bị đứng hình.
 func _update_fight(delta: float) -> void:
 	for unit in party_units:
 		if unit.is_dead():
@@ -116,12 +154,18 @@ func _update_fight(delta: float) -> void:
 		var target := _find_nearest_enemy_of(unit)
 		if target != null:
 			_fight_step(unit, target, delta)
+		else:
+			unit.is_engaged = false
+			unit.play_idle()
 	for unit in enemy_units:
 		if unit.is_dead():
 			continue
 		var target := _find_nearest_enemy_of(unit)
 		if target != null:
 			_fight_step(unit, target, delta)
+		else:
+			unit.is_engaged = false
+			unit.play_idle()
 
 func _find_nearest_enemy_of(unit: TroopUnit) -> TroopUnit:
 	var pool: Array[TroopUnit] = enemy_units if unit.team == Enums.Team.PLAYER else party_units
@@ -137,7 +181,8 @@ func _find_nearest_enemy_of(unit: TroopUnit) -> TroopUnit:
 	return nearest
 
 ## Ngoài tầm đánh thì đi tới, trong tầm thì đứng đánh theo cooldown - dùng
-## chung cho cả 2 phe, không có tấn công đặc biệt/đạn bay.
+## chung cho cả 2 phe, không có tấn công đặc biệt "đánh mạnh" (đạn bay đòn
+## thường xem _resolve_simple_attack).
 func _fight_step(attacker: TroopUnit, defender: TroopUnit, delta: float) -> void:
 	attacker.face_towards(defender.position)
 	var distance := attacker.position.distance_to(defender.position)
@@ -159,8 +204,13 @@ func _fight_step(attacker: TroopUnit, defender: TroopUnit, delta: float) -> void
 ## Copy đúng công thức sát thương của BattleScene._resolve_attack/_apply_damage
 ## (crit, giáp hiệu dụng theo armor penetration, life steal) - KHÔNG nhân
 ## SKILL_DAMAGE_MULT vì chưa có skill "đánh mạnh". Quái (ENEMY) chết THẬT ở
-## đây thì cộng vàng+EXP thật NGAY LÚC ĐÓ - đây chính là nguồn thưởng treo máy
-## duy nhất, không phải hình ảnh minh hoạ (xem ghi chú đầu file).
+## _apply_damage() thì cộng vàng+EXP thật NGAY LÚC ĐÓ - đây chính là nguồn
+## thưởng treo máy duy nhất, không phải hình ảnh minh hoạ (xem ghi chú đầu file).
+##
+## Archer/Wizard bắn đạn bay (sát thương chỉ áp dụng lúc đạn TỚI NƠI qua
+## on_arrive callback, giống BattleScene._spawn_arrow/_spawn_magic_bolt) thay
+## vì trừ máu ngay lúc ra đòn - nếu không đòn tầm xa chỉ đổi tư thế đánh mà
+## không có hiệu ứng gì bay tới mục tiêu, nhìn như "đánh chay".
 func _resolve_simple_attack(attacker: TroopUnit, defender: TroopUnit) -> void:
 	var atk_data := attacker.troop_data
 	var is_crit := randf() < atk_data.crit_rate
@@ -169,6 +219,20 @@ func _resolve_simple_attack(attacker: TroopUnit, defender: TroopUnit) -> void:
 	var effective_defense: float = raw_defense * (1.0 - atk_data.armor_penetration / 100.0)
 	var final_damage: float = maxf(base_damage - effective_defense, 1.0)
 
+	match atk_data.character_key:
+		"archer":
+			_spawn_arrow(attacker, defender, final_damage)
+		"wizard":
+			_spawn_magic_bolt(attacker, defender, final_damage)
+		"priest":
+			_apply_damage(attacker, defender, final_damage)
+			_spawn_impact_effect(defender.position, PRIEST_ATTACK_EFFECT_FRAMES)
+		_:
+			_apply_damage(attacker, defender, final_damage)
+
+func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
+	if defender.is_dead():
+		return
 	defender.take_damage(final_damage)
 	_spawn_popup(defender.position + POPUP_SPAWN_OFFSET, "-%d" % roundi(final_damage), COLOR_DAMAGE)
 	if attacker.troop_data.life_steal > 0.0:
@@ -178,9 +242,24 @@ func _resolve_simple_attack(attacker: TroopUnit, defender: TroopUnit) -> void:
 		GameState.grant_kill_exp(_member_troop_ids, defender.troop_data.exp_reward)
 		_spawn_popup(defender.position + POPUP_SPAWN_OFFSET + Vector2(0, -16), "+%d vàng" % defender.troop_data.gold_reward, COLOR_GOLD)
 
+func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
+	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
+	arena.add_child(projectile)
+	projectile.setup_static(attacker.position, defender.position, ARROW_TEXTURE, func(): _apply_damage(attacker, defender, final_damage))
+
+func _spawn_magic_bolt(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
+	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
+	arena.add_child(projectile)
+	projectile.setup_animated(attacker.position, defender.position, MAGIC_PROJECTILE_FRAMES, "cast", func(): _apply_damage(attacker, defender, final_damage))
+
+func _spawn_impact_effect(world_position: Vector2, frames: SpriteFrames) -> void:
+	var effect: ImpactEffect = IMPACT_EFFECT_SCENE.instantiate()
+	arena.add_child(effect)
+	effect.setup(world_position, frames, "cast")
+
 func _spawn_popup(world_position: Vector2, text: String, color: Color) -> void:
 	var popup: DamagePopup = DAMAGE_POPUP_SCENE.instantiate()
-	monsters.add_child(popup)
+	arena.add_child(popup)
 	popup.setup(text, color, world_position)
 
 ## Hết 1 phe (thường là quái, party đông/mạnh hơn) -> chờ RESTART_DELAY rồi
@@ -198,3 +277,4 @@ func _revive_all() -> void:
 		unit.revive()
 		unit.attack_bar_bg.visible = false
 		unit.skill_bar_bg.visible = false
+	_death_timers.clear()

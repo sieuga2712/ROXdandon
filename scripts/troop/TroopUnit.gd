@@ -263,9 +263,12 @@ const HURT_FLASH_DURATION: float = 0.15
 
 ## Hồi sinh đầy đủ, về lại trạng thái như mới setup() - dùng cho màn xem treo
 ## máy (StageFarmWorld) loop vô hạn, không có khái niệm thắng/thua nên chết
-## xong hồi sinh lại đánh tiếp thay vì kết thúc trận như BattleScene.
+## xong hồi sinh lại đánh tiếp thay vì kết thúc trận như BattleScene. Cần tự
+## bật lại `visible` vì StageFarmWorld ẩn hẳn xác sau vài giây (xem
+## StageFarmWorld._update_corpses).
 func revive() -> void:
 	current_hp = max_hp()
+	visible = true
 	animated_sprite.modulate = Color.WHITE
 	animated_sprite.play("idle")
 	hp_bar_bg.visible = true
