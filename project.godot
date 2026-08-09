@@ -21,6 +21,7 @@ TroopDatabase="*res://scripts/troop/TroopDatabase.gd"
 StageDatabase="*res://scripts/stage/StageDatabase.gd"
 MapDatabase="*res://scripts/stage/MapDatabase.gd"
 BossDatabase="*res://scripts/stage/BossDatabase.gd"
+MaterialDatabase="*res://scripts/state/MaterialDatabase.gd"
 GameState="*res://scripts/state/GameState.gd"
 
 [display]

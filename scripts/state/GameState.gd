@@ -131,3 +131,38 @@ func stop_idle_team() -> void:
 ## chưa có team nào đang treo.
 func get_idle_farm_map() -> StageFarmMap:
 	return _idle_farm_map
+
+## ============================== Nguyên liệu / Kho ==============================
+## Kho nguyên liệu của người chơi - xem MaterialDatabase.gd cho danh sách 50
+## nguyên liệu (10 nhóm x 5 cấp). CHƯA có nguồn thu thập thật nào gán vào đây
+## (nhặt được lúc đánh quái/nhiệm vụ...) - đây mới chỉ là kho chứa +
+## Thợ Nâng Cấp ghép cấp, xem [[Tiến độ & Việc còn dang dở]] khi cần thêm nguồn thu.
+
+var materials: Dictionary = {} ## material_id (String, xem MaterialDatabase.make_id) -> int
+
+func get_material_count(material_id: String) -> int:
+	return materials.get(material_id, 0)
+
+func add_material(material_id: String, amount: int) -> void:
+	materials[material_id] = get_material_count(material_id) + amount
+
+func remove_material(material_id: String, amount: int) -> bool:
+	var have := get_material_count(material_id)
+	if have < amount:
+		return false
+	materials[material_id] = have - amount
+	return true
+
+const MERGE_COST: int = 5 ## số lượng nguyên liệu cấp N cần để ghép lên 1 nguyên liệu cấp N+1
+
+## Ghép MERGE_COST nguyên liệu `group_key` cấp `tier` thành 1 nguyên liệu cùng
+## nhóm cấp `tier+1` - dùng cho Thợ Nâng Cấp (UpgraderPanel). False nếu đã ở
+## cấp tối đa (MaterialDatabase.MAX_TIER) hoặc không đủ số lượng để ghép.
+func merge_material_up(group_key: String, tier: int) -> bool:
+	if tier >= MaterialDatabase.MAX_TIER:
+		return false
+	var from_id := MaterialDatabase.make_id(group_key, tier)
+	if not remove_material(from_id, MERGE_COST):
+		return false
+	add_material(MaterialDatabase.make_id(group_key, tier + 1), 1)
+	return true

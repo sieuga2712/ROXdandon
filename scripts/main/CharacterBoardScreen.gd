@@ -159,12 +159,17 @@ func _portrait(troop: LinhData, size: int) -> PanelContainer:
 		badge.add_child(texture)
 	return badge
 
+## Icon dùng ký tự hình học đơn sắc (◆○⬡▲■▼◇●◈) thay vì emoji màu (⚔️💍📿... cũ)
+## - emoji có bảng màu riêng theo từng ký tự, không đổi màu qua font_color
+## được; ký tự hình học thì render đơn sắc, ăn đúng 1 màu MUTED áp chung cho
+## cả 11 ô, đúng ý "siêu tối giản chung màu" thay vì mỗi ô 1 màu emoji khác nhau.
 func _equipment_slot(icon: String) -> PanelContainer:
 	var slot := _styled_panel(Color(0.24, 0.26, 0.32), Color(0.35, 0.38, 0.46), 1, 6)
 	slot.custom_minimum_size = Vector2(44, 44)
 	var label := Label.new()
 	label.text = icon
 	label.add_theme_font_size_override("font_size", 20)
+	label.add_theme_color_override("font_color", MUTED)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -182,8 +187,8 @@ func close_detail() -> void:
 	detail_panel.visible = false
 	list_panel.visible = true
 
-const EQUIP_SLOTS_LEFT: Array[String] = ["⚔️", "💍", "📿", "🪖"]
-const EQUIP_SLOTS_RIGHT: Array[String] = ["🛡️", "👢", "🧤", "💎"]
+const EQUIP_SLOTS_LEFT: Array[String] = ["◆", "○", "⬡", "▲"] ## vũ khí/nhẫn/bùa/nón
+const EQUIP_SLOTS_RIGHT: Array[String] = ["■", "▼", "◇", "●"] ## khiên/giày/găng/đá quý
 const EQUIP_SLOTS_BOTTOM: Array[String] = ["◈", "◈", "◈"]
 
 func _build_detail(troop: LinhData, role: String) -> void:
