@@ -12,17 +12,17 @@ config_version=5
 
 config/name="ROXdandon"
 config/description="PvE party game - 4 nhan vat co dinh vuot ai, khong PvP. Godot 4."
-run/main_scene="res://scenes/main/MainShell.tscn"
+run/main_scene="res://core/app/MainShell.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [autoload]
 
-TroopDatabase="*res://scripts/troop/TroopDatabase.gd"
-StageDatabase="*res://scripts/stage/StageDatabase.gd"
-MapDatabase="*res://scripts/stage/MapDatabase.gd"
-BossDatabase="*res://scripts/stage/BossDatabase.gd"
-MaterialDatabase="*res://scripts/state/MaterialDatabase.gd"
-GameState="*res://scripts/state/GameState.gd"
+TroopDatabase="*res://core/database/TroopDatabase.gd"
+StageDatabase="*res://core/database/StageDatabase.gd"
+MapDatabase="*res://core/database/MapDatabase.gd"
+BossDatabase="*res://core/database/BossDatabase.gd"
+MaterialDatabase="*res://core/database/MaterialDatabase.gd"
+GameState="*res://core/app/GameState.gd"
 
 [display]
 

@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://cjy6abetrf3jn"]
 
-[ext_resource type="Texture2D" uid="uid://da5o550kklo1i" path="res://RPG Top Down Characters - Free Version/Blue Haired Woman/blue_haired_woman.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://da5o550kklo1i" path="res://tainguyen/RPG Top Down Characters - Free Version/Blue Haired Woman/blue_haired_woman.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bhw_idle_0"]
 atlas = ExtResource("1")

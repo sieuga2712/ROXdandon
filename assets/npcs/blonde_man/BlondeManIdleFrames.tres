@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://d6thc10ybwdk"]
 
-[ext_resource type="Texture2D" uid="uid://yeedgpi3fa5j" path="res://RPG Top Down Characters - Free Version/Blonde Man/blonde_man.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://yeedgpi3fa5j" path="res://tainguyen/RPG Top Down Characters - Free Version/Blonde Man/blonde_man.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_blonde_idle_0"]
 atlas = ExtResource("1")
