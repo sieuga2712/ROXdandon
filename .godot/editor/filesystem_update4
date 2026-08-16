@@ -1,4 +1,3 @@
-res://scripts/ui/UIBuilders.gd
 res://scenes/main/MainShell.tscn
 res://assets/troops/soldier/SoldierFrames.tres
 res://assets/troops/swordsman/SwordsmanFrames.tres
@@ -28,7 +27,3 @@ res://assets/troops/wizard/MagicSkillProjectileFrames.tres
 res://assets/troops/priest/PriestHealEffectFrames.tres
 res://assets/npcs/blonde_man/BlondeManIdleFrames.tres
 res://assets/npcs/blue_haired_woman/BlueHairedWomanIdleFrames.tres
-res://scripts/main/SimplePlaceholderPanel.gd
-res://scripts/main/UpgraderPanel.gd
-res://scripts/main/WarehousePanel.gd
-res://scripts/main/CharacterBoardScreen.gd
