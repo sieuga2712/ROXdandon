@@ -29,7 +29,10 @@
 
   .phone {
     width: 360px;
+    height: 720px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
     border: 2px solid #444;
     border-radius: 18px;
     overflow: hidden;
@@ -42,21 +45,25 @@
 
   .topbar {
     height: 48px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 0 16px;
     background: #1a1c20;
     border-bottom: 1px solid #3a3d44;
-    font-size: 14px;
-    font-weight: bold;
-    color: #d8b25a;
   }
+
+  .topbar-title { font-size: 14px; font-weight: bold; color: #eee; }
+
+  .resources { display: flex; gap: 12px; font-size: 12px; font-weight: bold; }
+  .resources .gold { color: #d8b25a; }
+  .resources .gem { color: #7ec8e3; }
 
   /* =========== vùng nội dung =========== */
 
   .content {
-    height: 560px;
+    flex: 1;
     overflow-y: auto;
     background: #2a2d33;
   }
@@ -72,40 +79,29 @@
 
   /* =========== màn Thành ============ */
 
-  .city-ground {
-    background: #3a4a3a;
-    border: 1px solid #4c5c4c;
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
+  .city-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
 
   .city-item {
-    width: 80px;
-    text-align: center;
-    font-size: 26px;
-    background: rgba(0,0,0,.15);
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 6px;
-    padding: 8px 4px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #343c35;
+    border: 1px solid #4c5c4c;
+    border-radius: 8px;
+    cursor: pointer;
   }
 
-  .city-item small {
-    display: block;
-    margin-top: 4px;
-    font-size: 10px;
-    color: #c6d0c6;
-  }
+  .city-item:hover { border-color: #7a7f88; }
+  .city-icon { font-size: 28px; margin-bottom: 6px; }
+  .city-name { font-size: 11px; color: #ddd; }
 
-  .city-item.placeholder {
-    opacity: .5;
-    font-size: 20px;
-  }
-
-  /* =========== sub-tab (Ải) =========== */
+  /* =========== sub-tab (Ải / Nhân vật / Kho) =========== */
 
   .subtabs {
     display: flex;
@@ -134,9 +130,126 @@
   .subpanel { display: none; }
   .subpanel.active { display: block; }
 
-  /* =========== thẻ map (Ủy Thác) =========== */
+  .section-label {
+    font-size: 10px;
+    color: #8a8f99;
+    margin-bottom: 8px;
+    letter-spacing: .5px;
+  }
 
-  .map-card {
+  .btn {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #6a6e77;
+    border-radius: 5px;
+    background: #4a4d54;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .btn:hover { background: #55595f; }
+  .btn.gold { background: #765d29; border-color: #a2823d; }
+  .btn.red { background: #593838; border-color: #805050; }
+
+  /* =========== Ải Treo - khu vực treo hiện tại =========== */
+
+  .afk-card {
+    background: #303a32;
+    border: 1px solid #526352;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  .afk-title { color: #9fb39f; font-size: 10px; font-weight: bold; margin-bottom: 8px; }
+
+  .afk-map { display: flex; gap: 10px; align-items: center; }
+
+  .afk-map-icon {
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+    background: #3d4940;
+    font-size: 25px;
+  }
+
+  .afk-map-name { font-size: 13px; font-weight: bold; color: #eee; }
+  .afk-floor { font-size: 10px; color: #999; margin-top: 3px; }
+  .afk-using-team { font-size: 10px; color: #9fb39f; margin-top: 3px; }
+
+  .afk-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .reward {
+    padding: 7px;
+    background: rgba(0,0,0,.2);
+    border: 1px solid #414740;
+    border-radius: 5px;
+    font-size: 9px;
+    color: #999;
+  }
+
+  .reward strong { display: block; margin-top: 2px; color: #ddd; font-size: 11px; }
+
+  .afk-empty {
+    text-align: center;
+    padding: 24px 10px;
+    border: 1px dashed #555b55;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    color: #9aa0aa;
+  }
+
+  .afk-empty .plus {
+    width: 42px; height: 42px;
+    margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #666;
+    border-radius: 50%;
+    font-size: 22px;
+    color: #aaa;
+  }
+
+  /* =========== Ải Treo - danh sách ải (bấm là treo ngay) =========== */
+
+  .stage-list { display: flex; flex-direction: column; gap: 7px; }
+
+  .stage-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+
+  .stage-item:hover { border-color: #7a7f88; }
+  .stage-item.current { border-color: #6a8a6a; background: #2e3630; }
+
+  .stage-icon {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: #3d4046;
+    border-radius: 6px;
+    font-size: 21px;
+  }
+
+  .stage-info { flex: 1; }
+  .stage-name { font-size: 12px; color: #eee; font-weight: bold; }
+  .stage-floor { font-size: 9px; color: #888; margin-top: 4px; }
+  .stage-arrow { color: #777; font-size: 18px; }
+
+  /* =========== Ải Boss =========== */
+
+  .boss-card {
     background: #33363c;
     border: 1px solid #4a4d54;
     border-radius: 8px;
@@ -144,296 +257,11 @@
     margin-bottom: 12px;
   }
 
-  .map-card-top {
-    text-align: right;
-    font-size: 9px;
-    color: #7d818a;
-    margin-bottom: 6px;
-  }
-
-  .map-card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .map-icon {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    border: 1px solid #5a5e66;
-    border-radius: 6px;
-    background: #3d4046;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-  }
-
-  .map-name {
-    font-size: 14px;
-    font-weight: bold;
-    color: #e6e6e6;
-  }
-
-  .map-type {
-    font-size: 9px;
-    color: #8a8f99;
-    margin-top: 2px;
-  }
-
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .info-box {
-    background: rgba(0,0,0,.2);
-    border: 1px solid #45484f;
-    border-radius: 5px;
-    padding: 6px 8px;
-  }
-
-  .info-box small {
-    display: block;
-    font-size: 8px;
-    color: #7d818a;
-    margin-bottom: 2px;
-  }
-
-  .info-box div { font-size: 11px; }
-
-  .floor-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: #b7bcc4;
-    border-top: 1px solid #40434a;
-    border-bottom: 1px solid #40434a;
-    padding: 6px 0;
-    margin-bottom: 10px;
-  }
-
-  .cta {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #6a6e77;
-    border-radius: 5px;
-    background: #4a4d54;
-    color: #fff;
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  /* =========== treo máy - thẻ trống =========== */
-
-  .empty-card {
-    border: 1px dashed #5a5e66;
-    border-radius: 8px;
-    padding: 24px 12px;
-    text-align: center;
-    color: #9aa0aa;
-  }
-
-  .plus-circle {
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
-    margin: 0 auto 8px;
-    border: 1px solid #5a5e66;
-    border-radius: 50%;
-    font-size: 22px;
-    color: #9aa0aa;
-  }
-
-  .empty-card .title { color: #d8dade; font-size: 12px; font-weight: bold; }
-  .empty-card small { font-size: 10px; }
-  .empty-card { cursor: pointer; }
-  .empty-card:hover { border-color: #7a7f88; }
-
-  /* =========== màn "Tạo đội treo" =========== */
-
-  .create-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  .back-btn {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #4a4d54;
-    border-radius: 6px;
-    background: #33363c;
-    color: #ddd;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .create-header-title {
-    font-size: 13px;
-    font-weight: bold;
-    color: #e6e6e6;
-  }
-
-  .header-spacer { width: 32px; }
-
-  .section-label {
-    font-size: 10px;
-    color: #8a8f99;
-    margin: 14px 0 8px;
-    letter-spacing: .5px;
-  }
-
-  .section-label:first-of-type { margin-top: 0; }
-
-  .select-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: #33363c;
-    border: 1px solid #4a4d54;
-    border-radius: 7px;
-    cursor: pointer;
-  }
-
-  .select-box:hover { border-color: #7a7f88; }
-
-  .select-box .map-icon { margin: 0; }
-
-  .select-info { flex: 1; }
-
-  .select-name { font-size: 13px; font-weight: bold; color: #e6e6e6; }
-  .select-sub { font-size: 10px; color: #8a8f99; margin-top: 3px; }
-  .select-arrow { font-size: 20px; color: #8a8f99; }
-
-  .floor-stepper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 10px;
-    background: #33363c;
-    border: 1px solid #4a4d54;
-    border-radius: 7px;
-  }
-
-  .floor-stepper button {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #5a5e66;
-    border-radius: 6px;
-    background: #3d4046;
-    color: #ddd;
-    font-size: 18px;
-    cursor: pointer;
-  }
-
-  .floor-value { min-width: 60px; text-align: center; }
-  .floor-value small { display: block; font-size: 9px; color: #8a8f99; }
-  .floor-value strong { display: block; font-size: 20px; color: #e6e6e6; margin-top: 2px; }
-
-  .section-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .team-count { font-size: 11px; color: #b7bcc4; }
-
-  .team-slots {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .slot {
-    position: relative;
-    width: 52px;
-    height: 52px;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-  }
-
-  .slot.filled {
-    background: #3d4046;
-    border: 1px solid #5a5e66;
-  }
-
-  .slot.empty {
-    background: #2a2d33;
-    border: 1px dashed #5a5e66;
-    color: #8a8f99;
-    cursor: pointer;
-  }
-
-  .slot.empty:hover { border-color: #7a7f88; color: #ccc; }
-
-  .slot-remove {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #6b3d3d;
-    border: 1px solid #8a5a5a;
-    color: #fff;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  .start-btn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 18px;
-    border: 1px solid #6a6e77;
-    border-radius: 5px;
-    background: #4a4d54;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .create-note {
-    font-size: 11px;
-    color: #7d818a;
-    margin-top: 14px;
-  }
-
-  /* =========== boss - thẻ boss (ngày + khủng) =========== */
-
-  .boss-list { display: flex; flex-direction: column; gap: 12px; }
-
-  .boss-card {
-    background: #33363c;
-    border: 1px solid #4a4d54;
-    border-radius: 8px;
-    padding: 12px;
-  }
-
   .boss-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 
   .boss-image {
-    width: 56px;
-    height: 60px;
-    min-width: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 56px; height: 60px; min-width: 56px;
+    display: flex; align-items: center; justify-content: center;
     border-radius: 6px;
     background: #3d4046;
     border: 1px solid #5a5e66;
@@ -480,7 +308,7 @@
   .detail-item { display: flex; justify-content: space-between; font-size: 9px; color: #8a8f99; }
   .detail-item strong { color: #e0e4ea; }
 
-  .reward-box {
+  .boss-team {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -489,10 +317,15 @@
     border-radius: 5px;
     background: rgba(0,0,0,.15);
     border: 1px solid #40434a;
+    font-size: 10px;
+    color: #aaa;
+    cursor: pointer;
   }
 
-  .reward-title { font-size: 9px; color: #8a8f99; }
-  .reward-value { font-size: 10px; font-weight: bold; color: #d8b25a; }
+  .boss-team strong { color: #ddd; }
+
+  .boss-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .boss-actions .btn { flex: 1; }
 
   .world-boss .boss-name { color: #c98a8a; }
 
@@ -508,7 +341,7 @@
 
   .boss-timer strong { color: #d8b25a; margin-left: 4px; }
 
-  /* =========== nhân vật - danh sách =========== */
+  /* =========== Nhân vật - danh sách =========== */
 
   .collection-info {
     display: flex;
@@ -544,12 +377,7 @@
 
   .search-box input::placeholder { color: #7d818a; }
 
-  .filters {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 12px;
-    overflow-x: auto;
-  }
+  .filters { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; }
 
   .filter {
     flex-shrink: 0;
@@ -562,17 +390,9 @@
     cursor: pointer;
   }
 
-  .filter.active {
-    color: #fff;
-    background: #454951;
-    border-color: #6a6e77;
-  }
+  .filter.active { color: #fff; background: #454951; border-color: #6a6e77; }
 
-  .character-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .character-list { display: flex; flex-direction: column; gap: 8px; }
 
   .character-item {
     display: flex;
@@ -588,12 +408,8 @@
   .character-item:hover { border-color: #7a7f88; }
 
   .character-portrait {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 48px; height: 48px; min-width: 48px;
+    display: flex; align-items: center; justify-content: center;
     border-radius: 6px;
     background: #3d4046;
     border: 1px solid #5a5e66;
@@ -616,6 +432,135 @@
     font-size: 8px;
   }
 
+  /* =========== Nhân vật - Đội hình =========== */
+
+  .team-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .team-card {
+    padding: 10px;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 7px;
+  }
+
+  .team-card.using { border-color: #6a8a6a; background: #2e3630; }
+
+  .team-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .team-name { font-size: 12px; font-weight: bold; color: #eee; }
+  .team-name .badge {
+    font-size: 8px;
+    font-weight: bold;
+    color: #9fb39f;
+    border: 1px solid #526352;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 6px;
+  }
+
+  .team-actions { display: flex; gap: 10px; font-size: 9px; color: #999; }
+  .team-actions span { cursor: pointer; }
+  .team-actions span:hover { color: #ddd; }
+
+  .team-members { display: flex; gap: 6px; }
+
+  .team-member {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: #3d4046;
+    border: 1px solid #555a62;
+    border-radius: 5px;
+    font-size: 21px;
+  }
+
+  /* =========== Kho =========== */
+
+  .inventory-summary { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+
+  .inventory-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 10px;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 6px;
+    font-size: 11px;
+  }
+
+  .inventory-summary-row strong { color: #d8b25a; }
+
+  .inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+  }
+
+  .inventory-item {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 6px;
+    font-size: 22px;
+  }
+
+  .inventory-item.empty { opacity: .35; border-style: dashed; }
+
+  /* tab cuộn ngang - dùng khi có nhiều tab hơn mức chia đều vừa màn (vd 5 tab nhóm nguyên liệu ở Kho) */
+  .subtabs.scroll { overflow-x: auto; }
+  .subtabs.scroll .subtab { flex: 0 0 auto; white-space: nowrap; padding: 8px 12px; }
+
+  .material-group-label { font-size: 10px; color: #8a8f99; margin: 12px 0 6px; }
+  .material-group-label:first-child { margin-top: 0; }
+
+  .material-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+
+  .material-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 2px;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 6px;
+  }
+
+  .material-icon { font-size: 18px; }
+  .material-tier { font-size: 8px; color: #8a8f99; margin-top: 3px; }
+  .material-count { font-size: 10px; font-weight: bold; color: #d8b25a; margin-top: 2px; }
+
+  /* =========== "Tạo đội hình" / chọn thành viên ============ */
+
+  .create-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .back-btn {
+    width: 32px; height: 32px;
+    border: 1px solid #4a4d54;
+    border-radius: 6px;
+    background: #33363c;
+    color: #ddd;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .create-header-title { font-size: 13px; font-weight: bold; color: #e6e6e6; }
+  .header-spacer { width: 32px; }
+
+  .create-note { font-size: 11px; color: #7d818a; margin-top: 14px; }
+
   /* =========== nhân vật - chi tiết =========== */
 
   .equipment-layout {
@@ -628,11 +573,8 @@
   }
 
   .equipment-slot {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
     border-radius: 6px;
     background: #3d4046;
     border: 1px solid #5a5e66;
@@ -658,27 +600,10 @@
 
   .character-image { font-size: 60px; }
 
-  .detail-name {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: #e6e6e6;
-  }
+  .detail-name { margin-top: 10px; text-align: center; font-size: 14px; font-weight: bold; color: #e6e6e6; }
+  .detail-level { margin-top: 3px; text-align: center; font-size: 11px; color: #8a8f99; }
 
-  .detail-level {
-    margin-top: 3px;
-    text-align: center;
-    font-size: 11px;
-    color: #8a8f99;
-  }
-
-  .bottom-equipment {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 8px;
-  }
+  .bottom-equipment { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
 
   .stats-panel {
     margin-top: 14px;
@@ -688,16 +613,82 @@
     border-radius: 8px;
   }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 16px;
-    row-gap: 7px;
-  }
-
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 7px; }
   .stat { display: flex; justify-content: space-between; font-size: 10px; }
   .stat-name { color: #8a8f99; }
   .stat-value { color: #e6e6e6; font-weight: bold; }
+
+  /* =========== nhân vật - chi tiết - kỹ năng =========== */
+
+  .skill-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .skill-item:hover { border-color: #7a7f88; }
+  .skill-item.active { border-color: #a2823d; background: #2e2a22; }
+
+  .skill-icon {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: #3d4046;
+    border: 1px solid #5a5e66;
+    border-radius: 6px;
+    font-size: 20px;
+  }
+
+  .skill-info { flex: 1; }
+  .skill-name { font-size: 12px; font-weight: bold; color: #e6e6e6; }
+  .skill-level { font-size: 9px; color: #8a8f99; margin-top: 3px; }
+  .skill-arrow { color: #777; font-size: 18px; }
+
+  .skill-detail {
+    margin-top: 14px;
+    padding: 12px;
+    background: #33363c;
+    border: 1px solid #4a4d54;
+    border-radius: 8px;
+  }
+
+  .skill-detail-header { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+
+  .skill-icon-lg {
+    width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center;
+    background: #3d4046;
+    border: 1px solid #5a5e66;
+    border-radius: 8px;
+    font-size: 26px;
+  }
+
+  .skill-detail-name { font-size: 13px; font-weight: bold; color: #eee; }
+  .skill-detail-desc { font-size: 10px; color: #999; margin-top: 4px; line-height: 1.4; }
+
+  .skill-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .skill-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: #2a2d33;
+    border: 1px dashed #5a5e66;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+
+  .skill-slot:hover { border-color: #7a7f88; }
+  .skill-slot-icon { font-size: 20px; }
+  .skill-slot-label { font-size: 10px; color: #b7bcc4; margin-top: 6px; font-weight: bold; }
 
   /* =========== cài đặt =========== */
 
@@ -707,15 +698,12 @@
     font-size: 13px;
   }
 
-  .settings-list .version {
-    color: #7d818a;
-    font-size: 11px;
-    border-bottom: none;
-  }
+  .settings-list .version { color: #7d818a; font-size: 11px; border-bottom: none; }
 
   /* =========== bottom nav =========== */
 
   .bottomnav {
+    flex-shrink: 0;
     display: flex;
     background: #1a1c20;
     border-top: 1px solid #3a3d44;
@@ -734,385 +722,336 @@
 
   .navbtn .icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
-  .navbtn.active {
-    color: #fff;
-    box-shadow: inset 0 2px 0 #6a6e77;
-  }
+  .navbtn.active { color: #fff; box-shadow: inset 0 2px 0 #6a6e77; }
 </style>
 </head>
 <body>
 
 <div class="page-note">
   Đây là <b>mockup thể hiện cách hiểu hiện tại</b> về giao diện ROXdandon (không phải ảnh chụp thật từ game), viết đơn giản để dễ soi lỗi hiểu sai - <b>bỏ qua màn chiến đấu</b> theo yêu cầu. Bấm vào các nút/tab dưới đây để xem thử từng màn.
+  <br><br>
+  <b>Bản thiết kế lại (chốt hướng mới):</b> gộp Boss vào tab "Ải" (2 sub-tab Ải Treo / Ải Boss), roster nhân vật KHÔNG còn giới hạn đúng 4 người - có tab "Đội hình" riêng để lưu nhiều preset đội (mỗi đội tối đa 4), treo máy dùng thẳng đội đang chọn (bỏ bước chọn map/tầng/thành viên thủ công), thêm tab "Kho" (trang bị/vật phẩm, mới làm khung sườn) và tiền tệ phụ Kim cương. Tab "Ải": khu vực trạng thái treo máy LUÔN cố định ở trên (~1/3 màn), chỉ danh sách bên dưới (~2/3 màn) đổi theo sub-tab Ải Treo/Ải Boss - không ẩn mất khi xem Boss. <b>Đây là hướng vừa chốt, CHƯA cài vào code game thật</b> - chỉ roster > 4 người là đã có thật trong <code>data/troops/</code> (thêm "Soldier" #2, id=23), phần còn lại (hệ đội hình nhiều-preset, Kho, kim cương) chưa nối logic thật.
 </div>
 
 <div class="phone">
 
-  <div class="topbar">Vàng: 0</div>
+  <div class="topbar">
+    <div class="topbar-title">Vương Quốc</div>
+    <div class="resources">
+      <span class="gold">💰 12.5K</span>
+      <span class="gem">💎 320</span>
+    </div>
+  </div>
 
   <div class="content">
 
     <!-- ============ THÀNH ============ -->
     <div class="screen active" id="city">
-      <div class="screen-title">Tab "Thành" - chỉ xem, KHÔNG điều khiển được nhân vật (thuần trang trí)</div>
-      <div class="city-ground">
-        <div class="city-item">🏠<small>Nhà 1</small></div>
-        <div class="city-item">🏠<small>Nhà 2</small></div>
-        <div class="city-item">🧑<small>NPC 1</small></div>
-        <div class="city-item">🧑<small>NPC 2</small></div>
-        <div class="city-item placeholder">?<small>(trống)</small></div>
-        <div class="city-item placeholder">?<small>(trống)</small></div>
+      <div class="screen-title">Tab "Thành" - shop/panel thật đã có trong code (Nâng cấp = UpgraderPanel, Kho báu = WarehousePanel), 2 ô còn lại (Thợ rèn/Cửa hàng) là placeholder cho tương lai</div>
+      <div class="city-grid">
+        <div class="city-item"><div class="city-icon">⚒️</div><div class="city-name">Thợ rèn</div></div>
+        <div class="city-item"><div class="city-icon">🛒</div><div class="city-name">Cửa hàng</div></div>
+        <div class="city-item" onclick="alert('Mở UpgraderPanel (đã có thật trong code)')"><div class="city-icon">🔮</div><div class="city-name">Nâng cấp</div></div>
+        <div class="city-item" onclick="alert('Mở WarehousePanel (đã có thật trong code)')"><div class="city-icon">🏦</div><div class="city-name">Kho báu</div></div>
       </div>
     </div>
 
-    <!-- ============ ẢI ============ -->
+    <!-- ============ ẢI (Ải Treo + Ải Boss) ============ -->
+    <!-- Layout mới: khu vực treo máy LUÔN cố định ở trên (~1/3 màn), không ẩn theo tab -
+         chỉ phần danh sách bên dưới (~2/3 màn) mới đổi theo sub-tab Ải Treo/Ải Boss. -->
     <div class="screen" id="stage">
-      <div class="subtabs">
-        <button class="subtab active" onclick="showSub('uythac', this)">Ủy Thác</button>
-        <button class="subtab" onclick="showSub('treomay', this)">Treo máy</button>
+
+      <div class="section-label">ĐỘI TREO DUY NHẤT</div>
+
+      <div class="afk-card" id="afkActive">
+        <div class="afk-title">ĐANG TREO</div>
+        <div class="afk-map">
+          <div class="afk-map-icon" id="afkMapIcon">🌲</div>
+          <div>
+            <div class="afk-map-name" id="afkMapName">Rừng Khởi Nguyên</div>
+            <div class="afk-floor" id="afkFloor">Tầng 1</div>
+            <div class="afk-using-team">Đội: <span id="afkTeamName">Cân Bằng</span></div>
+          </div>
+        </div>
+        <div class="afk-rewards">
+          <div class="reward">EXP<strong>+12.5K</strong></div>
+          <div class="reward">Vàng<strong>+8.2K</strong></div>
+        </div>
       </div>
 
-      <div class="subpanel active" id="uythac">
-
-        <div class="map-card">
-          <div class="map-card-top">MAP 01</div>
-          <div class="map-card-header">
-            <div class="map-icon">🌲</div>
-            <div>
-              <div class="map-name">Rừng Khởi Nguyên</div>
-              <div class="map-type">KHU VỰC RỪNG</div>
-            </div>
-          </div>
-          <div class="info-grid">
-            <div class="info-box"><small>ĐIỀU KIỆN THẮNG</small><div>Hạ toàn bộ địch</div></div>
-            <div class="info-box"><small>ĐỘ KHÓ</small><div>★★☆</div></div>
-          </div>
-          <div class="floor-row"><span>Tầng hiện tại</span><span>Chưa bắt đầu</span></div>
-          <button class="cta">VÀO TRẬN</button>
-        </div>
-
-        <div class="map-card">
-          <div class="map-card-top">MAP 02</div>
-          <div class="map-card-header">
-            <div class="map-icon">🏜️</div>
-            <div>
-              <div class="map-name">Sa Mạc Hoang Tàn</div>
-              <div class="map-type">KHU VỰC SA MẠC</div>
-            </div>
-          </div>
-          <div class="info-grid">
-            <div class="info-box"><small>ĐIỀU KIỆN THẮNG</small><div>Hạ Boss</div></div>
-            <div class="info-box"><small>ĐỘ KHÓ</small><div>★★★</div></div>
-          </div>
-          <div class="floor-row"><span>Tầng hiện tại</span><span>Chưa bắt đầu</span></div>
-          <button class="cta">VÀO TRẬN</button>
-        </div>
-
-        <div class="map-card">
-          <div class="map-card-top">MAP 03</div>
-          <div class="map-card-header">
-            <div class="map-icon">❄️</div>
-            <div>
-              <div class="map-name">Núi Băng Giá</div>
-              <div class="map-type">KHU VỰC BĂNG</div>
-            </div>
-          </div>
-          <div class="info-grid">
-            <div class="info-box"><small>ĐIỀU KIỆN THẮNG</small><div>Hạ toàn bộ địch</div></div>
-            <div class="info-box"><small>ĐỘ KHÓ</small><div>★★★☆</div></div>
-          </div>
-          <div class="floor-row"><span>Tầng hiện tại</span><span>Chưa bắt đầu</span></div>
-          <button class="cta">VÀO TRẬN</button>
-        </div>
-
-        <div class="map-card">
-          <div class="map-card-top">MAP 04</div>
-          <div class="map-card-header">
-            <div class="map-icon">🔥</div>
-            <div>
-              <div class="map-name">Pháo Đài Hỏa Ngục</div>
-              <div class="map-type">KHU VỰC HỎA NGỤC</div>
-            </div>
-          </div>
-          <div class="info-grid">
-            <div class="info-box"><small>ĐIỀU KIỆN THẮNG</small><div>Tiêu diệt Boss</div></div>
-            <div class="info-box"><small>ĐỘ KHÓ</small><div>★★★★</div></div>
-          </div>
-          <div class="floor-row"><span>Tầng hiện tại</span><span>Chưa bắt đầu</span></div>
-          <button class="cta">VÀO TRẬN</button>
-        </div>
-
+      <div class="afk-empty" id="afkEmpty" style="display:none;">
+        <div class="plus">+</div>
+        <div style="font-size:12px;color:#ddd;">Chưa có đội treo</div>
+        <div style="font-size:10px;color:#8a8f99;margin-top:4px;">Chọn ải ở tab "Ải Treo" bên dưới để bắt đầu treo</div>
       </div>
 
-      <div class="subpanel" id="treomay">
-        <div class="empty-card" onclick="openCreateAfk()">
-          <div class="plus-circle">+</div>
-          <div class="title">Thêm đội hình treo</div>
-          <small>Chọn map và tầng để bắt đầu</small>
+      <div class="subtabs" style="margin-top:14px;">
+        <button class="subtab active" onclick="showSub(this, 'afkList')">ẢI TREO</button>
+        <button class="subtab" onclick="showSub(this, 'boss')">ẢI BOSS</button>
+      </div>
+
+      <!-- ===== ẢI TREO: chỉ còn danh sách ải, bấm là treo ngay bằng đội đang chọn ===== -->
+      <div class="subpanel active" id="afkList">
+        <div class="section-label">CHỌN ẢI (bấm là treo ngay bằng đội đang chọn ở tab Đội hình)</div>
+        <div class="stage-list">
+          <div class="stage-item current" onclick="startAfk('🌲', 'Rừng Khởi Nguyên', 1)">
+            <div class="stage-icon">🌲</div>
+            <div class="stage-info"><div class="stage-name">Rừng Khởi Nguyên</div><div class="stage-floor">Tầng 1</div></div>
+            <div class="stage-arrow">›</div>
+          </div>
+          <div class="stage-item" onclick="startAfk('🏜️', 'Sa Mạc Hoang Tàn', 7)">
+            <div class="stage-icon">🏜️</div>
+            <div class="stage-info"><div class="stage-name">Sa Mạc Hoang Tàn</div><div class="stage-floor">Tầng 7</div></div>
+            <div class="stage-arrow">›</div>
+          </div>
+          <div class="stage-item" onclick="startAfk('❄️', 'Núi Băng Giá', 1)">
+            <div class="stage-icon">❄️</div>
+            <div class="stage-info"><div class="stage-name">Núi Băng Giá</div><div class="stage-floor">Tầng 1</div></div>
+            <div class="stage-arrow">›</div>
+          </div>
+          <div class="stage-item" onclick="startAfk('🔥', 'Pháo Đài Hỏa Ngục', 1)">
+            <div class="stage-icon">🔥</div>
+            <div class="stage-info"><div class="stage-name">Pháo Đài Hỏa Ngục</div><div class="stage-floor">Tầng 1</div></div>
+            <div class="stage-arrow">›</div>
+          </div>
         </div>
+
         <p style="font-size:11px;color:#7d818a;margin-top:12px;">
-          (Chưa tính thưởng/mỗi map tối đa 3 team - phần đó chưa dựng, chỉ mới đúng hình bấm "+" mở màn tạo đội.)
+          (Đã bỏ hẳn màn "Tạo đội treo" kiểu cũ - chọn map → chọn tầng → chọn 4 thành viên. Giờ chỉ cần bấm 1 ải, dùng luôn đội đang đánh dấu "đang dùng" ở tab Nhân vật › Đội hình. Đã bỏ nút "XEM"/"RÚT ĐỘI" cho gọn - khối "ĐANG TREO" ở trên chỉ còn thuần hiển thị trạng thái, bấm ải khác trong danh sách là tự chuyển sang treo ải đó luôn. Mặc định minh hoạ ở ải đầu tiên của map đầu tiên (Rừng Khởi Nguyên, Tầng 1/50).)
+        </p>
+      </div>
+
+      <!-- ===== ẢI BOSS ===== -->
+      <div class="subpanel" id="boss">
+        <div class="section-label">BOSS NGÀY</div>
+
+        <div class="boss-card" data-boss="1">
+          <div class="boss-top">
+            <div class="boss-image">🐉</div>
+            <div class="boss-info">
+              <div class="boss-name">Hắc Long</div>
+              <div class="boss-level">Lv.50 · Boss Ngày</div>
+              <div class="boss-stats">
+                <div class="boss-stat">❤️ <strong>1.2M</strong></div>
+                <div class="boss-stat">⚔ <strong>12.5K</strong></div>
+                <div class="boss-stat">🛡 <strong>5.2K</strong></div>
+                <div class="boss-stat">⚡ <strong>180</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="difficulty-title">ĐỘ KHÓ</div>
+          <div class="difficulty-tabs">
+            <button class="difficulty-button easy active" onclick="changeDifficulty(this, 'easy')">DỄ</button>
+            <button class="difficulty-button normal" onclick="changeDifficulty(this, 'normal')">THƯỜNG</button>
+            <button class="difficulty-button hard" onclick="changeDifficulty(this, 'hard')">KHÓ</button>
+          </div>
+          <div class="boss-detail">
+            <div class="detail-item"><span>HP</span><strong data-stat="hp">500K</strong></div>
+            <div class="detail-item"><span>ATK</span><strong data-stat="atk">5K</strong></div>
+            <div class="detail-item"><span>DEF</span><strong data-stat="def">2K</strong></div>
+            <div class="detail-item"><span>EXP</span><strong data-stat="exp">15K</strong></div>
+          </div>
+          <div class="boss-team" onclick="alert('Mở danh sách đội hình để chọn đội đánh boss này')">
+            Đội sử dụng: <strong class="boss-team-name">Đội Boss</strong>
+          </div>
+          <div class="boss-actions">
+            <button class="btn gold">THÁCH ĐẤU</button>
+          </div>
+        </div>
+
+        <div class="boss-card" data-boss="2">
+          <div class="boss-top">
+            <div class="boss-image">👹</div>
+            <div class="boss-info">
+              <div class="boss-name">Ma Tướng</div>
+              <div class="boss-level">Lv.65 · Boss Ngày</div>
+              <div class="boss-stats">
+                <div class="boss-stat">❤️ <strong>3.5M</strong></div>
+                <div class="boss-stat">⚔ <strong>28K</strong></div>
+                <div class="boss-stat">🛡 <strong>11K</strong></div>
+                <div class="boss-stat">⚡ <strong>210</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="difficulty-title">ĐỘ KHÓ</div>
+          <div class="difficulty-tabs">
+            <button class="difficulty-button easy active" onclick="changeDifficulty(this, 'easy')">DỄ</button>
+            <button class="difficulty-button normal" onclick="changeDifficulty(this, 'normal')">THƯỜNG</button>
+            <button class="difficulty-button hard" onclick="changeDifficulty(this, 'hard')">KHÓ</button>
+          </div>
+          <div class="boss-detail">
+            <div class="detail-item"><span>HP</span><strong data-stat="hp">500K</strong></div>
+            <div class="detail-item"><span>ATK</span><strong data-stat="atk">5K</strong></div>
+            <div class="detail-item"><span>DEF</span><strong data-stat="def">2K</strong></div>
+            <div class="detail-item"><span>EXP</span><strong data-stat="exp">15K</strong></div>
+          </div>
+          <div class="boss-team" onclick="alert('Mở danh sách đội hình để chọn đội đánh boss này')">
+            Đội sử dụng: <strong class="boss-team-name">Đội Boss</strong>
+          </div>
+          <div class="boss-actions">
+            <button class="btn gold">THÁCH ĐẤU</button>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:14px;">BOSS KHỦNG</div>
+        <div class="boss-card world-boss">
+          <div class="boss-top">
+            <div class="boss-image">💀</div>
+            <div class="boss-info">
+              <div class="boss-name">Ma Vương Abyss</div>
+              <div class="boss-level">Lv.100 · Boss Khủng</div>
+              <div class="boss-stats">
+                <div class="boss-stat">❤️ <strong>85M</strong></div>
+                <div class="boss-stat">⚔ <strong>120K</strong></div>
+                <div class="boss-stat">🛡 <strong>45K</strong></div>
+                <div class="boss-stat">⚡ <strong>250</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="boss-detail">
+            <div class="detail-item"><span>HP</span><strong>85M</strong></div>
+            <div class="detail-item"><span>ATK</span><strong>120K</strong></div>
+            <div class="detail-item"><span>DEF</span><strong>45K</strong></div>
+            <div class="detail-item"><span>EXP</span><strong>500K</strong></div>
+          </div>
+          <div class="boss-team" onclick="alert('Mở danh sách đội hình để chọn đội đánh boss này')">
+            Đội sử dụng: <strong class="boss-team-name">Đội Boss</strong>
+          </div>
+          <div class="boss-timer">Thời gian xuất hiện: <strong>02:35:18</strong></div>
+          <div class="boss-actions">
+            <button class="btn gold">THÁCH ĐẤU</button>
+          </div>
+        </div>
+
+        <p style="font-size:11px;color:#7d818a;margin-top:4px;">
+          (Mới thêm ở bản redesign: mỗi thẻ boss có dòng "Đội sử dụng" - bấm vào để đổi sang 1 đội hình khác trong tab Đội hình, không bắt buộc dùng đúng đội đang treo máy.)
         </p>
       </div>
     </div>
 
-    <!-- ============ TẠO ĐỘI TREO (mở từ nút "+" ở Treo máy) ============ -->
-    <div class="screen" id="createafk">
-      <div class="create-header">
-        <button class="back-btn" onclick="closeCreateAfk()">←</button>
-        <div class="create-header-title">TẠO ĐỘI TREO</div>
-        <div class="header-spacer"></div>
-      </div>
-
-      <div class="section-label">BẢN ĐỒ</div>
-      <div class="select-box" onclick="alert('Mở danh sách 4 map để chọn')">
-        <div class="map-icon">🌲</div>
-        <div class="select-info">
-          <div class="select-name">Rừng Khởi Nguyên</div>
-          <div class="select-sub">Tầng hiện tại: 18 / 50</div>
-        </div>
-        <div class="select-arrow">›</div>
-      </div>
-
-      <div class="section-label">TẦNG TREO</div>
-      <div class="floor-stepper">
-        <button onclick="changeFloor(-1)">−</button>
-        <div class="floor-value">
-          <small>TẦNG</small>
-          <strong id="floorValue">18</strong>
-        </div>
-        <button onclick="changeFloor(1)">+</button>
-      </div>
-
-      <div class="section-header-row" style="margin-top:14px;">
-        <div class="section-label" style="margin:0;">ĐỘI HÌNH</div>
-        <div class="team-count">3 / 4</div>
-      </div>
-      <div class="team-slots">
-        <div class="slot filled">🧙<span class="slot-remove">×</span></div>
-        <div class="slot filled">🛡️<span class="slot-remove">×</span></div>
-        <div class="slot filled">⚔️<span class="slot-remove">×</span></div>
-        <div class="slot empty" onclick="alert('Mở danh sách nhân vật còn trống (không đang treo team khác)')">+</div>
-      </div>
-
-      <button class="start-btn" onclick="alert('Đã tạo đội treo tại tầng ' + document.getElementById('floorValue').textContent)">BẮT ĐẦU TREO</button>
-
-      <div class="create-note">
-        (Chưa nối logic thật - map/tầng/thành viên ở trên là dữ liệu mẫu cố định, chưa lọc thành viên đang bận ở team khác, chưa giới hạn tầng theo tầng cao nhất đã qua.)
-      </div>
-    </div>
-
-    <!-- ============ BOSS ============ -->
-    <div class="screen" id="boss">
-      <div class="subtabs">
-        <button class="subtab active" onclick="showSub('bossngay', this)">Boss Ngày</button>
-        <button class="subtab" onclick="showSub('bosskhung', this)">Boss Khủng</button>
-      </div>
-
-      <!-- Boss Ngày: mỗi boss 1 thẻ, chọn độ khó (Dễ/Thường/Khó) ngay trong
-           thẻ - đổi độ khó cập nhật lại HP/ATK/DEF/EXP/thưởng bên dưới. -->
-      <div class="subpanel active" id="bossngay">
-        <div class="boss-list">
-
-          <div class="boss-card" data-boss="1">
-            <div class="boss-top">
-              <div class="boss-image">🐉</div>
-              <div class="boss-info">
-                <div class="boss-name">Hắc Long</div>
-                <div class="boss-level">Lv.50 · Boss Ngày</div>
-                <div class="boss-stats">
-                  <div class="boss-stat">❤️ <strong>1.2M</strong></div>
-                  <div class="boss-stat">⚔ <strong>12.5K</strong></div>
-                  <div class="boss-stat">🛡 <strong>5.2K</strong></div>
-                  <div class="boss-stat">⚡ <strong>180</strong></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="difficulty-title">ĐỘ KHÓ</div>
-            <div class="difficulty-tabs">
-              <button class="difficulty-button easy active" onclick="changeDifficulty(this, 'easy')">DỄ</button>
-              <button class="difficulty-button normal" onclick="changeDifficulty(this, 'normal')">THƯỜNG</button>
-              <button class="difficulty-button hard" onclick="changeDifficulty(this, 'hard')">KHÓ</button>
-            </div>
-
-            <div class="boss-detail">
-              <div class="detail-item"><span>HP</span><strong data-stat="hp">500K</strong></div>
-              <div class="detail-item"><span>ATK</span><strong data-stat="atk">5K</strong></div>
-              <div class="detail-item"><span>DEF</span><strong data-stat="def">2K</strong></div>
-              <div class="detail-item"><span>EXP</span><strong data-stat="exp">15K</strong></div>
-            </div>
-
-            <div class="reward-box">
-              <span class="reward-title">PHẦN THƯỞNG</span>
-              <span class="reward-value" data-stat="reward">💰 2,000</span>
-            </div>
-
-            <button class="cta">THÁCH ĐẤU</button>
-          </div>
-
-          <div class="boss-card" data-boss="2">
-            <div class="boss-top">
-              <div class="boss-image">👹</div>
-              <div class="boss-info">
-                <div class="boss-name">Ma Tướng</div>
-                <div class="boss-level">Lv.65 · Boss Ngày</div>
-                <div class="boss-stats">
-                  <div class="boss-stat">❤️ <strong>3.5M</strong></div>
-                  <div class="boss-stat">⚔ <strong>28K</strong></div>
-                  <div class="boss-stat">🛡 <strong>11K</strong></div>
-                  <div class="boss-stat">⚡ <strong>210</strong></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="difficulty-title">ĐỘ KHÓ</div>
-            <div class="difficulty-tabs">
-              <button class="difficulty-button easy active" onclick="changeDifficulty(this, 'easy')">DỄ</button>
-              <button class="difficulty-button normal" onclick="changeDifficulty(this, 'normal')">THƯỜNG</button>
-              <button class="difficulty-button hard" onclick="changeDifficulty(this, 'hard')">KHÓ</button>
-            </div>
-
-            <div class="boss-detail">
-              <div class="detail-item"><span>HP</span><strong data-stat="hp">500K</strong></div>
-              <div class="detail-item"><span>ATK</span><strong data-stat="atk">5K</strong></div>
-              <div class="detail-item"><span>DEF</span><strong data-stat="def">2K</strong></div>
-              <div class="detail-item"><span>EXP</span><strong data-stat="exp">15K</strong></div>
-            </div>
-
-            <div class="reward-box">
-              <span class="reward-title">PHẦN THƯỞNG</span>
-              <span class="reward-value" data-stat="reward">💰 2,000</span>
-            </div>
-
-            <button class="cta">THÁCH ĐẤU</button>
-          </div>
-
-        </div>
-
-        <p style="font-size:11px;color:#7d818a;margin-top:12px;">
-          (Chưa nối logic thật - số HP/ATK/DEF/EXP/thưởng theo độ khó đang dùng chung 1 bộ dữ liệu mẫu cho mọi boss, số lượt đánh/reset mỗi ngày cũng chưa có.)
-        </p>
-      </div>
-
-      <!-- Boss Khủng: 1 thẻ, không chọn độ khó, có đếm ngược thời gian
-           xuất hiện thay cho nút "vào trận" luôn sẵn sàng. -->
-      <div class="subpanel" id="bosskhung">
-        <div class="boss-list">
-
-          <div class="boss-card world-boss">
-            <div class="boss-top">
-              <div class="boss-image">💀</div>
-              <div class="boss-info">
-                <div class="boss-name">Ma Vương Abyss</div>
-                <div class="boss-level">Lv.100 · Boss Khủng</div>
-                <div class="boss-stats">
-                  <div class="boss-stat">❤️ <strong>85M</strong></div>
-                  <div class="boss-stat">⚔ <strong>120K</strong></div>
-                  <div class="boss-stat">🛡 <strong>45K</strong></div>
-                  <div class="boss-stat">⚡ <strong>250</strong></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="boss-detail">
-              <div class="detail-item"><span>HP</span><strong>85M</strong></div>
-              <div class="detail-item"><span>ATK</span><strong>120K</strong></div>
-              <div class="detail-item"><span>DEF</span><strong>45K</strong></div>
-              <div class="detail-item"><span>EXP</span><strong>500K</strong></div>
-            </div>
-
-            <div class="reward-box">
-              <span class="reward-title">PHẦN THƯỞNG</span>
-              <span class="reward-value">💰 100K</span>
-            </div>
-
-            <div class="boss-timer">Thời gian xuất hiện: <strong>02:35:18</strong></div>
-
-            <button class="cta">THÁCH ĐẤU</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- ============ NHÂN VẬT - DANH SÁCH ============ -->
+    <!-- ============ NHÂN VẬT (Nhân vật + Đội hình) ============ -->
     <div class="screen" id="character">
-      <div class="collection-info">
-        <div class="collection-title">NHÂN VẬT CỦA BẠN</div>
-        <div class="collection-count">4 / 50</div>
+      <div class="subtabs">
+        <button class="subtab active" onclick="showSub(this, 'characterList')">NHÂN VẬT</button>
+        <button class="subtab" onclick="showSub(this, 'teamList')">ĐỘI HÌNH</button>
       </div>
 
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" placeholder="Tìm nhân vật..." oninput="searchCharacters(this.value)">
+      <!-- ===== danh sách toàn bộ nhân vật sở hữu (roster, không còn giới hạn 4) ===== -->
+      <div class="subpanel active" id="characterList">
+        <div class="collection-info">
+          <div class="collection-title">NHÂN VẬT SỞ HỮU</div>
+          <div class="collection-count">5 / ?</div>
+        </div>
+
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Tìm nhân vật..." oninput="searchCharacters(this.value)">
+        </div>
+
+        <div class="filters">
+          <button class="filter active" onclick="filterCharacters('all', this)">Tất cả</button>
+          <button class="filter" onclick="filterCharacters('tank', this)">🛡 Tank</button>
+          <button class="filter" onclick="filterCharacters('dps', this)">⚔ DPS</button>
+          <button class="filter" onclick="filterCharacters('support', this)">✨ Support</button>
+        </div>
+
+        <div class="character-list" id="characterListItems">
+          <div class="character-item" data-name="Kỵ Sĩ Aran" data-type="tank" onclick="openCharacter('Kỵ Sĩ Aran', '🧙‍♂️', 42)">
+            <div class="character-portrait">🧙‍♂️</div>
+            <div class="character-info">
+              <div class="character-name">Kỵ Sĩ Aran</div>
+              <div class="character-level">Lv.42</div>
+              <div class="mini-stats"><span>❤️ <strong>35.2K</strong></span><span>⚔ <strong>12.5K</strong></span><span>🛡 <strong>8.3K</strong></span></div>
+            </div>
+            <div class="character-type">TANK</div>
+          </div>
+
+          <div class="character-item" data-name="Luna" data-type="dps" onclick="openCharacter('Luna', '🏹', 38)">
+            <div class="character-portrait">🏹</div>
+            <div class="character-info">
+              <div class="character-name">Luna</div>
+              <div class="character-level">Lv.38</div>
+              <div class="mini-stats"><span>❤️ <strong>21.8K</strong></span><span>⚔ <strong>14.2K</strong></span><span>🛡 <strong>4.1K</strong></span></div>
+            </div>
+            <div class="character-type">DPS</div>
+          </div>
+
+          <div class="character-item" data-name="Merlin" data-type="dps" onclick="openCharacter('Merlin', '🔮', 35)">
+            <div class="character-portrait">🔮</div>
+            <div class="character-info">
+              <div class="character-name">Merlin</div>
+              <div class="character-level">Lv.35</div>
+              <div class="mini-stats"><span>❤️ <strong>18.5K</strong></span><span>⚔ <strong>15.7K</strong></span><span>🛡 <strong>3.8K</strong></span></div>
+            </div>
+            <div class="character-type">DPS</div>
+          </div>
+
+          <div class="character-item" data-name="Elena" data-type="support" onclick="openCharacter('Elena', '🧝‍♀️', 31)">
+            <div class="character-portrait">🧝‍♀️</div>
+            <div class="character-info">
+              <div class="character-name">Elena</div>
+              <div class="character-level">Lv.31</div>
+              <div class="mini-stats"><span>❤️ <strong>24.1K</strong></span><span>⚔ <strong>8.4K</strong></span><span>🛡 <strong>5.2K</strong></span></div>
+            </div>
+            <div class="character-type">SUPPORT</div>
+          </div>
+
+          <div class="character-item" data-name="Soldier" data-type="tank" onclick="openCharacter('Soldier', '💂', 1)">
+            <div class="character-portrait">💂</div>
+            <div class="character-info">
+              <div class="character-name">Soldier <span style="color:#7d818a;font-weight:normal;">(mới)</span></div>
+              <div class="character-level">Lv.1</div>
+              <div class="mini-stats"><span>❤️ <strong>1.0K</strong></span><span>⚔ <strong>10</strong></span><span>🛡 <strong>5</strong></span></div>
+            </div>
+            <div class="character-type">TANK</div>
+          </div>
+        </div>
+
+        <p style="font-size:11px;color:#7d818a;margin-top:12px;">
+          ("Soldier" là nhân vật thứ 5 vừa thêm thật vào <code>data/troops/soldier_2.tres</code> (id=23), số liệu lấy y hệt <code>soldier.tres</code> gốc (id=1) - minh hoạ đúng hướng roster > 4 vừa chốt. Nhân vật này CHƯA có trong <code>GameState.PARTY_TROOP_IDS</code> (vẫn đang cố định [1,3,4,9]) vì hệ "đội hình nhiều-preset" chưa được cài vào code game thật, chỉ mới có ở mockup này.)
+        </p>
       </div>
 
-      <div class="filters">
-        <button class="filter active" onclick="filterCharacters('all', this)">Tất cả</button>
-        <button class="filter" onclick="filterCharacters('tank', this)">🛡 Tank</button>
-        <button class="filter" onclick="filterCharacters('dps', this)">⚔ DPS</button>
-        <button class="filter" onclick="filterCharacters('support', this)">✨ Support</button>
-      </div>
+      <!-- ===== đội hình: nhiều preset, mỗi đội tối đa 4, 1 đội đang dùng cho treo máy ===== -->
+      <div class="subpanel" id="teamList">
+        <div class="section-label">ĐỘI HÌNH ĐÃ LƯU (không giới hạn số lượng, mỗi đội tối đa 4 người)</div>
 
-      <div class="character-list" id="characterList">
-
-        <div class="character-item" data-name="Kỵ Sĩ Aran" data-type="tank" onclick="openCharacter('Kỵ Sĩ Aran', '🧙‍♂️', 42)">
-          <div class="character-portrait">🧙‍♂️</div>
-          <div class="character-info">
-            <div class="character-name">Kỵ Sĩ Aran</div>
-            <div class="character-level">Lv.42</div>
-            <div class="mini-stats">
-              <span>❤️ <strong>35.2K</strong></span>
-              <span>⚔ <strong>12.5K</strong></span>
-              <span>🛡 <strong>8.3K</strong></span>
+        <div class="team-list">
+          <div class="team-card using">
+            <div class="team-card-header">
+              <div class="team-name">Đội Cân Bằng <span class="badge">ĐANG DÙNG TREO MÁY</span></div>
+              <div class="team-actions"><span onclick="alert('Sửa đội hình')">Sửa</span></div>
+            </div>
+            <div class="team-members">
+              <div class="team-member">🧙‍♂️</div>
+              <div class="team-member">🏹</div>
+              <div class="team-member">🔮</div>
+              <div class="team-member">🧝‍♀️</div>
             </div>
           </div>
-          <div class="character-type">TANK</div>
-        </div>
 
-        <div class="character-item" data-name="Luna" data-type="dps" onclick="openCharacter('Luna', '🏹', 38)">
-          <div class="character-portrait">🏹</div>
-          <div class="character-info">
-            <div class="character-name">Luna</div>
-            <div class="character-level">Lv.38</div>
-            <div class="mini-stats">
-              <span>❤️ <strong>21.8K</strong></span>
-              <span>⚔ <strong>14.2K</strong></span>
-              <span>🛡 <strong>4.1K</strong></span>
+          <div class="team-card">
+            <div class="team-card-header">
+              <div class="team-name">Đội Boss</div>
+              <div class="team-actions">
+                <span onclick="setUsingTeam(this)">Dùng cho treo máy</span>
+                <span onclick="alert('Sửa đội hình')">Sửa</span>
+              </div>
+            </div>
+            <div class="team-members">
+              <div class="team-member">🧙‍♂️</div>
+              <div class="team-member">🏹</div>
+              <div class="team-member">🔮</div>
+              <div class="team-member">💂</div>
             </div>
           </div>
-          <div class="character-type">DPS</div>
+
+          <button class="btn" style="margin-top:4px;" onclick="alert('Tạo đội hình mới - chọn tối đa 4 trong 5 nhân vật sở hữu')">+ TẠO ĐỘI HÌNH</button>
         </div>
 
-        <div class="character-item" data-name="Merlin" data-type="dps" onclick="openCharacter('Merlin', '🔮', 35)">
-          <div class="character-portrait">🔮</div>
-          <div class="character-info">
-            <div class="character-name">Merlin</div>
-            <div class="character-level">Lv.35</div>
-            <div class="mini-stats">
-              <span>❤️ <strong>18.5K</strong></span>
-              <span>⚔ <strong>15.7K</strong></span>
-              <span>🛡 <strong>3.8K</strong></span>
-            </div>
-          </div>
-          <div class="character-type">DPS</div>
-        </div>
-
-        <div class="character-item" data-name="Elena" data-type="support" onclick="openCharacter('Elena', '🧝‍♀️', 31)">
-          <div class="character-portrait">🧝‍♀️</div>
-          <div class="character-info">
-            <div class="character-name">Elena</div>
-            <div class="character-level">Lv.31</div>
-            <div class="mini-stats">
-              <span>❤️ <strong>24.1K</strong></span>
-              <span>⚔ <strong>8.4K</strong></span>
-              <span>🛡 <strong>5.2K</strong></span>
-            </div>
-          </div>
-          <div class="character-type">SUPPORT</div>
-        </div>
-
+        <p style="font-size:11px;color:#7d818a;margin-top:12px;">
+          (Bấm "Dùng cho treo máy" ở 1 đội khác sẽ đổi badge "ĐANG DÙNG TREO MÁY" sang đội đó - minh hoạ hành vi, chưa nối logic thật. Đội "Đội Boss" đang dùng luôn "Soldier" thay vì Elena, minh hoạ lý do cần roster > 4: có đội hình khác nhau cho các mục đích khác nhau.)
+        </p>
       </div>
     </div>
 
@@ -1149,25 +1088,207 @@
         <div class="equipment-slot">◈</div>
       </div>
 
-      <div class="stats-panel">
-        <div class="stats-grid">
-          <div class="stat"><span class="stat-name">🧬 Base Lv</span><span class="stat-value">42</span></div>
-          <div class="stat"><span class="stat-name">📗 EXP Base</span><span class="stat-value">338,500</span></div>
-          <div class="stat"><span class="stat-name">🎖 Job Lv (1st)</span><span class="stat-value">42</span></div>
-          <div class="stat"><span class="stat-name">📘 EXP Job</span><span class="stat-value">45,550</span></div>
-          <div class="stat"><span class="stat-name">❤️ HP</span><span class="stat-value">35,200</span></div>
-          <div class="stat"><span class="stat-name">⚔ ATK</span><span class="stat-value">12,540</span></div>
-          <div class="stat"><span class="stat-name">🛡 DEF</span><span class="stat-value">8,320</span></div>
-          <div class="stat"><span class="stat-name">⚡ SPD</span><span class="stat-value">420</span></div>
-          <div class="stat"><span class="stat-name">🎯 CRIT</span><span class="stat-value">18%</span></div>
-          <div class="stat"><span class="stat-name">💥 CRD</span><span class="stat-value">150%</span></div>
-          <div class="stat"><span class="stat-name">🩸 REGEN</span><span class="stat-value">120</span></div>
-          <div class="stat"><span class="stat-name">🔮 MP</span><span class="stat-value">850</span></div>
+      <div class="subtabs" style="margin-top:14px;">
+        <button class="subtab active" onclick="showSub(this, 'detailStats')">THÔNG SỐ</button>
+        <button class="subtab" onclick="showSub(this, 'detailSkills')">KỸ NĂNG</button>
+      </div>
+
+      <div class="subpanel active" id="detailStats">
+        <div class="stats-panel">
+          <div class="stats-grid">
+            <div class="stat"><span class="stat-name">🧬 Base Lv</span><span class="stat-value">42</span></div>
+            <div class="stat"><span class="stat-name">📗 EXP Base</span><span class="stat-value">338,500</span></div>
+            <div class="stat"><span class="stat-name">🎖 Job Lv (1st)</span><span class="stat-value">42</span></div>
+            <div class="stat"><span class="stat-name">📘 EXP Job</span><span class="stat-value">45,550</span></div>
+            <div class="stat"><span class="stat-name">❤️ HP</span><span class="stat-value">35,200</span></div>
+            <div class="stat"><span class="stat-name">⚔ ATK</span><span class="stat-value">12,540</span></div>
+            <div class="stat"><span class="stat-name">🛡 DEF</span><span class="stat-value">8,320</span></div>
+            <div class="stat"><span class="stat-name">⚡ SPD</span><span class="stat-value">420</span></div>
+            <div class="stat"><span class="stat-name">🎯 CRIT</span><span class="stat-value">18%</span></div>
+            <div class="stat"><span class="stat-name">💥 CRD</span><span class="stat-value">150%</span></div>
+            <div class="stat"><span class="stat-name">🩸 REGEN</span><span class="stat-value">120</span></div>
+            <div class="stat"><span class="stat-name">🔮 MP</span><span class="stat-value">850</span></div>
+          </div>
+        </div>
+
+        <p style="font-size:11px;color:#7d818a;margin-top:14px;">
+          (Chưa nối logic thật - chỉ số/trang bị ở trên là dữ liệu mẫu cố định, chưa bấm được vào từng ô trang bị. Cách chia EXP Base/EXP Job = 1/10 giá trị trong ROX_EXP_Goc_Base_Job_DayDu.xlsx đã là công thức chính thức trong <code>ExpTables.gd</code>. Base Lv +10%/cấp cộng thẳng vào HP/ATK/DEF/M.DEF, Job Lv +1 ATK thẳng/cấp cộng sau đó.)
+        </p>
+      </div>
+
+      <!-- ===== Kỹ năng - icon mặc định (chưa thiết kế icon riêng), bấm vào hiện thông tin + ô Nâng cấp/Trang bị ===== -->
+      <div class="subpanel" id="detailSkills">
+        <div class="skill-list" id="skillList">
+          <div class="skill-item active" onclick="openSkillInfo(this, 'atk')">
+            <div class="skill-icon">✨</div>
+            <div class="skill-info"><div class="skill-name">Đánh mạnh</div><div class="skill-level">Cấp 1</div></div>
+            <div class="skill-arrow">›</div>
+          </div>
+          <div class="skill-item" onclick="openSkillInfo(this, 'locked1')">
+            <div class="skill-icon">✨</div>
+            <div class="skill-info"><div class="skill-name">(Trống)</div><div class="skill-level">Chưa mở khoá</div></div>
+            <div class="skill-arrow">›</div>
+          </div>
+          <div class="skill-item" onclick="openSkillInfo(this, 'locked2')">
+            <div class="skill-icon">✨</div>
+            <div class="skill-info"><div class="skill-name">(Trống)</div><div class="skill-level">Chưa mở khoá</div></div>
+            <div class="skill-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="skill-detail" id="skillDetailPanel">
+          <div class="skill-detail-header">
+            <div class="skill-icon-lg" id="skillDetailIcon">✨</div>
+            <div>
+              <div class="skill-detail-name" id="skillDetailName">Đánh mạnh</div>
+              <div class="skill-detail-desc" id="skillDetailDesc">Gây 150% ATK sát thương lên 1 mục tiêu - kỹ năng duy nhất hiện có trong dữ liệu thật (<code>LinhData.skill_name</code>), chưa nối vào chiến đấu (BattleScene/StageFarmWorld hiện chỉ có đòn đánh thường).</div>
+            </div>
+          </div>
+          <div class="skill-slots">
+            <div class="skill-slot" onclick="alert('Mở màn nâng cấp kỹ năng')">
+              <div class="skill-slot-icon">⬆️</div>
+              <div class="skill-slot-label">NÂNG CẤP</div>
+            </div>
+            <div class="skill-slot" onclick="alert('Mở màn trang bị kỹ năng')">
+              <div class="skill-slot-icon">🎯</div>
+              <div class="skill-slot-label">TRANG BỊ</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:11px;color:#7d818a;margin-top:12px;">
+          (Icon kỹ năng để mặc định (✨) - chưa thiết kế icon riêng từng kỹ năng. Chỉ ô đầu có dữ liệu thật (<code>skill_name</code> trong LinhData), 2 ô còn lại là chỗ trống minh hoạ cho hệ kỹ năng mở rộng sau này. "Nâng cấp"/"Trang bị" mới là 2 điểm bấm placeholder, chưa có hệ thống thật đứng sau.)
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ KHO (mới - trang bị + vật phẩm, mới làm khung sườn) ============ -->
+    <div class="screen" id="inventory">
+      <div class="screen-title">Tab "Kho" - Trang bị (placeholder) + đúng 4 category nguyên liệu thật trong core/database/MaterialDatabase.gd (GROUPS), không giới hạn số lượng sở hữu</div>
+
+      <div class="subtabs scroll">
+        <button class="subtab active" onclick="showSub(this, 'invEquip')">TRANG BỊ</button>
+        <button class="subtab" onclick="showSub(this, 'invDaCuongHoa')">ĐÁ CƯỜNG HÓA</button>
+        <button class="subtab" onclick="showSub(this, 'invThucVat')">THỰC VẬT</button>
+        <button class="subtab" onclick="showSub(this, 'invGem')">GEM</button>
+        <button class="subtab" onclick="showSub(this, 'invQuang')">QUẶNG</button>
+      </div>
+
+      <div class="subpanel active" id="invEquip">
+        <div class="inventory-summary">
+          <div class="inventory-summary-row"><span>Trang bị sở hữu</span><strong>12</strong></div>
+        </div>
+        <div class="section-label">[ Vũ khí ] [ Giáp ] [ Phụ kiện ] - lọc theo loại, chưa nối logic</div>
+        <div class="inventory-grid">
+          <div class="inventory-item">⚔️</div>
+          <div class="inventory-item">🛡️</div>
+          <div class="inventory-item">🪖</div>
+          <div class="inventory-item">👢</div>
+          <div class="inventory-item">💍</div>
+          <div class="inventory-item">📿</div>
+          <div class="inventory-item empty">+</div>
+          <div class="inventory-item empty">+</div>
         </div>
       </div>
 
-      <p style="font-size:11px;color:#7d818a;margin-top:14px;">
-        (Chưa nối logic thật - chỉ số/trang bị ở trên là dữ liệu mẫu cố định, chưa bấm được vào từng ô trang bị. EXP Base/EXP Job đang lấy tạm = 1/10 giá trị "EXP cần" tại Lv.42 trong ROX_EXP_Goc_Base_Job_DayDu.xlsx - Base EXP và First Job - chưa phải công thức chính thức của game.)
+      <!-- ===== Đá Cường Hóa - đúng 1 nhóm x 5 cấp theo MaterialDatabase.GROUPS ===== -->
+      <div class="subpanel" id="invDaCuongHoa">
+        <div class="material-group-label">ĐÁ CƯỜNG HÓA</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🪨</div><div class="material-tier">Cấp 1</div><div class="material-count">320</div></div>
+          <div class="material-item"><div class="material-icon">🪨</div><div class="material-tier">Cấp 2</div><div class="material-count">180</div></div>
+          <div class="material-item"><div class="material-icon">🪨</div><div class="material-tier">Cấp 3</div><div class="material-count">64</div></div>
+          <div class="material-item"><div class="material-icon">🪨</div><div class="material-tier">Cấp 4</div><div class="material-count">12</div></div>
+          <div class="material-item"><div class="material-icon">🪨</div><div class="material-tier">Cấp 5</div><div class="material-count">2</div></div>
+        </div>
+      </div>
+
+      <!-- ===== Thực Vật - 3 nhóm (Bạch/Hồng/Hoàng Hoa) x 5 cấp ===== -->
+      <div class="subpanel" id="invThucVat">
+        <div class="material-group-label">BẠCH HOA</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🌼</div><div class="material-tier">Cấp 1</div><div class="material-count">150</div></div>
+          <div class="material-item"><div class="material-icon">🌼</div><div class="material-tier">Cấp 2</div><div class="material-count">80</div></div>
+          <div class="material-item"><div class="material-icon">🌼</div><div class="material-tier">Cấp 3</div><div class="material-count">30</div></div>
+          <div class="material-item"><div class="material-icon">🌼</div><div class="material-tier">Cấp 4</div><div class="material-count">8</div></div>
+          <div class="material-item"><div class="material-icon">🌼</div><div class="material-tier">Cấp 5</div><div class="material-count">1</div></div>
+        </div>
+        <div class="material-group-label">HỒNG HOA</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🌸</div><div class="material-tier">Cấp 1</div><div class="material-count">140</div></div>
+          <div class="material-item"><div class="material-icon">🌸</div><div class="material-tier">Cấp 2</div><div class="material-count">75</div></div>
+          <div class="material-item"><div class="material-icon">🌸</div><div class="material-tier">Cấp 3</div><div class="material-count">22</div></div>
+          <div class="material-item"><div class="material-icon">🌸</div><div class="material-tier">Cấp 4</div><div class="material-count">5</div></div>
+          <div class="material-item"><div class="material-icon">🌸</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+        <div class="material-group-label">HOÀNG HOA</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🌻</div><div class="material-tier">Cấp 1</div><div class="material-count">110</div></div>
+          <div class="material-item"><div class="material-icon">🌻</div><div class="material-tier">Cấp 2</div><div class="material-count">60</div></div>
+          <div class="material-item"><div class="material-icon">🌻</div><div class="material-tier">Cấp 3</div><div class="material-count">18</div></div>
+          <div class="material-item"><div class="material-icon">🌻</div><div class="material-tier">Cấp 4</div><div class="material-count">4</div></div>
+          <div class="material-item"><div class="material-icon">🌻</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+      </div>
+
+      <!-- ===== Gem - 3 nhóm (Băng/Hắc/Hỏa Ngọc) x 5 cấp ===== -->
+      <div class="subpanel" id="invGem">
+        <div class="material-group-label">BĂNG NGỌC</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🔷</div><div class="material-tier">Cấp 1</div><div class="material-count">90</div></div>
+          <div class="material-item"><div class="material-icon">🔷</div><div class="material-tier">Cấp 2</div><div class="material-count">45</div></div>
+          <div class="material-item"><div class="material-icon">🔷</div><div class="material-tier">Cấp 3</div><div class="material-count">15</div></div>
+          <div class="material-item"><div class="material-icon">🔷</div><div class="material-tier">Cấp 4</div><div class="material-count">3</div></div>
+          <div class="material-item"><div class="material-icon">🔷</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+        <div class="material-group-label">HẮC NGỌC</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">⬛</div><div class="material-tier">Cấp 1</div><div class="material-count">85</div></div>
+          <div class="material-item"><div class="material-icon">⬛</div><div class="material-tier">Cấp 2</div><div class="material-count">40</div></div>
+          <div class="material-item"><div class="material-icon">⬛</div><div class="material-tier">Cấp 3</div><div class="material-count">10</div></div>
+          <div class="material-item"><div class="material-icon">⬛</div><div class="material-tier">Cấp 4</div><div class="material-count">2</div></div>
+          <div class="material-item"><div class="material-icon">⬛</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+        <div class="material-group-label">HỎA NGỌC</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🔶</div><div class="material-tier">Cấp 1</div><div class="material-count">70</div></div>
+          <div class="material-item"><div class="material-icon">🔶</div><div class="material-tier">Cấp 2</div><div class="material-count">35</div></div>
+          <div class="material-item"><div class="material-icon">🔶</div><div class="material-tier">Cấp 3</div><div class="material-count">9</div></div>
+          <div class="material-item"><div class="material-icon">🔶</div><div class="material-tier">Cấp 4</div><div class="material-count">1</div></div>
+          <div class="material-item"><div class="material-icon">🔶</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+      </div>
+
+      <!-- ===== Quặng - 3 nhóm (Băng/Hỏa/Thổ Thạch) x 5 cấp ===== -->
+      <div class="subpanel" id="invQuang">
+        <div class="material-group-label">BĂNG THẠCH</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🧊</div><div class="material-tier">Cấp 1</div><div class="material-count">200</div></div>
+          <div class="material-item"><div class="material-icon">🧊</div><div class="material-tier">Cấp 2</div><div class="material-count">95</div></div>
+          <div class="material-item"><div class="material-icon">🧊</div><div class="material-tier">Cấp 3</div><div class="material-count">28</div></div>
+          <div class="material-item"><div class="material-icon">🧊</div><div class="material-tier">Cấp 4</div><div class="material-count">6</div></div>
+          <div class="material-item"><div class="material-icon">🧊</div><div class="material-tier">Cấp 5</div><div class="material-count">1</div></div>
+        </div>
+        <div class="material-group-label">HỎA THẠCH</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🔥</div><div class="material-tier">Cấp 1</div><div class="material-count">190</div></div>
+          <div class="material-item"><div class="material-icon">🔥</div><div class="material-tier">Cấp 2</div><div class="material-count">88</div></div>
+          <div class="material-item"><div class="material-icon">🔥</div><div class="material-tier">Cấp 3</div><div class="material-count">25</div></div>
+          <div class="material-item"><div class="material-icon">🔥</div><div class="material-tier">Cấp 4</div><div class="material-count">5</div></div>
+          <div class="material-item"><div class="material-icon">🔥</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+        <div class="material-group-label">THỔ THẠCH</div>
+        <div class="material-grid">
+          <div class="material-item"><div class="material-icon">🟫</div><div class="material-tier">Cấp 1</div><div class="material-count">175</div></div>
+          <div class="material-item"><div class="material-icon">🟫</div><div class="material-tier">Cấp 2</div><div class="material-count">80</div></div>
+          <div class="material-item"><div class="material-icon">🟫</div><div class="material-tier">Cấp 3</div><div class="material-count">20</div></div>
+          <div class="material-item"><div class="material-icon">🟫</div><div class="material-tier">Cấp 4</div><div class="material-count">4</div></div>
+          <div class="material-item"><div class="material-icon">🟫</div><div class="material-tier">Cấp 5</div><div class="material-count">0</div></div>
+        </div>
+      </div>
+
+      <p style="font-size:11px;color:#7d818a;margin-top:12px;">
+        (4 tab nguyên liệu lấy đúng category thật trong <code>MaterialDatabase.GROUPS</code> (đá cường hóa/thực vật/gem/quặng, mỗi nhóm 5 cấp - 10 nhóm × 5 cấp = 50 nguyên liệu thật). Số lượng sở hữu KHÔNG giới hạn (không còn dạng "X/Y" như bản trước) - số hiển thị ở đây vẫn là mẫu cố định, chưa đọc từ <code>GameState.get_material_count()</code> thật.)
       </p>
     </div>
 
@@ -1192,9 +1313,9 @@
   <div class="bottomnav">
     <button class="navbtn active" onclick="showScreen('city', this)"><span class="icon">🏰</span>Thành</button>
     <button class="navbtn" onclick="showScreen('stage', this)"><span class="icon">⚔️</span>Ải</button>
-    <button class="navbtn" onclick="showScreen('boss', this)"><span class="icon">👹</span>Boss</button>
-    <button class="navbtn" onclick="showScreen('character', this)"><span class="icon">👤</span>NV</button>
-    <button class="navbtn" onclick="showScreen('settings', this)"><span class="icon">⚙️</span>Cài</button>
+    <button class="navbtn" onclick="showScreen('character', this)"><span class="icon">👤</span>Nhân vật</button>
+    <button class="navbtn" onclick="showScreen('inventory', this)"><span class="icon">🎒</span>Kho</button>
+    <button class="navbtn" onclick="showScreen('settings', this)"><span class="icon">⚙️</span>Cài đặt</button>
   </div>
 
 </div>
@@ -1203,50 +1324,79 @@
 function showScreen(id, btn) {
   document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.navbtn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+  if (btn) {
+    document.querySelectorAll('.navbtn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
 }
 
-function showSub(id, btn) {
+/* subtab dùng chung cho Ải/Nhân vật/Kho - showSub(nút bấm, id muốn hiện). Ẩn TOÀN BỘ
+   .subpanel trong cùng .screen rồi chỉ hiện đúng 1 cái - hoạt động đúng với bất kỳ
+   số lượng tab nào (2 tab như Ải/Nhân vật hay 5 tab như Kho). */
+function showSub(btn, showId) {
   var parent = btn.closest('.screen');
   parent.querySelectorAll('.subpanel').forEach(function(p) { p.classList.remove('active'); });
-  parent.querySelector('#' + id).classList.add('active');
+  parent.querySelector('#' + showId).classList.add('active');
   parent.querySelectorAll('.subtab').forEach(function(t) { t.classList.remove('active'); });
   btn.classList.add('active');
 }
 
-/* Màn "Tạo đội treo" là màn con của tab Ải (mở từ nút "+" ở Treo máy) - ẩn
-   toàn bộ .screen khác nhưng KHÔNG đụng tới .navbtn.active, để bottom nav vẫn
-   hiện đúng tab "Ải" đang chọn khi đang ở màn con này. */
-function openCreateAfk() {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('createafk').classList.add('active');
+/* ============ Ải Treo: bấm 1 ải là treo ngay, không còn màn chọn map/tầng/thành viên ============ */
+function startAfk(icon, name, floor) {
+  document.getElementById('afkMapIcon').textContent = icon;
+  document.getElementById('afkMapName').textContent = name;
+  document.getElementById('afkFloor').textContent = 'Tầng ' + floor;
+  document.getElementById('afkActive').style.display = 'block';
+  document.getElementById('afkEmpty').style.display = 'none';
 }
 
-function closeCreateAfk() {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('stage').classList.add('active');
+/* ============ Đội hình: đổi đội nào đang dùng cho treo máy (demo UI, chưa nối logic thật) ============ */
+function setUsingTeam(span) {
+  var card = span.closest('.team-card');
+  document.querySelectorAll('.team-card').forEach(function(c) {
+    c.classList.remove('using');
+    var badge = c.querySelector('.badge');
+    if (badge) badge.remove();
+  });
+  card.classList.add('using');
+  var nameEl = card.querySelector('.team-name');
+  var badge = document.createElement('span');
+  badge.className = 'badge';
+  badge.textContent = 'ĐANG DÙNG TREO MÁY';
+  nameEl.appendChild(badge);
+  document.getElementById('afkTeamName').textContent = nameEl.firstChild.textContent.trim();
 }
 
-/* Màn "Chi tiết nhân vật" là màn con của tab NV (mở từ 1 item trong danh
-   sách) - cùng cách làm với "Tạo đội treo" ở trên: ẩn toàn bộ .screen khác
-   nhưng KHÔNG đụng .navbtn.active để bottom nav vẫn hiện đúng tab "NV". */
+/* ============ Nhân vật - chi tiết ============ */
 function openCharacter(name, image, level) {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('characterDetail').classList.add('active');
+  showScreen('characterDetail');
   document.getElementById('detailCharacterName').textContent = name.toUpperCase();
   document.getElementById('detailCharacterImage').textContent = image;
   document.getElementById('detailCharacterLevel').textContent = 'Base Lv.' + level + ' · Job Lv.' + level + ' (First Job)';
 }
 
+/* ============ Nhân vật - chi tiết - tab Kỹ năng: bấm 1 ô là hiện thông tin + Nâng cấp/Trang bị ============ */
+var skillData = {
+  atk: { name: 'Đánh mạnh', level: 'Cấp 1', desc: 'Gây 150% ATK sát thương lên 1 mục tiêu - kỹ năng duy nhất hiện có trong dữ liệu thật (LinhData.skill_name), chưa nối vào chiến đấu (BattleScene/StageFarmWorld hiện chỉ có đòn đánh thường).' },
+  locked1: { name: '(Trống)', level: 'Chưa mở khoá', desc: 'Chỗ trống minh hoạ cho hệ kỹ năng mở rộng sau này - chưa có dữ liệu thật.' },
+  locked2: { name: '(Trống)', level: 'Chưa mở khoá', desc: 'Chỗ trống minh hoạ cho hệ kỹ năng mở rộng sau này - chưa có dữ liệu thật.' }
+};
+
+function openSkillInfo(el, key) {
+  document.querySelectorAll('#skillList .skill-item').forEach(function(i) { i.classList.remove('active'); });
+  el.classList.add('active');
+  var data = skillData[key];
+  document.getElementById('skillDetailName').textContent = data.name;
+  document.getElementById('skillDetailDesc').textContent = data.desc;
+}
+
 function closeCharacter() {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('character').classList.add('active');
+  showScreen('character');
 }
 
 function searchCharacters(value) {
   value = value.toLowerCase();
-  document.querySelectorAll('#characterList .character-item').forEach(function(item) {
+  document.querySelectorAll('#characterListItems .character-item').forEach(function(item) {
     var match = item.dataset.name.toLowerCase().includes(value);
     item.style.display = match ? 'flex' : 'none';
   });
@@ -1255,41 +1405,28 @@ function searchCharacters(value) {
 function filterCharacters(type, btn) {
   document.querySelectorAll('.filters .filter').forEach(function(f) { f.classList.remove('active'); });
   btn.classList.add('active');
-  document.querySelectorAll('#characterList .character-item').forEach(function(item) {
+  document.querySelectorAll('#characterListItems .character-item').forEach(function(item) {
     var match = type === 'all' || item.dataset.type === type;
     item.style.display = match ? 'flex' : 'none';
   });
 }
 
-/* Boss Ngày - đổi độ khó trong thẻ cập nhật lại khối .boss-detail/.reward-box
-   của đúng thẻ đó (scope qua closest('.boss-card')) - hiện dùng chung 1 bộ dữ
-   liệu mẫu cho mọi boss, chưa phải số liệu thật riêng từng boss. */
+/* ============ Boss Ngày - đổi độ khó trong thẻ ============ */
 var difficultyData = {
-  easy:   { hp: '500K', atk: '5K',  def: '2K',  exp: '15K', reward: '💰 2,000' },
-  normal: { hp: '1.2M', atk: '12K', def: '5K',  exp: '30K', reward: '💰 4,000' },
-  hard:   { hp: '3M',   atk: '28K', def: '11K', exp: '60K', reward: '💰 8,000' }
+  easy:   { hp: '500K', atk: '5K',  def: '2K',  exp: '15K' },
+  normal: { hp: '1.2M', atk: '12K', def: '5K',  exp: '30K' },
+  hard:   { hp: '3M',   atk: '28K', def: '11K', exp: '60K' }
 };
 
 function changeDifficulty(button, difficulty) {
   var card = button.closest('.boss-card');
   card.querySelectorAll('.difficulty-button').forEach(function(btn) { btn.classList.remove('active'); });
   button.classList.add('active');
-
   var data = difficultyData[difficulty];
   card.querySelector('[data-stat="hp"]').textContent = data.hp;
   card.querySelector('[data-stat="atk"]').textContent = data.atk;
   card.querySelector('[data-stat="def"]').textContent = data.def;
   card.querySelector('[data-stat="exp"]').textContent = data.exp;
-  card.querySelector('[data-stat="reward"]').textContent = data.reward;
-}
-
-var currentFloor = 18;
-var FLOOR_MIN = 1;
-var FLOOR_MAX = 18; /* = tầng cao nhất đã qua của map đang chọn, dữ liệu mẫu */
-
-function changeFloor(delta) {
-  currentFloor = Math.max(FLOOR_MIN, Math.min(FLOOR_MAX, currentFloor + delta));
-  document.getElementById('floorValue').textContent = currentFloor;
 }
 </script>
 
