@@ -1,11 +1,11 @@
 # features/combat
 
 ## Mục đích
-Trận đấu thật — dùng chung bởi `features/stage` (Ủy Thác) và `features/boss` ("Thách đấu"). Không thuộc riêng 1 tab nào.
+Trận đấu thật (hiện chỉ dùng cho Ải Boss - "Thách đấu", Ải Thường dùng `features/stage/StageFarmWorld` riêng). Không thuộc riêng 1 tab nào. `BattleScene` sống cố định ở `core/app/MainShell.tscn` nhưng KHÔNG còn hiện overlay toàn màn (đổi 2026-08) - `MainShell.gd` tiêm instance này cho `StageBoardScreen` (`set_battle_scene()`), module đó tự mượn tạm (reparent) vào `%BattleViewHost` của nó lúc đánh boss rồi trả về khi xong - `StageFlowController`/`BattleScene` ở đây hoàn toàn không biết/không quan tâm việc mount đó, chỉ lo bắt đầu/kết thúc trận.
 
 ## File chính
 - `StageFlowController.gd` — mở `BattleScene` cho 1 `StageData`, phát `signal stage_finished(stage, won)` khi xong.
-- `BattleScene.gd` / `.tscn` — scene trận đấu thật, dùng `entities/troop/TroopUnit` cho cả 2 phe.
+- `BattleScene.gd` / `.tscn` — scene trận đấu thật, dùng `entities/troop/TroopUnit` cho cả 2 phe. Nhiều đợt quái thường trước boss thật (xem `core/combat/EncounterGenerator`), camera đuổi theo phe mình.
 
 ## Entry Point
 `StageFlowController.gd` — **entry point tạm thời** (theo quyết định 2026-08 khi tái cấu trúc: chưa tạo `CombatManager.gd` vì hiện chỉ có 1 luồng combat duy nhất — Ủy Thác/Boss đều gọi thẳng `StageFlowController.start_stage()`. Nếu sau này có thêm luồng combat khác (PvP, Guild War...), cân nhắc thêm `CombatManager.gd` làm facade chung lúc đó, không làm trước khi cần).
@@ -17,7 +17,7 @@ signal StageFlowController.stage_finished(stage: StageData, won: bool)
 ```
 
 ## Module được phép gọi
-`core/app`, `entities/troop`, `entities/stage`.
+`core/app`, `core/combat` (`EncounterGenerator` — sinh đợt quái thường trước boss thật, xem `BattleScene._spawn_trash_wave`), `entities/troop`, `entities/stage`.
 
 ## Ai được gọi vào đây
 `features/stage` (Ủy Thác), `features/boss` (Thách đấu) — cả 2 nối vào cùng 1 instance `StageFlowController` qua `core/app/MainShell.gd`.

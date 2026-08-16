@@ -12,8 +12,8 @@ signal tab_selected(id: String)
 
 const TABS: Array[Dictionary] = [
 	{"id": "city", "icon": "🏰", "label": "Thành"},
-	{"id": "stage", "icon": "⚔️", "label": "Ải"},
 	{"id": "character", "icon": "👤", "label": "NV"},
+	{"id": "stage", "icon": "⚔️", "label": "Ải"},
 	{"id": "inventory", "icon": "🎒", "label": "Kho"},
 	{"id": "settings", "icon": "⚙️", "label": "Cài"},
 ]

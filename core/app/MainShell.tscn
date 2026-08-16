@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://d2wdy4ldlhmkx"]
 
-[ext_resource type="Script" path="res://core/app/MainShell.gd" id="1"]
-[ext_resource type="Script" path="res://core/app/ScreenRouter.gd" id="2"]
-[ext_resource type="PackedScene" path="res://features/city/OverworldMap.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://features/combat/BattleScene.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://core/app/BottomNav.tscn" id="5"]
-[ext_resource type="Script" path="res://features/combat/StageFlowController.gd" id="6"]
-[ext_resource type="PackedScene" path="res://features/stage/StageBoardScreen.tscn" id="7"]
-[ext_resource type="PackedScene" path="res://features/character/CharacterBoardScreen.tscn" id="9"]
+[ext_resource type="Script" uid="uid://c7l5o7lhw7tg4" path="res://core/app/MainShell.gd" id="1"]
+[ext_resource type="Script" uid="uid://dgt28yk2ohr5w" path="res://core/app/ScreenRouter.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://bxeyoolca3uc4" path="res://features/city/OverworldMap.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cf6er44u8rje2" path="res://features/combat/BattleScene.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://cg8vhux0peo6b" path="res://core/app/BottomNav.tscn" id="5"]
+[ext_resource type="Script" uid="uid://cuyxjfbmfl5e7" path="res://features/combat/StageFlowController.gd" id="6"]
+[ext_resource type="PackedScene" uid="uid://gi4mhp1kergl" path="res://features/stage/StageBoardScreen.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://xict2qvkww2k" path="res://features/character/CharacterBoardScreen.tscn" id="9"]
 
 [node name="MainShell" type="Control"]
 layout_mode = 3

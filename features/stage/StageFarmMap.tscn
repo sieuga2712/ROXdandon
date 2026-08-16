@@ -23,7 +23,7 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = true
-size = Vector2i(720, 1280)
+size = Vector2i(720, 360)
 render_target_update_mode = 4
 
 [node name="StageFarmWorld" type="Node2D" parent="SubViewportContainer/SubViewport"]
@@ -31,8 +31,8 @@ script = ExtResource("2")
 
 [node name="GroundBackground" type="ColorRect" parent="SubViewportContainer/SubViewport/StageFarmWorld"]
 mouse_filter = 2
-position = Vector2(-360, -640)
-size = Vector2(720, 1280)
+position = Vector2(-360, -180)
+size = Vector2(720, 360)
 color = Color(0.42, 0.5, 0.22, 1)
 
 [node name="Arena" type="Node2D" parent="SubViewportContainer/SubViewport/StageFarmWorld"]

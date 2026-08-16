@@ -8,13 +8,14 @@ Bản đồ toàn bộ module — dùng để biết nên mở file nào trướ
 | `core/database/` | mỗi file 1 autoload độc lập | `TroopDatabase.gd`, `StageDatabase.gd`, `BossDatabase.gd`, `MapDatabase.gd`, `MaterialDatabase.gd`, `MaterialData.gd` | `entities/troop`, `entities/stage` (kiểu dữ liệu trả về) |
 | `core/shared/` | không có (thuần toolkit) | `UIBuilders.gd`, `UIConstants.gd` | không phụ thuộc gì trong project |
 | `core/config/` | không có (thuần hằng số) | `Enums.gd`, `ExpTables.gd` | không phụ thuộc gì trong project |
+| `core/combat/` | không có (thuần công thức) | `EncounterGenerator.gd` | không phụ thuộc gì trong project |
 | `entities/troop/` | `TroopUnit.gd` | `TroopUnit.gd`, `LinhData.gd`, `Projectile.gd`, `ImpactEffect.gd`, `DamagePopup.gd` | `core/config` (Enums) |
 | `entities/stage/` | `StageData.gd` | `StageData.gd` | không phụ thuộc gì trong project |
-| `features/city/` | `OverworldMap.gd` | `OverworldMap.gd`, `OverworldWorld.gd`, `SimplePlaceholderPanel.gd`, `UpgraderPanel.gd`, `WarehousePanel.gd` | `core/app` (GameState), `core/database` (MaterialDatabase), `core/shared` |
-| `features/stage/` | `StageBoardScreen.gd` | `StageBoardScreen.gd`, `StageFarmMap.gd`, `StageFarmWorld.gd`, `MapData.gd` | `core/app`, `core/database`, `entities/troop`, `entities/stage`, `features/boss` (nhúng `BossBoardScreen` làm sub-tab thứ 3), `features/combat` (mở trận) |
+| `features/city/` | `OverworldMap.gd` | `OverworldMap.gd`, `SimplePlaceholderPanel.gd`, `UpgraderPanel.gd`, `WarehousePanel.gd` | `core/app` (GameState), `core/database` (MaterialDatabase), `core/shared` |
+| `features/stage/` | `StageBoardScreen.gd` | `StageBoardScreen.gd`, `StageFarmMap.gd`, `StageFarmWorld.gd`, `MapData.gd` | `core/app`, `core/database`, `core/combat`, `entities/troop`, `entities/stage`, `features/boss` (nhúng `BossBoardScreen` làm sub-tab thứ 3), `features/combat` (mở trận) |
 | `features/boss/` | `BossBoardScreen.gd` (nhúng bởi `features/stage`, không còn instance trực tiếp bởi `core/app`) | `BossBoardScreen.gd`, `BossData.gd` | `core/database` (gồm `StageDatabase`), `features/combat` (mở trận, gián tiếp qua `features/stage` forward) |
 | `features/character/` | `CharacterBoardScreen.gd` | `CharacterBoardScreen.gd` | `core/app` (GameState), `entities/troop` |
-| `features/combat/` | `StageFlowController.gd` (entry point tạm thời — xem README) | `StageFlowController.gd`, `BattleScene.gd` | `core/app`, `entities/troop`, `entities/stage` |
+| `features/combat/` | `StageFlowController.gd` (entry point tạm thời — xem README) | `StageFlowController.gd`, `BattleScene.gd` | `core/app`, `core/combat`, `entities/troop`, `entities/stage` |
 | `legacy/` | — (không dùng, không instance ở đâu) | `Hub.tscn`, `StageSelectPanel.gd` | không áp dụng — không sửa nội dung |
 
 ## 5 tab UI thật của game (map sang module)

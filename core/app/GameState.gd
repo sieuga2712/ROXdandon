@@ -86,7 +86,7 @@ func effective_m_def(troop_id: int, base_m_def: float) -> float:
 ## + công thức DPS/thời gian trôi qua sau khi thảo luận lại). Treo máy = 1
 ## trận đấu THẬT chạy nền liên tục ngay khi bắt đầu (`StageFarmMap`/
 ## `StageFarmWorld` - instance được GameState giữ sống suốt thời gian treo,
-## xem `start_idle_team`) - KHÔNG dùng công thức nào cả, quái chết thật trong
+## xem `start_idle_team_on_map`) - KHÔNG dùng công thức nào cả, quái chết thật trong
 ## trận nền đó thì cộng vàng (`LinhData.gold_reward`) + EXP
 ## (`LinhData.exp_reward`) NGAY LÚC ĐÓ cho các thành viên trong team (xem
 ## `StageFarmWorld._resolve_simple_attack`).
@@ -95,9 +95,12 @@ func effective_m_def(troop_id: int, base_m_def: float) -> float:
 ## GameState là autoload nên Node này sống suốt vòng đời app), TẮT APP LÀ MẤT
 ## LUÔN NODE ĐÓ, không bù giờ, không có/không cần persistence cho phần này -
 ## đây là lựa chọn thiết kế, không phải thiếu sót.
-## Treo máy TÁCH BIỆT hoàn toàn với Ủy Thác/Boss (đánh tay dùng party riêng,
-## không bị chặn bởi treo máy) - Ủy Thác chỉ có vai trò mở khoá tầng cao hơn
-## cho treo máy (xem get_highest_floor).
+##
+## Tự động lên tầng khi thắng/đánh lại đúng tầng khi thua (xem
+## StageFarmWorld._check_wipe/_advance_floor) - KHÔNG còn bước "Tạo đội treo"
+## chọn map/tầng/thành viên thủ công (đã bỏ 2026-08, xem mockup đã chốt) -
+## bấm 1 ải trong danh sách là tự treo NGAY bằng GameState.PARTY_TROOP_IDS, bắt
+## đầu ở tầng highest_floor_cleared[map_id]+1.
 
 const STAGE_FARM_MAP_SCENE: PackedScene = preload("res://features/stage/StageFarmMap.tscn")
 
@@ -109,17 +112,37 @@ func has_idle_team() -> bool:
 func is_troop_idling(troop_id: int) -> bool:
 	return _idle_farm_map != null and troop_id in _idle_farm_map.get_member_troop_ids()
 
-## false nếu đã có team đang treo (phải rút về trước) hoặc stage_id/thành viên không hợp lệ.
-func start_idle_team(stage_id: int, member_troop_ids: Array[int]) -> bool:
+## Treo máy ở map_id, bắt đầu từ tầng highest_floor_cleared[map_id]+1 - KHÔNG
+## còn kẹp ở tầng cuối cùng đã author (xem resolve_stage_for_floor(), tầng tiến
+## được vô hạn nhờ EncounterGenerator sinh quái theo floor_number, không cần
+## StageData thật cho từng tầng). Nếu đang treo map KHÁC thì tự dừng cái cũ
+## trước, không cần rút về thủ công (đúng hành vi "bấm ải khác trong danh
+## sách" của mockup). False nếu map không có StageData nào hoặc thành viên rỗng.
+func start_idle_team_on_map(map_id: int, member_troop_ids: Array[int]) -> bool:
+	var floors: Array[StageData] = StageDatabase.get_floors_for_map(map_id)
+	if floors.is_empty() or member_troop_ids.is_empty():
+		return false
+	var stage: StageData = resolve_stage_for_floor(floors, get_highest_floor(map_id) + 1)
+
 	if _idle_farm_map != null:
-		return false
-	var stage: StageData = StageDatabase.get_by_id(stage_id)
-	if stage == null or member_troop_ids.is_empty():
-		return false
+		stop_idle_team()
 	_idle_farm_map = STAGE_FARM_MAP_SCENE.instantiate()
 	add_child(_idle_farm_map)
 	_idle_farm_map.configure(stage, member_troop_ids)
 	return true
+
+## Trả StageData ĐÚNG target_floor - nếu chưa author tới tầng đó thì tự
+## duplicate() tầng cuối cùng có sẵn rồi đổi floor_number, để tầng luôn tiến
+## được vô hạn (map_id/floor_number là 2 field DUY NHẤT còn được đọc thật ở
+## luồng Ải Thường - enemy_troop_ids/stage_name/time_limit/reward_gold đều đã
+## dead code từ khi treo máy chuyển sang EncounterGenerator sinh quái theo tầng).
+func resolve_stage_for_floor(floors: Array[StageData], target_floor: int) -> StageData:
+	for s in floors:
+		if s.floor_number == target_floor:
+			return s
+	var synthesized: StageData = floors[-1].duplicate()
+	synthesized.floor_number = target_floor
+	return synthesized
 
 func stop_idle_team() -> void:
 	if _idle_farm_map != null:

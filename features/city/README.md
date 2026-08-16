@@ -1,14 +1,13 @@
 # features/city
 
 ## Mục đích
-Tab "Thành" — màn hình thuần trang trí/xem, không điều khiển được nhân vật, chứa các panel shop (nâng cấp, kho).
+Tab "Thành" — lưới thẻ 2 cột đúng mockup `mockups/giao-dien-hien-tai.html` (#city), bấm thẻ mở panel shop tương ứng. KHÔNG có map/nhân vật đi lại (đã bỏ hẳn 2026-08, xem lịch sử Git nếu cần bản map+NPC cũ).
 
 ## File chính
-- `OverworldMap.gd` / `.tscn` — controller chính của tab, root scene được `core/app/MainShell.tscn` instance.
-- `OverworldWorld.gd` — world 2D bên trong (hiển thị nhà/NPC, chọn đơn vị kiểu RTS — không liên quan combat).
-- `SimplePlaceholderPanel.gd` — panel placeholder dùng chung trong tab này.
-- `UpgraderPanel.gd` — panel nâng cấp.
-- `WarehousePanel.gd` — panel kho vật liệu.
+- `OverworldMap.gd` / `.tscn` — controller chính của tab (dựng lưới 4 thẻ bằng code trong `_build_grid()`), root scene được `core/app/MainShell.tscn` instance.
+- `SimplePlaceholderPanel.gd` — panel placeholder dùng chung cho thẻ "Thợ rèn"/"Cửa hàng" (chưa có gameplay thật).
+- `UpgraderPanel.gd` — panel nâng cấp (thẻ "Nâng cấp", đã có gameplay thật).
+- `WarehousePanel.gd` — panel kho vật liệu (thẻ "Kho báu", đã có gameplay thật).
 
 ## Entry Point
 `OverworldMap.gd` — instance bởi `core/app/MainShell.tscn`, id tab `city` trong `ScreenRouter`.

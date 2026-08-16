@@ -98,6 +98,7 @@ const COOLDOWN_BAR_READY_COLOR_ENEMY: Color = Color(0.95, 0.85, 0.15)
 
 var troop_data: LinhData
 var team: Enums.Team
+var monster_level: int = 1 ## chỉ có ý nghĩa khi team != PLAYER - xem EncounterGenerator, hệ số áp ở _monster_stat_multiplier()
 var current_hp: float = 0.0
 var attack_cooldown: float = 0.0
 var skill_cooldown: float = 0.0 ## "Đánh mạnh" - xem BattleScene.SKILL_INTERVAL/SKILL_DAMAGE_MULT
@@ -111,9 +112,10 @@ var is_engaged: bool = false ## true khi đang trong tầm đánh của mục ti
 var is_selected: bool = false ## true = đang được chọn trên overworld map (RTS-style, xem OverworldWorld) - không liên quan gì tới combat/BattleScene
 var _attack_animations: Array[String] = []
 
-func setup(data: LinhData, unit_team: Enums.Team) -> void:
+func setup(data: LinhData, unit_team: Enums.Team, level: int = 1) -> void:
 	troop_data = data
 	team = unit_team
+	monster_level = level
 	current_hp = max_hp()
 	var character_key: String = data.character_key if CHARACTER_FRAMES.has(data.character_key) else DEFAULT_CHARACTER_KEY
 	animated_sprite.sprite_frames = CHARACTER_FRAMES[character_key]
@@ -141,28 +143,36 @@ func set_selected(value: bool) -> void:
 	is_selected = value
 	queue_redraw()
 
+const MONSTER_HP_SCALE: float = 0.1 ## giảm máu MỌI phe địch (quái thường lẫn boss) còn 1/10 - trận đấu nhanh hơn, không đụng ATK/DEF/M.DEF
+
 ## Chỉ phe mình (PLAYER) mới lên cấp - xem GameState.stat_multiplier/
 ## job_atk_bonus (Base Lv +10%/cấp cộng thẳng theo gốc HP/ATK/DEF/M.DEF, Job Lv
-## +1 ATK thẳng/cấp). Phe địch/quái luôn dùng đúng số gốc trong LinhData.
+## +1 ATK thẳng/cấp). Phe địch/quái dùng monster_level qua _monster_stat_multiplier()
+## (công thức y hệt GameState.stat_multiplier - quái không có EXP total nên
+## không tái dùng GameState được, chép công thức riêng, đúng quy ước duplicate
+## đã có giữa StageFarmWorld/BattleScene).
 func max_hp() -> float:
 	if team != Enums.Team.PLAYER:
-		return troop_data.hp
+		return troop_data.hp * _monster_stat_multiplier() * MONSTER_HP_SCALE
 	return GameState.effective_hp(troop_data.id, troop_data.hp)
 
 func effective_atk() -> float:
 	if team != Enums.Team.PLAYER:
-		return troop_data.atk
+		return troop_data.atk * _monster_stat_multiplier()
 	return GameState.effective_atk(troop_data.id, troop_data.atk)
 
 func effective_def() -> float:
 	if team != Enums.Team.PLAYER:
-		return troop_data.def
+		return troop_data.def * _monster_stat_multiplier()
 	return GameState.effective_def(troop_data.id, troop_data.def)
 
 func effective_m_def() -> float:
 	if team != Enums.Team.PLAYER:
-		return troop_data.m_def
+		return troop_data.m_def * _monster_stat_multiplier()
 	return GameState.effective_m_def(troop_data.id, troop_data.m_def)
+
+func _monster_stat_multiplier() -> float:
+	return 1.0 + 0.10 * (monster_level - 1)
 
 const SELECTION_RING_RADIUS: float = HITBOX_DIAMETER / 2.0 + 4.0
 const SELECTION_RING_COLOR: Color = Color(1.0, 1.0, 0.4, 0.9)
@@ -291,7 +301,10 @@ func _flash_hurt() -> void:
 func heal(amount: float) -> void:
 	if is_dead():
 		return
-	current_hp = minf(current_hp + amount, troop_data.hp)
+	## Clamp theo max_hp() (CÓ hệ số) chứ không phải troop_data.hp thẳng - nếu
+	## không, quái bị giảm máu qua MONSTER_HP_SCALE sẽ tự hồi (regen_hp) vọt
+	## lên tới tận mức máu GỐC chưa giảm, phá luôn tác dụng giảm máu.
+	current_hp = minf(current_hp + amount, max_hp())
 	_update_hp_bar()
 
 func _update_hp_bar() -> void:

@@ -1,10 +1,14 @@
 class_name StageFlowController
 extends Node
 
-## Mở BattleScene cho 1 StageData - dùng chung bởi StageBoardScreen (tab
-## "Vượt ải") và sau này BossScreen (Ải Boss). Khi thắng, tự báo tiến độ tầng
-## lên GameState rồi phát stage_finished ra ngoài cho màn gọi biết để vẽ lại
-## UI (mở khoá tầng kế tiếp) - không tự vẽ UI gì ở đây.
+## Mở BattleScene cho 1 StageData - hiện chỉ dùng cho Ải Boss (Ải Thường dùng
+## StageFarmWorld, không qua đây nữa). Chỉ gọi battle_scene.start_battle() -
+## KHÔNG biết/không cần biết BattleScene đang hiện toàn màn hay nhúng trong
+## %BattleViewHost của StageBoardScreen (2026-08: đổi sang nhúng, xem
+## StageBoardScreen._mount_boss_battle()) - việc mount/vị trí hiển thị hoàn
+## toàn tách biệt khỏi luồng bắt đầu/kết thúc trận ở đây. Khi thắng, tự báo
+## tiến độ tầng lên GameState rồi phát stage_finished ra ngoài cho màn gọi
+## biết để vẽ lại UI - không tự vẽ UI gì ở đây.
 
 signal stage_finished(stage: StageData, won: bool)
 

@@ -23,3 +23,10 @@ extends Resource
 ## trí trong đội hình bên địch (xem BattleScene._spawn_side).
 @export var enemy_troop_ids: Array[int] = []
 @export var enemy_troop_counts: Array[int] = []
+
+## Chỉ dùng cho ải Boss (BattleScene) - số đợt quái thường NGẪU NHIÊN (xem
+## EncounterGenerator) xuất hiện TRƯỚC đợt boss thật (enemy_troop_ids ở trên
+## luôn là đợt CUỐI CÙNG). Không liên quan floor_number (ải Boss không có khái
+## niệm tầng) - map thủ công theo độ khó Dễ/Thường/Khó lúc author data.
+@export var boss_trash_wave_count: int = 3
+@export var boss_trash_monster_level: int = 1

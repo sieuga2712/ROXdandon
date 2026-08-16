@@ -1,0 +1,9 @@
+# Godot 4 - thư mục cache local, tự sinh lại mỗi lần mở editor, không nên
+# nằm trong git (gây lệch cache -> Godot tự quét lại asset mỗi lần mở).
+.godot/
+
+# Export
+export.cfg
+
+# Import cache tự sinh cho từng asset - regenerate được từ file gốc.
+*.import

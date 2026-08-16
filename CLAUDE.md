@@ -14,6 +14,7 @@ core/       hạ tầng dùng chung, không chứa gameplay riêng feature nào
   database/   6 autoload dạng "kho tra cứu theo id" (TroopDatabase, StageDatabase, BossDatabase, MapDatabase, MaterialDatabase) + MaterialData
   shared/     UIBuilders, UIConstants — toolkit dựng UI dùng chung
   config/     Enums, ExpTables — hằng số/bảng cân bằng toàn cục
+  combat/     EncounterGenerator — công thức sinh quái theo đợt/tầng (thuần dữ liệu), dùng chung features/stage + features/combat
 
 entities/   domain object dùng chung bởi nhiều feature, KHÔNG phụ thuộc ngược vào features/
   troop/      TroopUnit (actor chiến đấu), LinhData, Projectile, ImpactEffect, DamagePopup
@@ -60,3 +61,4 @@ features/*  →  core/shared, core/config
 7. Tài liệu thiết kế gốc (ý tưởng, lý do thiết kế, lịch sử quyết định) nằm ở `ROX đần độn/` — đọc ở đó khi cần hiểu "tại sao", không phải để tìm code.
 8. Đừng tạo thư mục rỗng (vd không tự tạo `core/utils/` nếu chưa có file nào cần).
 9. **Chỉ sửa `mockups/giao-dien-hien-tai.html` khi hướng thiết kế đã CHỐT** (user xác nhận rõ ràng, không còn đang so sánh/thảo luận phương án). Trong lúc thảo luận ý tưởng UI, chỉ trả lời bằng text/phân tích trade-off — không tự sửa file mockup theo từng ý tưởng chưa quyết, tránh mockup nhảy lung tung không phản ánh đúng cái đã chốt.
+10. **Trước khi code luôn phải hỏi.** Nhận task xong, trình bày ngắn gọn hướng làm (file nào đổi, cách tiếp cận, đánh đổi nếu có) và đợi user xác nhận trước khi bắt đầu sửa file — kể cả khi hướng làm có vẻ rõ ràng. Không tự chạy thẳng vào implement rồi mới báo cáo kết quả.

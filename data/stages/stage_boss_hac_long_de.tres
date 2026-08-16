@@ -12,3 +12,4 @@ enemy_troop_ids = Array[int]([200])
 enemy_troop_counts = Array[int]([1])
 map_id = 100
 floor_number = 1
+boss_trash_monster_level = 1

@@ -1,7 +1,10 @@
 class_name BossBoardScreen
 extends Control
 
-## Tab "Boss" - 2 sub-tab, cùng khuôn với StageBoardScreen (tab "Ải"):
+## Tab "Boss" - nhúng bên trong StageBoardScreen (tab "Ải"), KHÔNG còn hàng
+## sub-tab riêng của mình - StageBoardScreen gộp "BOSS NGÀY"/"BOSS KHỦNG"
+## chung 1 hàng với "ẢI THƯỜNG" (đổi 2026-08), chọn panel nào hiện qua
+## show_daily_tab()/show_world_tab() (public API), KHÔNG tự vẽ nút chọn nữa:
 ## - "Boss Ngày": mỗi boss 1 thẻ, chọn độ khó (Dễ/Thường/Khó) ngay trong thẻ -
 ##   mỗi độ khó là 1 StageData THẬT riêng (xem BossData.get_stage) nên đổi độ
 ##   khó là đổi hẳn quái/thưởng sẽ đưa vào BattleScene, không phải số liệu ảo.
@@ -13,7 +16,8 @@ extends Control
 ## và stage_flow.stage_finished -> on_stage_finished, dùng CHUNG 1
 ## StageFlowController với StageBoardScreen (đúng như ghi chú sẵn trong
 ## StageFlowController.gd) - chỉ 1 trận đấu chạy tại 1 thời điểm nên không có
-## xung đột.
+## xung đột. Từ 2026-08, trận boss KHÔNG còn mở BattleScene toàn màn - xem
+## StageBoardScreen._mount_boss_battle() (đánh ngay trong %BattleViewHost).
 
 signal stage_selected(stage: StageData)
 
@@ -33,7 +37,6 @@ const DIFFICULTIES: Array[String] = ["easy", "normal", "hard"]
 const DIFFICULTY_LABELS: Dictionary = {"easy": "DỄ", "normal": "THƯỜNG", "hard": "KHÓ"}
 const DIFFICULTY_COLORS: Dictionary = {"easy": DIFF_EASY, "normal": DIFF_NORMAL, "hard": DIFF_HARD}
 
-@onready var sub_tab_row: HBoxContainer = %BossSubTabRow
 @onready var daily_panel: Control = %DailyPanel
 @onready var world_panel: Control = %WorldPanel
 @onready var daily_list: VBoxContainer = %DailyList
@@ -42,24 +45,18 @@ const DIFFICULTY_COLORS: Dictionary = {"easy": DIFF_EASY, "normal": DIFF_NORMAL,
 var _selected_difficulty: Dictionary = {} ## boss_id (int) -> "easy"/"normal"/"hard", mặc định "easy"
 
 func _ready() -> void:
-	_build_sub_tab_buttons()
 	_build_daily_cards()
 	_build_world_cards()
 
-func _build_sub_tab_buttons() -> void:
-	var daily_button := Button.new()
-	daily_button.text = "Boss Ngày"
-	daily_button.pressed.connect(_set_sub_tab.bind(true))
-	sub_tab_row.add_child(daily_button)
+## Gọi từ StageBoardScreen khi user bấm "BOSS NGÀY"/"BOSS KHỦNG" ở hàng
+## sub-tab chung - panel mặc định lúc _ready() là daily_panel (xem .tscn).
+func show_daily_tab() -> void:
+	daily_panel.visible = true
+	world_panel.visible = false
 
-	var world_button := Button.new()
-	world_button.text = "Boss Khủng"
-	world_button.pressed.connect(_set_sub_tab.bind(false))
-	sub_tab_row.add_child(world_button)
-
-func _set_sub_tab(show_daily: bool) -> void:
-	daily_panel.visible = show_daily
-	world_panel.visible = not show_daily
+func show_world_tab() -> void:
+	daily_panel.visible = false
+	world_panel.visible = true
 
 ## ============================== Boss Ngày ==============================
 

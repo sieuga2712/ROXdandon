@@ -3,9 +3,14 @@ extends Control
 
 ## Màn chiến đấu PvE - auto-battle: bấm "Chọn ải" xong vào thẳng trận, không
 ## còn pha "xếp quân" (party cố định 4 người, không có gì để chọn trước mỗi
-## trận - xem GameState.PARTY_TROOP_IDS). start_battle(stage) spawn cả 2 phe
-## vào %BattleArena (SubViewport riêng) và chạy AI mỗi frame cho tới khi 1 phe
-## chết hết hoặc hết giờ.
+## trận - xem GameState.PARTY_TROOP_IDS). start_battle(stage) spawn phe mình
+## vào %BattleArena (SubViewport riêng) rồi lần lượt spawn N đợt quái thường
+## NGẪU NHIÊN (StageData.boss_trash_wave_count, xem EncounterGenerator) cách
+## nhau WAVE_SPACING_X dọc trục X, đợt CUỐI CÙNG luôn là boss thật
+## (enemy_troop_ids/enemy_troop_counts) - xem _spawn_next_wave()/_check_battle_end().
+## Camera đuổi theo phe mình mỗi frame (_update_camera_follow, giống hệt
+## StageFarmWorld) tạo cảm giác phe mình đứng yên, đợt quái/boss trôi tới.
+## Trận kết thúc khi phe mình chết hết/hết giờ (THUA) hoặc đợt boss chết (THẮNG).
 ##
 ## Quyết định thiết kế (kế thừa từ bản city-builder cũ, xem lịch sử):
 ## - Sát thương = ATK (x Crit Damage nếu chí mạng) TRỪ THẲNG (không phải %)
@@ -25,8 +30,10 @@ extends Control
 ##   theo squad cố định - xem _update_side().
 ## - Đội hình: dùng 1 bộ offset hình nêm cố định (FORMATION_OFFSETS, kế thừa ý
 ##   tưởng từ BattleHexCell cũ) quanh tâm đội hình mỗi phe, mirror theo trục X
-##   cho phe địch. Party 4 người luôn vừa trong 6 vị trí; quái mỗi ải nên giữ
-##   tổng số <= 6 để đội hình không đè lên nhau (v1 chưa cần > 6).
+##   cho phe địch. Party 4 người luôn vừa trong 6 vị trí; quái MỖI ĐỢT (trash =
+##   EncounterGenerator.BASE_MONSTERS_PER_WAVE = 5, boss = enemy_troop_ids/counts
+##   của StageData) nên giữ tổng số <= 6 để đội hình không đè lên nhau (v1 chưa
+##   cần > 6) - chỉ 1 đợt tồn tại trên màn cùng lúc, không cộng dồn giữa các đợt.
 
 signal closed(won: bool) ## StageFlowController lắng nghe để biết có mở khoá tầng kế tiếp không (xem tab "Vượt ải")
 
@@ -62,7 +69,16 @@ const FORMATION_OFFSETS: Array[Vector2] = [
 ]
 const FORMATION_WORLD_SPACING: float = 40.0
 const PLAYER_TEAM_CENTER: Vector2 = Vector2(-180, 0)
-const ENEMY_TEAM_CENTER: Vector2 = Vector2(180, 0)
+
+## Bản đồ dài nhiều đợt (giống StageFarmWorld, xem EncounterGenerator) - N đợt
+## quái thường NGẪU NHIÊN (StageData.boss_trash_wave_count) trước khi tới đợt
+## CUỐI CÙNG là boss thật (enemy_troop_ids/enemy_troop_counts). Camera đuổi
+## theo party mỗi frame tạo cảm giác phe mình đứng yên, đúng kiểu StageFarmWorld.
+const WAVE_SPACING_X: float = 900.0 ## khoảng cách world-X giữa 2 đợt liên tiếp
+const FIRST_WAVE_OFFSET_X: float = 260.0 ## khoảng cách từ PLAYER_TEAM_CENTER tới đợt đầu tiên - đủ xa để phe mình tốn ~1-2s đi tới thay vì đứng chung chỗ với quái ngay từ đầu, giống hệt StageFarmWorld
+const WAVE_CLEAR_DELAY: float = 0.6 ## nghỉ ngắn giữa 2 đợt (không kết thúc trận)
+const CAMERA_FOLLOW_LERP_SPEED: float = 4.0 ## hệ số lerp/giây, giống hệt StageFarmWorld
+const CAMERA_LEFT_OFFSET_X: float = 180.0 ## lệch tâm camera sang PHẢI so với party 1 khoảng = 1/4 chiều rộng viewport (720px) - để phe mình luôn hiện ở góc trái màn, không đứng giữa, giống hệt StageFarmWorld
 
 const SKILL_INTERVAL: float = 2.0 ## Đánh mạnh tự động kích hoạt mỗi 2 giây
 const PRIEST_SKILL_INTERVAL: float = 1.0 ## Riêng Priest: chu kỳ ngắn hơn hẳn để hồi máu/đánh thường xen kẽ rõ hơn
@@ -89,6 +105,11 @@ var _time_left: float = 0.0
 var _active: bool = false ## true = đang chạy AI mỗi frame (xem _process)
 var _last_result_won: bool = false ## lưu lại từ _end_battle() để _on_result_closed() phát kèm signal closed(won)
 
+var _wave_count: int = 1 ## boss_trash_wave_count + 1 (đợt cuối = boss thật) - xem start_battle()
+var _current_wave_index: int = -1 ## đợt đang đánh (0-based), -1 = chưa spawn đợt nào
+var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tăng WAVE_SPACING_X mỗi lần _spawn_next_wave()
+var _wave_transition_timer: float = -1.0 ## >=0: đang nghỉ WAVE_CLEAR_DELAY giữa 2 đợt (KHÔNG kết thúc trận - chỉ đợt cuối chết mới end battle)
+
 func _ready() -> void:
 	visible = false
 	result_panel.visible = false
@@ -96,18 +117,18 @@ func _ready() -> void:
 	surrender_button.pressed.connect(_on_surrender_pressed)
 	if DEBUG_SHOW_COLLISION_SHAPES:
 		get_tree().debug_collisions_hint = true
-	battle_camera.position = Vector2.ZERO
 	battle_camera.zoom = Vector2.ONE
 
 func start_battle(stage: StageData) -> void:
 	_stage = stage
 	_clear_units()
 	_spawn_team(GameState.PARTY_TROOP_IDS, Enums.Team.PLAYER, PLAYER_TEAM_CENTER, 1.0)
-	var enemy_ids: Array[int] = []
-	for i in range(stage.enemy_troop_ids.size()):
-		for _n in range(stage.enemy_troop_counts[i]):
-			enemy_ids.append(stage.enemy_troop_ids[i])
-	_spawn_team(enemy_ids, Enums.Team.ENEMY, ENEMY_TEAM_CENTER, -1.0)
+	battle_camera.position = Vector2(PLAYER_TEAM_CENTER.x + CAMERA_LEFT_OFFSET_X, 0.0)
+
+	_wave_count = maxi(stage.boss_trash_wave_count, 0) + 1 ## đợt cuối luôn là boss thật
+	_current_wave_index = -1
+	_wave_anchor_x = PLAYER_TEAM_CENTER.x + FIRST_WAVE_OFFSET_X - WAVE_SPACING_X
+	_spawn_next_wave()
 
 	_time_left = stage.time_limit
 	_active = true
@@ -118,14 +139,16 @@ func start_battle(stage: StageData) -> void:
 
 ## facing = +1.0 (phe mình, mũi nhọn hướng +X = về phía địch bên phải) hoặc
 ## -1.0 (phe địch, mirror ngược lại để mũi nhọn hướng về phía người chơi).
-func _spawn_team(troop_ids: Array[int], team: Enums.Team, team_center: Vector2, facing: float) -> void:
+## monster_level > 1 chỉ có ý nghĩa với quái (xem TroopUnit._monster_stat_multiplier) -
+## boss thật giữ default 1 = dùng đúng số liệu tay trong LinhData, không bị cấp quái ăn vào.
+func _spawn_team(troop_ids: Array[int], team: Enums.Team, team_center: Vector2, facing: float, monster_level: int = 1) -> void:
 	for i in range(troop_ids.size()):
 		var troop := TroopDatabase.get_by_id(troop_ids[i])
 		if troop == null:
 			continue
 		var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
 		arena.add_child(unit)
-		unit.setup(troop, team)
+		unit.setup(troop, team, monster_level)
 		var offset := FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()]
 		offset.x *= facing
 		unit.position = team_center + offset * FORMATION_WORLD_SPACING
@@ -133,6 +156,31 @@ func _spawn_team(troop_ids: Array[int], team: Enums.Team, team_center: Vector2, 
 			_player_units.append(unit)
 		else:
 			_enemy_units.append(unit)
+
+## Dọn đợt quái cũ (nếu có) rồi spawn đợt KẾ TIẾP cách đợt trước WAVE_SPACING_X
+## dọc trục X - còn đợt trash thì random quái thường (EncounterGenerator), là
+## đợt CUỐI CÙNG thì spawn boss thật (enemy_troop_ids/enemy_troop_counts).
+func _spawn_next_wave() -> void:
+	for unit in _enemy_units:
+		unit.queue_free()
+	_enemy_units.clear()
+	_current_wave_index += 1
+	_wave_anchor_x += WAVE_SPACING_X
+	if _current_wave_index < _wave_count - 1:
+		_spawn_trash_wave()
+	else:
+		_spawn_boss_wave()
+
+func _spawn_trash_wave() -> void:
+	var encounter: Dictionary = EncounterGenerator.generate_encounter(EncounterGenerator.BASE_MONSTERS_PER_WAVE, _stage.boss_trash_monster_level)
+	_spawn_team(encounter["monster_ids"], Enums.Team.ENEMY, Vector2(_wave_anchor_x, 0.0), -1.0, encounter["monster_level"])
+
+func _spawn_boss_wave() -> void:
+	var enemy_ids: Array[int] = []
+	for i in range(_stage.enemy_troop_ids.size()):
+		for _n in range(_stage.enemy_troop_counts[i]):
+			enemy_ids.append(_stage.enemy_troop_ids[i])
+	_spawn_team(enemy_ids, Enums.Team.ENEMY, Vector2(_wave_anchor_x, 0.0), -1.0)
 
 func _clear_units() -> void:
 	for child in arena.get_children():
@@ -142,6 +190,20 @@ func _clear_units() -> void:
 
 func _process(delta: float) -> void:
 	if not _active:
+		return
+	_update_camera_follow(delta)
+	## Nghỉ ngắn giữa 2 đợt (KHÔNG kết thúc trận) - vẫn chạy _run_ai/_resolve_collisions
+	## bình thường (đợt cũ đã hết mục tiêu -> tự chuyển idle qua nhánh
+	## "target == null" có sẵn trong _update_unit(), KHÔNG đứng hình animation
+	## tấn công cuối như bug đã gặp/sửa ở StageFarmWorld) - chỉ tạm hoãn
+	## _check_battle_end() để không set lại _wave_transition_timer chồng lên chính nó.
+	if _wave_transition_timer >= 0.0:
+		_wave_transition_timer -= delta
+		_run_ai(delta)
+		_resolve_collisions()
+		if _wave_transition_timer <= 0.0:
+			_wave_transition_timer = -1.0
+			_spawn_next_wave()
 		return
 	_time_left = maxf(_time_left - delta, 0.0)
 	timer_label.text = "%d:%02d" % [int(_time_left) / 60, int(_time_left) % 60]
@@ -412,15 +474,37 @@ func _spawn_heal_popup(unit: TroopUnit, amount: float) -> void:
 	arena.add_child(popup)
 	popup.setup("+%d" % roundi(amount), COLOR_HEAL, unit.position + POPUP_SPAWN_OFFSET)
 
+## Quái ĐỢT HIỆN TẠI chết sạch: còn đợt kế (trash hoặc boss) -> chuyển đợt
+## (WAVE_CLEAR_DELAY, KHÔNG kết thúc trận); là đợt CUỐI CÙNG (boss thật) ->
+## THẮNG CẢ TRẬN. Party chết sạch/hết giờ -> THUA như cũ (không phân biệt đợt).
 func _check_battle_end() -> void:
 	var enemy_alive := _enemy_units.any(func(u): return not u.is_dead())
 	var player_alive := _player_units.any(func(u): return not u.is_dead())
-	if not enemy_alive:
-		_end_battle(true)
-	elif not player_alive:
+	if not player_alive:
 		_end_battle(false)
 	elif _time_left <= 0.0:
 		_end_battle(false)
+	elif not enemy_alive:
+		if _current_wave_index < _wave_count - 1:
+			_wave_transition_timer = WAVE_CLEAR_DELAY
+		else:
+			_end_battle(true)
+
+## Camera bám theo X trung bình của phe mình còn sống mỗi frame - giống hệt
+## StageFarmWorld._update_camera_follow, LỆCH sang phải CAMERA_LEFT_OFFSET_X
+## (không canh giữa) để phe mình luôn hiện ở góc trái màn, đợt quái kế
+## tiếp/boss trôi tới từ bên phải.
+func _update_camera_follow(delta: float) -> void:
+	var sum_x := 0.0
+	var count := 0
+	for unit in _player_units:
+		if not unit.is_dead():
+			sum_x += unit.position.x
+			count += 1
+	if count == 0:
+		return
+	var target_x: float = sum_x / count + CAMERA_LEFT_OFFSET_X
+	battle_camera.position.x = lerpf(battle_camera.position.x, target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
 
 ## Người chơi chủ động bấm "Chịu thua" - luôn tính là thua ngay lập tức.
 func _on_surrender_pressed() -> void:

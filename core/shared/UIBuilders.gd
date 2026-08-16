@@ -19,7 +19,7 @@ static func texture_icon(texture: Texture2D, size: int) -> TextureRect:
 ## như màn "settings" đã đặt sẵn trong MainShell.tscn) phải tự trừ đúng
 ## khoảng này ra, nếu không nút/chữ ở mép trên-dưới bị 2 thanh đó che mất dù
 ## vẫn tồn tại đúng trong cây scene (không phải lỗi, chỉ là bị vẽ đè lên).
-const TOP_BAR_HEIGHT: float = 72.0
+const TOP_BAR_HEIGHT: float = 84.0 ## khớp offset_top các màn thật khác (CharacterBoardScreen.CharacterListPanel, StageBoardScreen.SubTabRow) - không phải đúng 72 (chiều cao vật lý TopStatusBar) vì có thêm khoảng thở
 const BOTTOM_NAV_HEIGHT: float = 96.0
 
 ## Gọi ngay sau set_anchors_preset(Control.PRESET_FULL_RECT) cho 1 panel dựng
