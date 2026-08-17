@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=54 format=3 uid="uid://dn2o0iwp88khn"]
 
-[ext_resource type="Texture2D" uid="uid://b78nbjqanrxan" path="res://assets/troops/greatsword_skeleton/GreatswordSkeletonSheet.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://77qvd0qssev3" path="res://assets/troops/greatsword_skeleton/GreatswordSkeletonSheet.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_greatsword_skeleton_attack01_0"]
 atlas = ExtResource("1")

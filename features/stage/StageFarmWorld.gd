@@ -50,6 +50,8 @@ const PRIEST_ATTACK_EFFECT_FRAMES: SpriteFrames = preload("res://assets/troops/p
 const POPUP_SPAWN_OFFSET: Vector2 = Vector2(0, -70)
 const COLOR_DAMAGE: Color = Color.WHITE
 const COLOR_GOLD: Color = Color(1.0, 0.9, 0.3)
+const COLOR_MATERIAL: Color = Color(0.6, 0.85, 1.0)
+const MATERIAL_DROP_CHANCE: float = 0.7 ## hạ 1 quái = 70% rơi đúng 1 nguyên liệu cấp 1 (ngẫu nhiên trong 10 nhóm)
 
 const PARTY_CENTER: Vector2 = Vector2(-160.0, 0.0)
 const SPREAD_RADIUS: float = 44.0
@@ -58,13 +60,30 @@ const RESTART_DELAY: float = 2.0 ## hết CẢ TẦNG (đợt cuối cùng) -> c
 const CORPSE_VANISH_DELAY: float = 2.0 ## xác đơn vị chết ẩn đi sau chừng này giây (dù phe kia còn đang đánh tiếp, không đợi tới lúc cả phe bị xoá sạch mới ẩn)
 
 ## Bản đồ dài nhiều đợt (xem EncounterGenerator) - quái đợt kế spawn xa hơn
-## dọc trục X, world "dài vô hạn" nhờ GroundBackground bám theo camera mỗi
-## frame (xem _update_camera_follow) thay vì 1 rect cố định đủ dài.
+## dọc trục X, quay vòng qua WAVE_SLOT_COUNT vị trí X cố định thay vì cộng dồn
+## vô hạn (xem WAVE_SLOT_COUNT bên dưới).
 const WAVE_SPACING_X: float = 900.0 ## khoảng cách world-X giữa 2 đợt liên tiếp
 const FIRST_WAVE_OFFSET_X: float = 260.0 ## khoảng cách từ PARTY_CENTER tới đợt đầu tiên
 const WAVE_CLEAR_DELAY: float = 0.6 ## nghỉ ngắn giữa 2 đợt trong CÙNG 1 tầng - khác RESTART_DELAY (dùng cho thắng/thua cả tầng)
 const CAMERA_FOLLOW_LERP_SPEED: float = 4.0 ## hệ số lerp/giây - camera đuổi theo X trung bình của party còn sống, tạo cảm giác phe mình đứng yên
 const CAMERA_LEFT_OFFSET_X: float = 180.0 ## lệch tâm camera sang PHẢI so với party 1 khoảng = 1/4 chiều rộng viewport (720px) - để phe mình luôn hiện ở góc trái màn, không đứng giữa, dễ theo dõi quái/boss tới từ bên phải
+
+## --- Giới hạn bản đồ (2026-08) ---
+## Trước đây _wave_anchor_x cộng dồn WAVE_SPACING_X mãi mãi theo floor_number
+## (có thể tới 29 đợt ở floor 100) -> world "dài vô hạn" phải giả bằng cách
+## cho ground_background bám theo camera mỗi frame (đã xoá, xem
+## _update_camera_follow). Từ giờ: WAVE_SLOT_COUNT vị trí X CỐ ĐỊNH mà đợt
+## quái xoay vòng qua - hết 1 vòng, _recenter_world() dịch lại party + camera
+## lùi về đúng lúc không có quái trên màn (WAVE_CLEAR_DELAY), giữ nguyên cảm
+## giác "luôn tiến về phía trước" nhưng world không bao giờ vượt
+## CAMERA_LIMIT_LEFT/RIGHT nữa - ground_background giờ TĨNH, không cần bám
+## theo camera mỗi frame nữa.
+const WAVE_SLOT_COUNT: int = 3
+
+const VIEWPORT_HALF_WIDTH: float = 360.0 ## SubViewport rộng 720 (xem .tscn)
+const CAMERA_VIEW_MARGIN: float = 40.0 ## đệm dôi thêm, tránh clamp chạm biên đúng lúc đang cần thấy trọn cảnh
+const CAMERA_LIMIT_LEFT: float = PARTY_CENTER.x + CAMERA_LEFT_OFFSET_X - VIEWPORT_HALF_WIDTH - CAMERA_VIEW_MARGIN
+const CAMERA_LIMIT_RIGHT: float = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + (WAVE_SLOT_COUNT - 1) * WAVE_SPACING_X + CAMERA_LEFT_OFFSET_X + VIEWPORT_HALF_WIDTH + CAMERA_VIEW_MARGIN
 
 @onready var arena: Node2D = $Arena
 @onready var camera: Camera2D = $FarmCamera
@@ -81,8 +100,20 @@ var _death_timers: Dictionary = {} ## TroopUnit đã chết -> số giây đã t
 
 var _wave_count: int = 1 ## tổng số đợt của tầng đang treo - xem EncounterGenerator.wave_count_for_floor()
 var _current_wave_index: int = -1 ## đợt đang đánh (0-based), -1 = chưa spawn đợt nào
-var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tăng WAVE_SPACING_X mỗi lần _spawn_next_wave()
+var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tính lại mỗi lần _spawn_next_wave() theo slot xoay vòng (xem WAVE_SLOT_COUNT)
 var _wave_transition_timer: float = -1.0 ## >=0: đang nghỉ WAVE_CLEAR_DELAY giữa 2 đợt (khác _restart_timer - dùng khi hết CẢ TẦNG)
+
+func _ready() -> void:
+	## Nền + giới hạn camera CỐ ĐỊNH bất kể floor_number/wave_count - set 1 lần
+	## ở đây (LUÔN chạy trước configure() đầu tiên - Godot gọi _ready() ngay
+	## khi add_child(), trước khi add_child() trả về) để camera.position gán
+	## lần đầu trong configure() đã bị giới hạn đúng ngay từ đầu.
+	ground_background.position.x = CAMERA_LIMIT_LEFT
+	ground_background.size.x = CAMERA_LIMIT_RIGHT - CAMERA_LIMIT_LEFT
+	camera.limit_left = roundi(CAMERA_LIMIT_LEFT)
+	camera.limit_right = roundi(CAMERA_LIMIT_RIGHT)
+	## KHÔNG set limit_top/limit_bottom - camera.position.y không bao giờ đổi
+	## ở file này (lý do chi tiết xem BattleScene._ready(), cùng công thức).
 
 ## Gọi được NHIỀU LẦN trên cùng 1 instance (lên tầng khi thắng) - tự dọn hết
 ## quân cũ (queue_free + xoá 2 mảng) trước khi spawn quân mới, không cần
@@ -103,7 +134,6 @@ func configure(stage: StageData, member_troop_ids: Array[int]) -> void:
 
 	_wave_count = EncounterGenerator.wave_count_for_floor(stage.floor_number)
 	_current_wave_index = -1
-	_wave_anchor_x = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X - WAVE_SPACING_X
 	_spawn_next_wave()
 
 func get_stage() -> StageData:
@@ -128,18 +158,22 @@ func _spawn_party(member_troop_ids: Array[int]) -> void:
 		unit.position = PARTY_CENTER + offset
 		party_units.append(unit)
 
-## Dọn đợt quái cũ (nếu có) rồi spawn đợt KẾ TIẾP (_current_wave_index += 1)
-## cách đợt trước WAVE_SPACING_X dọc trục X - quái luôn random theo đúng
-## floor_number đang treo (xem EncounterGenerator.generate_encounter_for_floor).
-## Gọi từ configure() (đợt đầu tầng), _process() khi hết WAVE_CLEAR_DELAY, và
-## _revive_all() (thua -> đánh lại từ đợt 1).
+## Dọn đợt quái cũ (nếu có) rồi spawn đợt KẾ TIẾP (_current_wave_index += 1) -
+## quái luôn random theo đúng floor_number đang treo (xem
+## EncounterGenerator.generate_encounter_for_floor). Vị trí X xoay vòng qua
+## WAVE_SLOT_COUNT vị trí cố định (xem ghi chú WAVE_SLOT_COUNT) - không cộng
+## dồn vô hạn. Gọi từ configure() (đợt đầu tầng), _process() khi hết
+## WAVE_CLEAR_DELAY, và _revive_all() (thua -> đánh lại từ đợt 1).
 func _spawn_next_wave() -> void:
 	for unit in enemy_units:
 		unit.queue_free()
 		_death_timers.erase(unit)
 	enemy_units.clear()
 	_current_wave_index += 1
-	_wave_anchor_x += WAVE_SPACING_X
+	var slot: int = _current_wave_index % WAVE_SLOT_COUNT
+	if slot == 0 and _current_wave_index > 0:
+		_recenter_world(WAVE_SLOT_COUNT * WAVE_SPACING_X)
+	_wave_anchor_x = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + slot * WAVE_SPACING_X
 
 	var encounter: Dictionary = EncounterGenerator.generate_encounter_for_floor(_stage.floor_number)
 	var monster_ids: Array[int] = encounter["monster_ids"]
@@ -159,6 +193,14 @@ func _spawn_next_wave() -> void:
 		unit.position = Vector2(_wave_anchor_x, 0.0) + offset
 		enemy_units.append(unit)
 	_rebuild_all_units()
+
+## Dịch cả party lẫn camera lùi lại đúng `shift` - gọi ĐÚNG LÚC không còn quái
+## nào sống trên màn (giữa 2 đợt CÙNG 1 tầng), khi party đang idle nhờ
+## _hold_survivors_idle(), nên hoàn toàn không thấy "giật/nhảy".
+func _recenter_world(shift: float) -> void:
+	for unit in party_units:
+		unit.position.x -= shift
+	camera.position.x -= shift
 
 ## party_units/enemy_units không đổi thành phần trong lúc chiến đấu (chết chỉ
 ## đổi is_dead()) - chỉ cần gộp lại _all_units mỗi lần ĐỔI ĐỢT/TẦNG (spawn lại
@@ -213,7 +255,6 @@ func _update_camera_follow(delta: float) -> void:
 		return
 	var target_x: float = sum_x / count + CAMERA_LEFT_OFFSET_X
 	camera.position.x = lerpf(camera.position.x, target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
-	ground_background.position.x = camera.position.x - ground_background.size.x / 2.0
 
 ## Trong lúc chờ RESTART_DELAY, _update_fight không còn chạy nên phải tự gọi
 ## play_idle() MỖI FRAME ở đây thay vì 1 lần duy nhất - play_idle() cố ý
@@ -338,6 +379,18 @@ func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float
 		GameState.add_gold(defender.troop_data.gold_reward)
 		GameState.grant_kill_exp(_member_troop_ids, defender.troop_data.exp_reward)
 		_spawn_popup(defender.position + POPUP_SPAWN_OFFSET + Vector2(0, -16), "+%d vàng" % defender.troop_data.gold_reward, COLOR_GOLD)
+		_roll_material_drop(defender)
+
+## Hạ 1 quái = MATERIAL_DROP_CHANCE (70%) rơi đúng 1 nguyên liệu cấp 1, ngẫu
+## nhiên trong 10 nhóm (xem MaterialDatabase.random_tier1_id) - cộng thẳng
+## vào GameState.materials (WarehousePanel đọc trực tiếp từ đó).
+func _roll_material_drop(defender: TroopUnit) -> void:
+	if randf() >= MATERIAL_DROP_CHANCE:
+		return
+	var material_id := MaterialDatabase.random_tier1_id()
+	GameState.add_material(material_id, 1)
+	var mat := MaterialDatabase.get_by_id(material_id)
+	_spawn_popup(defender.position + POPUP_SPAWN_OFFSET + Vector2(0, -32), "+1 %s" % mat.display_name, COLOR_MATERIAL)
 
 func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
 	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
@@ -409,5 +462,4 @@ func _revive_all() -> void:
 		unit.position = PARTY_CENTER + offset
 	_death_timers.clear()
 	_current_wave_index = -1
-	_wave_anchor_x = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X - WAVE_SPACING_X
 	_spawn_next_wave()

@@ -21,6 +21,17 @@ offset_right = 40.0
 offset_bottom = 3.0
 color = Color(0.3, 0.9, 0.3, 1)
 
+[node name="LevelLabel" type="Label" parent="."]
+offset_left = 23.0
+offset_top = -27.0
+offset_right = 63.0
+offset_bottom = -17.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "Lv.1"
+
 [node name="SkillStatus" type="Node2D" parent="."]
 
 [node name="AttackBarBg" type="ColorRect" parent="SkillStatus"]

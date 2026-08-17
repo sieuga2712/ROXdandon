@@ -25,7 +25,7 @@ Thuộc [[Mục lục]]. Liên quan: [[Đội hình cố định (Party)]], [[Da
 attack_range_px = HITBOX_DIAMETER × (1 + tầm_đánh_data × hệ_số)
 HITBOX_DIAMETER = 36        (khớp kích thước nhân vật thật sau khi trim sprite - xem [[Hoạt ảnh & Asset lính]])
 MELEE_RANGE_COEF = 0.1      (troop_type NORMAL)
-RANGED_RANGE_COEF = 1.0     (troop_type ARCHER)
+RANGED_RANGE_COEF = 0.1     (troop_type ARCHER)
 ```
 - Cận chiến (`attack_range` data = 1.0): 36×(1+1×0.1) = **39.6** world-unit.
 - Đánh xa (`attack_range` data = 8.0): 36×(1+8×1.0) = **324** world-unit.

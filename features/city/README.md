@@ -1,13 +1,13 @@
 # features/city
 
 ## Mục đích
-Tab "Thành" — lưới thẻ 2 cột đúng mockup `mockups/giao-dien-hien-tai.html` (#city), bấm thẻ mở panel shop tương ứng. KHÔNG có map/nhân vật đi lại (đã bỏ hẳn 2026-08, xem lịch sử Git nếu cần bản map+NPC cũ).
+Tab "Thành" — lưới thẻ 3 thẻ đúng mockup `mockups/giao-dien-hien-tai.html` (#city), bấm thẻ mở panel shop tương ứng. KHÔNG có map/nhân vật đi lại (đã bỏ hẳn 2026-08, xem lịch sử Git nếu cần bản map+NPC cũ).
 
 ## File chính
-- `OverworldMap.gd` / `.tscn` — controller chính của tab (dựng lưới 4 thẻ bằng code trong `_build_grid()`), root scene được `core/app/MainShell.tscn` instance.
+- `OverworldMap.gd` / `.tscn` — controller chính của tab (dựng lưới thẻ bằng code trong `_build_grid()`), root scene được `core/app/MainShell.tscn` instance.
 - `SimplePlaceholderPanel.gd` — panel placeholder dùng chung cho thẻ "Thợ rèn"/"Cửa hàng" (chưa có gameplay thật).
 - `UpgraderPanel.gd` — panel nâng cấp (thẻ "Nâng cấp", đã có gameplay thật).
-- `WarehousePanel.gd` — panel kho vật liệu (thẻ "Kho báu", đã có gameplay thật).
+- `WarehousePanel.gd` — panel kho vật liệu - **thẻ "Kho báu" đã BỎ khỏi màn Thành (2026-08)**, file/node vẫn còn trong `.tscn` nhưng không còn cách mở từ UI (xem `features/inventory` - tab "Kho" ở BottomNav giờ là lối vào duy nhất, giao diện tương tự nhưng KHÔNG dùng chung class).
 
 ## Entry Point
 `OverworldMap.gd` — instance bởi `core/app/MainShell.tscn`, id tab `city` trong `ScreenRouter`.

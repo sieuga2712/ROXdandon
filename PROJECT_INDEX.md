@@ -15,6 +15,7 @@ Bản đồ toàn bộ module — dùng để biết nên mở file nào trướ
 | `features/stage/` | `StageBoardScreen.gd` | `StageBoardScreen.gd`, `StageFarmMap.gd`, `StageFarmWorld.gd`, `MapData.gd` | `core/app`, `core/database`, `core/combat`, `entities/troop`, `entities/stage`, `features/boss` (nhúng `BossBoardScreen` làm sub-tab thứ 3), `features/combat` (mở trận) |
 | `features/boss/` | `BossBoardScreen.gd` (nhúng bởi `features/stage`, không còn instance trực tiếp bởi `core/app`) | `BossBoardScreen.gd`, `BossData.gd` | `core/database` (gồm `StageDatabase`), `features/combat` (mở trận, gián tiếp qua `features/stage` forward) |
 | `features/character/` | `CharacterBoardScreen.gd` | `CharacterBoardScreen.gd` | `core/app` (GameState), `entities/troop` |
+| `features/inventory/` | `InventoryScreen.gd` | `InventoryScreen.gd` | `core/app` (GameState), `core/database` (MaterialDatabase), `core/shared` |
 | `features/combat/` | `StageFlowController.gd` (entry point tạm thời — xem README) | `StageFlowController.gd`, `BattleScene.gd` | `core/app`, `core/combat`, `entities/troop`, `entities/stage` |
 | `legacy/` | — (không dùng, không instance ở đâu) | `Hub.tscn`, `StageSelectPanel.gd` | không áp dụng — không sửa nội dung |
 
@@ -25,7 +26,7 @@ Bản đồ toàn bộ module — dùng để biết nên mở file nào trướ
 | `city` (Thành) | `features/city` |
 | `stage` (Ải: Ủy Thác + Treo máy + Ải Boss) | `features/stage` (sub-tab "Ải Boss" nhúng `features/boss`, không còn tab riêng - đổi 2026-08) |
 | `character` (Nhân vật) | `features/character` |
-| `inventory` (Kho) | chưa tách module riêng — hiện là placeholder tĩnh trong `core/app` (2026-08, thay thế vị trí tab `boss` cũ ở BottomNav) |
+| `inventory` (Kho) | `features/inventory` (thay thế vị trí tab `boss` cũ ở BottomNav) |
 | `settings` (Cài đặt) | chưa tách module riêng — hiện là placeholder tĩnh trong `core/app` |
 
 ## `data/` (không phải module, resource thuần)

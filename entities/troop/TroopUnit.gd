@@ -91,6 +91,7 @@ const COOLDOWN_BAR_READY_COLOR_ENEMY: Color = Color(0.95, 0.85, 0.15)
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hp_bar_bg: ColorRect = $HpBarBg
 @onready var hp_bar_fill: ColorRect = $HpBarBg/HpBarFill
+@onready var level_label: Label = $LevelLabel
 @onready var attack_bar_bg: ColorRect = $SkillStatus/AttackBarBg
 @onready var attack_bar_fill: ColorRect = $SkillStatus/AttackBarBg/AttackBarFill
 @onready var skill_bar_bg: ColorRect = $SkillStatus/SkillBarBg
@@ -130,6 +131,10 @@ func setup(data: LinhData, unit_team: Enums.Team, level: int = 1) -> void:
 	animated_sprite.flip_h = team == Enums.Team.ENEMY
 	animated_sprite.play("idle")
 	_update_hp_bar()
+	## Quái dùng monster_level (do EncounterGenerator sinh theo tầng), phe mình
+	## dùng Base Lv thật (GameState.get_base_level) - cấp không đổi trong lúc
+	## đang chiến đấu nên chỉ cần set 1 lần ở đây, không cần cập nhật mỗi frame.
+	level_label.text = "Lv.%d" % (level if unit_team != Enums.Team.PLAYER else GameState.get_base_level(data.id))
 	queue_redraw()
 
 func is_dead() -> bool:
@@ -193,16 +198,15 @@ func _draw() -> void:
 	if troop_data != null:
 		draw_arc(Vector2.ZERO, attack_range_px(), 0.0, TAU, 48, Color(1.0, 0.2, 0.2, 0.85), 2.0)
 
-const MELEE_RANGE_COEF: float = 0.1
-const RANGED_RANGE_COEF: float = 1.0
+const RANGE_COEF: float = 0.1 ## DÙNG CHUNG cho mọi loại - không còn tách hệ số riêng theo troop_type NORMAL/ARCHER như trước
 
-## Phạm vi tấn công = đường kính hitbox * (1 + tầm đánh * hệ_số), hệ số khác
-## nhau theo troop_type - lính cận chiến (NORMAL) tăng chậm hơn hẳn lính
-## đánh xa (ARCHER) theo mỗi điểm tầm đánh, để 2 nhóm không dùng chung 1
-## đường cong.
+## Phạm vi tấn công = đường kính hitbox * (1 + tầm đánh * RANGE_COEF). Tầm
+## đánh (LinhData.attack_range) giờ tự nó đã phân biệt gần/trung/xa qua 1
+## trong 3 mốc RANGE_NEAR(1.0)/RANGE_MID(2.0)/RANGE_FAR(4.0), nên không cần
+## hệ số riêng theo troop_type nữa - 2 lính cùng tầm (VD 1 melee 1 ranged cùng
+## để RANGE_MID) sẽ ra đúng cùng 1 phạm vi tấn công thật.
 func attack_range_px() -> float:
-	var range_coef: float = RANGED_RANGE_COEF if troop_data.troop_type == Enums.TroopType.ARCHER else MELEE_RANGE_COEF
-	return HITBOX_DIAMETER * (1.0 + troop_data.attack_range * range_coef)
+	return HITBOX_DIAMETER * (1.0 + troop_data.attack_range * RANGE_COEF)
 
 ## "1 điểm ATK Speed = 1 giây đánh được 0.1 lần" -> số đòn/giây = atk_speed * 0.1.
 func attack_interval() -> float:

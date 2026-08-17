@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=41 format=3 uid="uid://ikurcw58tfgw"]
 
-[ext_resource type="Texture2D" uid="uid://ci2wxgrouqy5i" path="res://assets/troops/armored_skeleton/ArmoredSkeletonSheet.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://cprcs4aa3rjj7" path="res://assets/troops/armored_skeleton/ArmoredSkeletonSheet.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_armored_skeleton_attack01_0"]
 atlas = ExtResource("1")

@@ -4,15 +4,18 @@ extends Control
 ## Màn "Thành phố" (`city`) - lưới thẻ 2 cột đúng mockup
 ## mockups/giao-dien-hien-tai.html (#city .city-grid), bấm thẻ mở panel
 ## tương ứng. KHÔNG còn map/NPC đi lại (đã bỏ SubViewport+OverworldWorld) -
-## đơn giản hoá theo đúng hướng mockup đã chốt, chỉ 2 thẻ có gameplay thật
-## (Nâng cấp = UpgraderPanel, Kho báu = WarehousePanel), 2 thẻ còn lại (Thợ
-## rèn/Cửa hàng) là placeholder cho tương lai.
+## đơn giản hoá theo đúng hướng mockup đã chốt, chỉ 1 thẻ có gameplay thật
+## (Nâng cấp = UpgraderPanel), 2 thẻ còn lại (Thợ rèn/Cửa hàng) là placeholder
+## cho tương lai. "Kho báu" đã BỎ khỏi màn này (2026-08) - Kho giờ là 1 tab
+## riêng ở BottomNav (`features/inventory/InventoryScreen.gd`), không còn lối
+## vào thứ 2 từ đây nữa. `WarehousePanel` (node con, .tscn) vẫn còn trong scene
+## (chưa xoá file/node - không mồ côi hẳn vì UpgraderPanel.gd tương tự vẫn
+## dùng chung khuôn) nhưng KHÔNG còn cách nào mở được từ UI.
 
 const ITEMS: Array[Dictionary] = [
 	{"icon": "⚒️", "name": "Thợ rèn", "action": "blacksmith"},
 	{"icon": "🛒", "name": "Cửa hàng", "action": "shop"},
 	{"icon": "🔮", "name": "Nâng cấp", "action": "upgrader"},
-	{"icon": "🏦", "name": "Kho báu", "action": "warehouse"},
 ]
 
 const COLS: int = 2
@@ -27,7 +30,6 @@ const NAME_COLOR: Color = Color(0.867, 0.867, 0.867) ## mockup .city-name color 
 
 @onready var _blacksmith_panel: SimplePlaceholderPanel = $BlacksmithPanel
 @onready var _shop_panel: SimplePlaceholderPanel = $ShopPanel
-@onready var _warehouse_panel: WarehousePanel = $WarehousePanel
 @onready var _upgrader_panel: UpgraderPanel = $UpgraderPanel
 
 func _ready() -> void:
@@ -108,5 +110,3 @@ func _on_item_pressed(action: String) -> void:
 			_shop_panel.open()
 		"upgrader":
 			_upgrader_panel.open()
-		"warehouse":
-			_warehouse_panel.open()

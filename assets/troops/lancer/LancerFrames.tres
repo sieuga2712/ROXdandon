@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=47 format=3 uid="uid://c1kxleel7acbo"]
 
-[ext_resource type="Texture2D" uid="uid://c3ksu8fn7kt6u" path="res://assets/troops/lancer/LancerSheet.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://bidbuj6dhh4om" path="res://assets/troops/lancer/LancerSheet.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lancer_attack01_0"]
 atlas = ExtResource("1")

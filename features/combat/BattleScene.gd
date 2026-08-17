@@ -52,6 +52,8 @@ const POPUP_SPAWN_OFFSET: Vector2 = Vector2(0, -70) ## Cao hơn thanh máu 1 ch�
 const COLOR_DAMAGE_NORMAL: Color = Color.WHITE
 const COLOR_DAMAGE_SKILL: Color = Color(1.0, 0.6, 0.0) ## cam
 const COLOR_HEAL: Color = Color(0.3, 0.9, 0.3) ## xanh lá
+const COLOR_MATERIAL: Color = Color(0.6, 0.85, 1.0)
+const MATERIAL_DROP_CHANCE: float = 0.7 ## hạ 1 quái = 70% rơi đúng 1 nguyên liệu cấp 1 (ngẫu nhiên trong 10 nhóm, giống StageFarmWorld._roll_material_drop)
 
 ## Bán kính hitbox va chạm để lính không đè khít lên nhau - nhỏ hơn hẳn
 ## hitbox logic dùng cho tầm đánh (TroopUnit.HITBOX_DIAMETER/2). Không dùng
@@ -80,6 +82,31 @@ const WAVE_CLEAR_DELAY: float = 0.6 ## nghỉ ngắn giữa 2 đợt (không k�
 const CAMERA_FOLLOW_LERP_SPEED: float = 4.0 ## hệ số lerp/giây, giống hệt StageFarmWorld
 const CAMERA_LEFT_OFFSET_X: float = 180.0 ## lệch tâm camera sang PHẢI so với party 1 khoảng = 1/4 chiều rộng viewport (720px) - để phe mình luôn hiện ở góc trái màn, không đứng giữa, giống hệt StageFarmWorld
 
+## --- Giới hạn bản đồ (2026-08) ---
+## Trước đây _wave_anchor_x cộng dồn WAVE_SPACING_X mãi mãi theo
+## boss_trash_wave_count -> world dài vô hạn, không có limit_left/right thật,
+## BattleArenaBackground rộng cố định quanh world X=0 nên khi camera cuộn quá
+## đợt 1, nền đen (Background, ColorRect ngoài SubViewport) lộ ra phía sau.
+## TRASH_WAVE_SLOTS = số vị trí X CỐ ĐỊNH mà đợt quái thường xoay vòng qua.
+## boss_trash_wave_count hiện luôn = 3 (mặc định StageData, chưa .tres nào
+## chỉnh) nên trong thực tế KHÔNG BAO GIỜ phải xoay vòng thật - đây là lưới an
+## toàn cho sau này nếu 1 độ khó (vd *_kho.tres) tăng số đợt thường lên > 3.
+## Nếu có xoay vòng thật, _recenter_world() dịch lại party + camera lùi về
+## đúng lúc không có quái trên màn (WAVE_CLEAR_DELAY) để giữ cảm giác "luôn
+## tiến về phía trước" mà KHÔNG để toạ độ world lớn dần vô hạn - xem
+## _spawn_next_wave().
+const TRASH_WAVE_SLOTS: int = 3
+## Boss LUÔN đứng ở vị trí CỐ ĐỊNH ngay sau vị trí đợt thường xa nhất, bất kể
+## trước đó có bao nhiêu đợt/có xoay vòng hay không - tự nhiên xa hơn hẳn mọi
+## đợt trash nên "dễ phân biệt"/camera tự dịch phải hơn khi boss xuất hiện,
+## không cần code "camera nudge" riêng cho boss.
+const BOSS_ANCHOR_X: float = PLAYER_TEAM_CENTER.x + FIRST_WAVE_OFFSET_X + TRASH_WAVE_SLOTS * WAVE_SPACING_X
+
+const VIEWPORT_HALF_WIDTH: float = 360.0 ## SubViewport rộng 720 (xem .tscn) - dùng để camera limit không chặn cứng ngay sát tầm nhìn tự nhiên (Godot tự trừ nửa viewport khi kẹp vị trí camera vào limit)
+const CAMERA_VIEW_MARGIN: float = 40.0 ## đệm dôi thêm, tránh clamp chạm biên đúng lúc đang cần thấy trọn cảnh
+const CAMERA_LIMIT_LEFT: float = PLAYER_TEAM_CENTER.x + CAMERA_LEFT_OFFSET_X - VIEWPORT_HALF_WIDTH - CAMERA_VIEW_MARGIN
+const CAMERA_LIMIT_RIGHT: float = BOSS_ANCHOR_X + CAMERA_LEFT_OFFSET_X + VIEWPORT_HALF_WIDTH + CAMERA_VIEW_MARGIN
+
 const SKILL_INTERVAL: float = 2.0 ## Đánh mạnh tự động kích hoạt mỗi 2 giây
 const PRIEST_SKILL_INTERVAL: float = 1.0 ## Riêng Priest: chu kỳ ngắn hơn hẳn để hồi máu/đánh thường xen kẽ rõ hơn
 const SKILL_DAMAGE_MULT: float = 2.0
@@ -91,6 +118,7 @@ const DEBUG_FREEZE_UNITS: bool = false
 
 @onready var arena: Node2D = %BattleArena
 @onready var battle_camera: Camera2D = %BattleCamera
+@onready var battle_arena_background: ColorRect = %BattleArenaBackground
 @onready var timer_label: Label = %BattleTimerLabel
 @onready var result_panel: PanelContainer = %BattleResultPanel
 @onready var result_title: Label = %BattleResultTitle
@@ -107,7 +135,7 @@ var _last_result_won: bool = false ## lưu lại từ _end_battle() để _on_re
 
 var _wave_count: int = 1 ## boss_trash_wave_count + 1 (đợt cuối = boss thật) - xem start_battle()
 var _current_wave_index: int = -1 ## đợt đang đánh (0-based), -1 = chưa spawn đợt nào
-var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tăng WAVE_SPACING_X mỗi lần _spawn_next_wave()
+var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tính lại mỗi lần _spawn_next_wave() theo slot xoay vòng (xem TRASH_WAVE_SLOTS) hoặc BOSS_ANCHOR_X nếu là đợt boss
 var _wave_transition_timer: float = -1.0 ## >=0: đang nghỉ WAVE_CLEAR_DELAY giữa 2 đợt (KHÔNG kết thúc trận - chỉ đợt cuối chết mới end battle)
 
 func _ready() -> void:
@@ -119,6 +147,20 @@ func _ready() -> void:
 		get_tree().debug_collisions_hint = true
 	battle_camera.zoom = Vector2.ONE
 
+	## Nền + giới hạn camera CỐ ĐỊNH, không phụ thuộc stage/đợt - set 1 lần ở
+	## đây (LUÔN chạy trước start_battle() đầu tiên) để battle_camera.position
+	## gán lần đầu trong start_battle() đã bị giới hạn đúng ngay từ đầu.
+	battle_arena_background.offset_left = CAMERA_LIMIT_LEFT
+	battle_arena_background.offset_right = CAMERA_LIMIT_RIGHT
+	battle_camera.limit_left = roundi(CAMERA_LIMIT_LEFT)
+	battle_camera.limit_right = roundi(CAMERA_LIMIT_RIGHT)
+	## KHÔNG set limit_top/limit_bottom: camera.position.y luôn = 0 (không nơi
+	## nào trong file này đổi .y). SubViewport ở đây cao 1280 (nửa=640) >
+	## world cao 900 (nửa=450, offset_top/bottom không đổi) - nếu chặn
+	## limit_top/bottom theo đúng 900 đó, Godot sẽ ép camera center Y lệch
+	## khỏi 0 (khoảng hợp lệ [190,-190] rỗng/đảo ngược), làm lệch khung hình.
+	## Để mặc định (không giới hạn dọc) là AN TOÀN vì Y không bao giờ bị đổi.
+
 func start_battle(stage: StageData) -> void:
 	_stage = stage
 	_clear_units()
@@ -127,7 +169,6 @@ func start_battle(stage: StageData) -> void:
 
 	_wave_count = maxi(stage.boss_trash_wave_count, 0) + 1 ## đợt cuối luôn là boss thật
 	_current_wave_index = -1
-	_wave_anchor_x = PLAYER_TEAM_CENTER.x + FIRST_WAVE_OFFSET_X - WAVE_SPACING_X
 	_spawn_next_wave()
 
 	_time_left = stage.time_limit
@@ -157,19 +198,32 @@ func _spawn_team(troop_ids: Array[int], team: Enums.Team, team_center: Vector2, 
 		else:
 			_enemy_units.append(unit)
 
-## Dọn đợt quái cũ (nếu có) rồi spawn đợt KẾ TIẾP cách đợt trước WAVE_SPACING_X
-## dọc trục X - còn đợt trash thì random quái thường (EncounterGenerator), là
-## đợt CUỐI CÙNG thì spawn boss thật (enemy_troop_ids/enemy_troop_counts).
+## Dọn đợt quái cũ (nếu có) rồi spawn đợt KẾ TIẾP - đợt thường xoay vòng qua
+## TRASH_WAVE_SLOTS vị trí X cố định (world không tăng vô hạn - xem ghi chú
+## TRASH_WAVE_SLOTS), đợt CUỐI CÙNG (boss thật) luôn đứng ở BOSS_ANCHOR_X.
 func _spawn_next_wave() -> void:
 	for unit in _enemy_units:
 		unit.queue_free()
 	_enemy_units.clear()
 	_current_wave_index += 1
-	_wave_anchor_x += WAVE_SPACING_X
 	if _current_wave_index < _wave_count - 1:
+		var slot: int = _current_wave_index % TRASH_WAVE_SLOTS
+		if slot == 0 and _current_wave_index > 0:
+			_recenter_world(TRASH_WAVE_SLOTS * WAVE_SPACING_X)
+		_wave_anchor_x = PLAYER_TEAM_CENTER.x + FIRST_WAVE_OFFSET_X + slot * WAVE_SPACING_X
 		_spawn_trash_wave()
 	else:
+		_wave_anchor_x = BOSS_ANCHOR_X
 		_spawn_boss_wave()
+
+## Dịch cả party lẫn camera lùi lại đúng `shift` - gọi ĐÚNG LÚC không còn quái
+## nào sống trên màn (giữa 2 đợt, WAVE_CLEAR_DELAY), khi party đang idle không
+## di chuyển, nên hoàn toàn không thấy "giật/nhảy". Giữ cảm giác "luôn tiến về
+## phía trước" dù toạ độ world không bao giờ vượt CAMERA_LIMIT_LEFT/RIGHT.
+func _recenter_world(shift: float) -> void:
+	for unit in _player_units:
+		unit.position.x -= shift
+	battle_camera.position.x -= shift
 
 func _spawn_trash_wave() -> void:
 	var encounter: Dictionary = EncounterGenerator.generate_encounter(EncounterGenerator.BASE_MONSTERS_PER_WAVE, _stage.boss_trash_monster_level)
@@ -445,6 +499,23 @@ func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float
 		## ước "giết quái thì cả team nhận EXP" như treo máy (xem
 		## StageFarmWorld._apply_damage).
 		GameState.grant_kill_exp(GameState.PARTY_TROOP_IDS, defender.troop_data.exp_reward)
+		_roll_material_drop(defender)
+
+## Hạ 1 quái = MATERIAL_DROP_CHANCE (70%) rơi đúng 1 nguyên liệu cấp 1, ngẫu
+## nhiên trong 10 nhóm (xem MaterialDatabase.random_tier1_id) - cộng thẳng
+## vào GameState.materials (WarehousePanel đọc trực tiếp từ đó).
+func _roll_material_drop(defender: TroopUnit) -> void:
+	if randf() >= MATERIAL_DROP_CHANCE:
+		return
+	var material_id := MaterialDatabase.random_tier1_id()
+	GameState.add_material(material_id, 1)
+	var mat := MaterialDatabase.get_by_id(material_id)
+	_spawn_loot_popup(defender, "+1 %s" % mat.display_name, COLOR_MATERIAL)
+
+func _spawn_loot_popup(unit: TroopUnit, text: String, color: Color) -> void:
+	var popup: DamagePopup = DAMAGE_POPUP_SCENE.instantiate()
+	arena.add_child(popup)
+	popup.setup(text, color, unit.position + POPUP_SPAWN_OFFSET + Vector2(0, -16))
 
 func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float, is_skill: bool) -> void:
 	var projectile: Projectile = PROJECTILE_SCENE.instantiate()

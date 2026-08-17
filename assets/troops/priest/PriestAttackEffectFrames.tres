@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://dmyhigbtcf6ie"]
 
-[ext_resource type="Texture2D" uid="uid://82duh4idnmhf" path="res://assets/troops/priest/PriestAttackEffectSheet.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://jrkihbifed0t" path="res://assets/troops/priest/PriestAttackEffectSheet.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_priest_attack_effect_0"]
 atlas = ExtResource("1")

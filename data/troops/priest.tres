@@ -24,6 +24,6 @@ crit_damage = 1.5
 armor_penetration = 10.0
 life_steal = 0.01
 regen_hp = 10.0
-attack_range = 8.0
+attack_range = 20.0
 exp_reward = 7
 gold_reward = 10

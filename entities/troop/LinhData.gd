@@ -29,7 +29,22 @@ extends Resource
 @export var armor_penetration: float = 10.0 ## 1 điểm = bỏ qua 1% giáp tương ứng (DEF/M.DEF đối phương)
 @export var life_steal: float = 0.01 ## 1% - hồi máu theo % sát thương gây ra
 @export var regen_hp: float = 10.0 ## hồi mỗi 5 giây
-@export var attack_range: float = 100.0 ## xem công thức quy đổi ra phạm vi tấn công trong TroopUnit.attack_range_px()
+
+## Tầm đánh CHỈ được gán 1 trong 3 mốc dưới đây - không dùng số tự do khác.
+## Quy đổi ra pixel thật dùng CHUNG 1 hệ số cho cả 3 mốc (xem
+## TroopUnit.RANGE_COEF/attack_range_px()) - không còn phân biệt theo
+## troop_type NORMAL/ARCHER như trước, tầm xa/gần giờ chọn TRỰC TIẾP qua field
+## này cho từng loại lính/quái.
+## RANGE_MID/RANGE_FAR đang tạm x10 (2.0->20.0, 4.0->40.0) để THỬ dãn đội hình
+## chiến đấu ra xa nhau hơn (đánh giá bằng mắt xem có ổn không - trước đó với
+## RANGE_COEF dùng chung 0.1, mọi loại tầm đánh chỉ chênh nhau rất ít khiến
+## các đơn vị đứng dính sát nhau). RANGE_NEAR giữ nguyên 1.0 - chỉ x10 tầm
+## trung/xa theo đúng yêu cầu.
+const RANGE_NEAR: float = 1.0
+const RANGE_MID: float = 20.0
+const RANGE_FAR: float = 40.0
+
+@export var attack_range: float = RANGE_NEAR ## xem RANGE_NEAR/RANGE_MID/RANGE_FAR ở trên
 
 ## Hạ được 1 con này thì CẢ TEAM (mọi thành viên đang cùng đội - đánh tay hay
 ## treo máy) nhận đúng số EXP này, cộng vào cả Base EXP lẫn Job EXP (xem

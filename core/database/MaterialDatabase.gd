@@ -60,3 +60,8 @@ func get_group_keys(category: String) -> Array[String]:
 
 func make_id(group_key: String, tier: int) -> String:
 	return "%s_cap%d" % [group_key, tier]
+
+## Chọn ngẫu nhiên 1 nguyên liệu CẤP 1 (đều trong 10 nhóm) - dùng cho tỉ lệ
+## rơi đồ khi hạ quái, xem StageFarmWorld/BattleScene._apply_damage().
+func random_tier1_id() -> String:
+	return make_id(GROUPS.pick_random()["key"], 1)

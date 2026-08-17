@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2wdy4ldlhmkx"]
+[gd_scene load_steps=10 format=3 uid="uid://d2wdy4ldlhmkx"]
 
-[ext_resource type="Script" uid="uid://c7l5o7lhw7tg4" path="res://core/app/MainShell.gd" id="1"]
-[ext_resource type="Script" uid="uid://dgt28yk2ohr5w" path="res://core/app/ScreenRouter.gd" id="2"]
+[ext_resource type="Script" path="res://core/app/MainShell.gd" id="1"]
+[ext_resource type="Script" path="res://core/app/ScreenRouter.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://bxeyoolca3uc4" path="res://features/city/OverworldMap.tscn" id="3"]
-[ext_resource type="PackedScene" uid="uid://cf6er44u8rje2" path="res://features/combat/BattleScene.tscn" id="4"]
-[ext_resource type="PackedScene" uid="uid://cg8vhux0peo6b" path="res://core/app/BottomNav.tscn" id="5"]
-[ext_resource type="Script" uid="uid://cuyxjfbmfl5e7" path="res://features/combat/StageFlowController.gd" id="6"]
+[ext_resource type="PackedScene" path="res://features/combat/BattleScene.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://core/app/BottomNav.tscn" id="5"]
+[ext_resource type="Script" path="res://features/combat/StageFlowController.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://gi4mhp1kergl" path="res://features/stage/StageBoardScreen.tscn" id="7"]
-[ext_resource type="PackedScene" uid="uid://xict2qvkww2k" path="res://features/character/CharacterBoardScreen.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://features/character/CharacterBoardScreen.tscn" id="9"]
+[ext_resource type="Script" path="res://features/inventory/InventoryScreen.gd" id="10"]
 
 [node name="MainShell" type="Control"]
 layout_mode = 3
@@ -41,38 +42,14 @@ unique_name_in_owner = true
 layout_mode = 1
 
 [node name="inventory" type="Control" parent="ScreenContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 72.0
-offset_bottom = -96.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Background" type="ColorRect" parent="ScreenContainer/inventory"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-color = Color(0.16, 0.18, 0.22, 1)
-
-[node name="Center" type="CenterContainer" parent="ScreenContainer/inventory"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PlaceholderLabel" type="Label" parent="ScreenContainer/inventory/Center"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.5)
-theme_override_font_sizes/font_size = 18
-text = "Kho - đang phát triển"
+script = ExtResource("10")
 
 [node name="settings" type="Control" parent="ScreenContainer"]
 layout_mode = 1
