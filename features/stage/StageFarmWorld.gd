@@ -21,17 +21,34 @@ extends Node2D
 ## quái đều tăng theo floor_number - xem core/combat/EncounterGenerator.gd),
 ## quái đợt kế luôn spawn xa hơn về +X (WAVE_SPACING_X) - party tự đi tới vì
 ## AI vẫn chỉ "tìm địch gần nhất rồi tới đánh" như cũ, không có gì đổi ở đó.
-## Camera bám theo X trung bình của party mỗi frame (_update_camera_follow)
-## tạo cảm giác phe mình đứng yên, quái/thế giới trôi qua - kiểu auto-runner
-## (tham khảo Tap Titans/taskbar hero). Hết đợt hiện tại (còn đợt kế trong
-## tầng) -> nghỉ WAVE_CLEAR_DELAY rồi spawn đợt kế (_spawn_next_wave). Hết ĐỢT
-## CUỐI CÙNG (party còn sống) = THẮNG CẢ TẦNG -> báo
-## GameState.report_floor_cleared rồi tự nạp StageData tầng kế tiếp (không
-## còn bị kẹp ở tầng cuối cùng đã author tay - xem GameState.resolve_stage_for_floor).
-## THUA (party chết sạch, ở BẤT KỲ đợt nào) -> đánh lại từ ĐỢT 1 của đúng tầng
-## đang treo, không tiếp tục từ đợt đang thua (xem _revive_all). Cả thắng/thua
-## cả tầng đều chờ RESTART_DELAY giây trước khi thật sự đổi - giống kiểu AFK
-## Arena/game farm-tầng-tự-động.
+##
+## Camera BÁM LIÊN TỤC theo 1 NHÂN VẬT CỤ THỂ trong party (không phải trung
+## bình cả đội, không khoá cứng theo area/wave) - chọn nhân vật theo tầm đánh,
+## thứ tự ưu tiên ĐỔI tuỳ đã giao chiến hay chưa (xem _pick_camera_follow_unit()):
+## - CHƯA giao chiến (đang đi tới quái): ưu tiên MID (Priest) -> GẦN (Soldier)
+##   -> XA (Archer/Wizard).
+## - ĐÃ giao chiến (có unit is_engaged): ưu tiên GẦN (Soldier, tank đứng đầu)
+##   -> MID (Priest) -> XA (Archer/Wizard).
+## Lựa chọn này CHỈ đánh giá lại mỗi CAMERA_FOLLOW_SWITCH_HOLD giây (không
+## phải mỗi frame) - tránh camera đổi hướng liên tục nếu is_engaged nhấp nháy
+## lúc combat. Target còn lệch sang phải CAMERA_LOOKAHEAD_X so với nhân vật
+## đang bám (nhân vật hiện ở bên trái tâm màn hình), để nhân vật hiện rõ hơn
+## (không dính đúng tâm) và hé thêm không gian phía quái sắp tới. Hết phe
+## mình (cả đội chết, đang chờ hồi sinh) ->
+## fallback về PARTY_CENTER.x (xem _update_camera_follow()) - tự nhiên lerp về
+## nhà, không cần code riêng cho lúc thua. Giới hạn camera THEO MAP
+## (_camera_limit_left/right, tính từ
+## viewport thật lúc _ready(), không hard-code độ phân giải) đảm bảo không bao
+## giờ lộ ra ngoài world.
+##
+## Hết đợt hiện tại (còn đợt kế trong tầng) -> nghỉ WAVE_CLEAR_DELAY rồi spawn
+## đợt kế (_spawn_next_wave). Hết ĐỢT CUỐI CÙNG (party còn sống) = THẮNG CẢ
+## TẦNG -> báo GameState.report_floor_cleared rồi tự nạp StageData tầng kế
+## tiếp (không còn bị kẹp ở tầng cuối cùng đã author tay - xem
+## GameState.resolve_stage_for_floor). THUA (party chết sạch, ở BẤT KỲ đợt
+## nào) -> đánh lại từ ĐỢT 1 của đúng tầng đang treo, không tiếp tục từ đợt
+## đang thua (xem _revive_all). Cả thắng/thua cả tầng đều chờ RESTART_DELAY
+## giây trước khi thật sự đổi - giống kiểu AFK Arena/game farm-tầng-tự-động.
 ##
 ## PHẠM VI (cắt bớt có chủ đích): chỉ có đòn đánh thường (đúng công thức sát
 ## thương của BattleScene._resolve_attack/_apply_damage - crit/giáp hiệu
@@ -65,8 +82,7 @@ const CORPSE_VANISH_DELAY: float = 2.0 ## xác đơn vị chết ẩn đi sau ch
 const WAVE_SPACING_X: float = 900.0 ## khoảng cách world-X giữa 2 đợt liên tiếp
 const FIRST_WAVE_OFFSET_X: float = 260.0 ## khoảng cách từ PARTY_CENTER tới đợt đầu tiên
 const WAVE_CLEAR_DELAY: float = 0.6 ## nghỉ ngắn giữa 2 đợt trong CÙNG 1 tầng - khác RESTART_DELAY (dùng cho thắng/thua cả tầng)
-const CAMERA_FOLLOW_LERP_SPEED: float = 4.0 ## hệ số lerp/giây - camera đuổi theo X trung bình của party còn sống, tạo cảm giác phe mình đứng yên
-const CAMERA_LEFT_OFFSET_X: float = 180.0 ## lệch tâm camera sang PHẢI so với party 1 khoảng = 1/4 chiều rộng viewport (720px) - để phe mình luôn hiện ở góc trái màn, không đứng giữa, dễ theo dõi quái/boss tới từ bên phải
+const CAMERA_FOLLOW_LERP_SPEED: float = 4.0 ## hệ số lerp/giây - camera lerp mượt tới _camera_target_x, KHÔNG tính lại target mỗi frame
 
 ## --- Giới hạn bản đồ (2026-08) ---
 ## Trước đây _wave_anchor_x cộng dồn WAVE_SPACING_X mãi mãi theo floor_number
@@ -76,14 +92,11 @@ const CAMERA_LEFT_OFFSET_X: float = 180.0 ## lệch tâm camera sang PHẢI so v
 ## quái xoay vòng qua - hết 1 vòng, _recenter_world() dịch lại party + camera
 ## lùi về đúng lúc không có quái trên màn (WAVE_CLEAR_DELAY), giữ nguyên cảm
 ## giác "luôn tiến về phía trước" nhưng world không bao giờ vượt
-## CAMERA_LIMIT_LEFT/RIGHT nữa - ground_background giờ TĨNH, không cần bám
+## _camera_limit_left/right nữa - ground_background giờ TĨNH, không cần bám
 ## theo camera mỗi frame nữa.
 const WAVE_SLOT_COUNT: int = 3
 
-const VIEWPORT_HALF_WIDTH: float = 360.0 ## SubViewport rộng 720 (xem .tscn)
 const CAMERA_VIEW_MARGIN: float = 40.0 ## đệm dôi thêm, tránh clamp chạm biên đúng lúc đang cần thấy trọn cảnh
-const CAMERA_LIMIT_LEFT: float = PARTY_CENTER.x + CAMERA_LEFT_OFFSET_X - VIEWPORT_HALF_WIDTH - CAMERA_VIEW_MARGIN
-const CAMERA_LIMIT_RIGHT: float = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + (WAVE_SLOT_COUNT - 1) * WAVE_SPACING_X + CAMERA_LEFT_OFFSET_X + VIEWPORT_HALF_WIDTH + CAMERA_VIEW_MARGIN
 
 @onready var arena: Node2D = $Arena
 @onready var camera: Camera2D = $FarmCamera
@@ -103,15 +116,30 @@ var _current_wave_index: int = -1 ## đợt đang đánh (0-based), -1 = chưa s
 var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tính lại mỗi lần _spawn_next_wave() theo slot xoay vòng (xem WAVE_SLOT_COUNT)
 var _wave_transition_timer: float = -1.0 ## >=0: đang nghỉ WAVE_CLEAR_DELAY giữa 2 đợt (khác _restart_timer - dùng khi hết CẢ TẦNG)
 
+const CAMERA_FOLLOW_SWITCH_HOLD: float = 0.6 ## giữ nguyên nhân vật đang bám tối thiểu chừng này giây trước khi cho đổi lại - tránh camera "lật" liên tục nếu is_engaged nhấp nháy (unit ra/vào tầm đánh nhanh), xem _update_camera_follow()
+const CAMERA_LOOKAHEAD_X: float = 60.0 ## camera lệch sang PHẢI 1 khoảng nhỏ so với nhân vật đang bám - nhân vật hiện rõ hơn ở bên trái tâm màn hình thay vì đúng giữa, hé thêm không gian bên phải (hướng quái tới)
+
+var _camera_follow_unit: TroopUnit = null ## unit ĐANG được camera bám - chỉ đánh giá lại lựa chọn khi hết CAMERA_FOLLOW_SWITCH_HOLD hoặc unit này vừa chết, xem _update_camera_follow()
+var _camera_follow_switch_cooldown: float = 0.0
+var _camera_return_home: bool = false ## true = ép camera lerp về PARTY_CENTER.x bất kể đang bám ai - bật lúc THẮNG CẢ TẦNG/THUA (chờ RESTART_DELAY), để tới lúc configure() tầng mới/_revive_all() chạy thì camera đã sẵn ở nhà, không còn gì để "nhảy" - xem _check_wipe()
+var _camera_target_x: float = 0.0 ## = _camera_follow_unit.position.x + CAMERA_LOOKAHEAD_X (hoặc PARTY_CENTER.x nếu hết phe mình/_camera_return_home) - lưu ở đây chỉ để tiện đọc/debug, camera.position lerp mượt tới giá trị này chứ không gán thẳng
+var _camera_limit_left: float = 0.0 ## tính theo viewport THẬT lúc _ready() (không hard-code độ phân giải) - xem _ready()
+var _camera_limit_right: float = 0.0
+
 func _ready() -> void:
 	## Nền + giới hạn camera CỐ ĐỊNH bất kể floor_number/wave_count - set 1 lần
 	## ở đây (LUÔN chạy trước configure() đầu tiên - Godot gọi _ready() ngay
 	## khi add_child(), trước khi add_child() trả về) để camera.position gán
-	## lần đầu trong configure() đã bị giới hạn đúng ngay từ đầu.
-	ground_background.position.x = CAMERA_LIMIT_LEFT
-	ground_background.size.x = CAMERA_LIMIT_RIGHT - CAMERA_LIMIT_LEFT
-	camera.limit_left = roundi(CAMERA_LIMIT_LEFT)
-	camera.limit_right = roundi(CAMERA_LIMIT_RIGHT)
+	## lần đầu trong configure() đã bị giới hạn đúng ngay từ đầu. Đọc
+	## get_viewport_rect() THẬT thay vì hard-code 1 độ phân giải cố định - vẫn
+	## đúng nếu SubViewport (xem StageFarmMap.tscn) đổi kích thước sau này.
+	var viewport_half_width: float = get_viewport_rect().size.x / 2.0
+	_camera_limit_left = PARTY_CENTER.x - viewport_half_width - CAMERA_VIEW_MARGIN
+	_camera_limit_right = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + (WAVE_SLOT_COUNT - 1) * WAVE_SPACING_X + viewport_half_width + CAMERA_VIEW_MARGIN
+	ground_background.position.x = _camera_limit_left
+	ground_background.size.x = _camera_limit_right - _camera_limit_left
+	camera.limit_left = roundi(_camera_limit_left)
+	camera.limit_right = roundi(_camera_limit_right)
 	## KHÔNG set limit_top/limit_bottom - camera.position.y không bao giờ đổi
 	## ở file này (lý do chi tiết xem BattleScene._ready(), cùng công thức).
 
@@ -128,8 +156,20 @@ func configure(stage: StageData, member_troop_ids: Array[int]) -> void:
 
 	_stage = stage
 	_member_troop_ids = member_troop_ids
-	camera.position = PARTY_CENTER + Vector2(CAMERA_LEFT_OFFSET_X, 0.0)
+	## Camera bắt đầu tại PARTY_CENTER (chỗ phe mình sắp spawn) - tránh
+	## giật/lerp thừa từ vị trí Godot mặc định (0,0) lúc mới vào tầng.
+	## _update_camera_follow() ngay frame kế sẽ tự tính lại target đúng theo
+	## nhân vật được chọn (party vừa spawn tại đây nên giá trị khớp nhau).
+	camera.position = Vector2(PARTY_CENTER.x, 0.0)
 	camera.zoom = Vector2.ONE
+	## party_units cũ vừa bị queue_free() ở trên (nếu có) - _camera_follow_unit
+	## đang trỏ tới instance CŨ đó, phải reset để buộc đánh giá lại ngay trên
+	## party MỚI vừa spawn, không đợi hết CAMERA_FOLLOW_SWITCH_HOLD. Tắt luôn
+	## _camera_return_home (nếu bật từ lúc thắng cả tầng) - đợt/tầng mới đã bắt
+	## đầu thật, quay lại bám nhân vật bình thường.
+	_camera_follow_unit = null
+	_camera_follow_switch_cooldown = 0.0
+	_camera_return_home = false
 	_spawn_party(member_troop_ids)
 
 	_wave_count = EncounterGenerator.wave_count_for_floor(stage.floor_number)
@@ -169,10 +209,19 @@ func _spawn_next_wave() -> void:
 		unit.queue_free()
 		_death_timers.erase(unit)
 	enemy_units.clear()
+
 	_current_wave_index += 1
 	var slot: int = _current_wave_index % WAVE_SLOT_COUNT
 	if slot == 0 and _current_wave_index > 0:
-		_recenter_world(WAVE_SLOT_COUNT * WAVE_SPACING_X)
+		## Dịch cả party lẫn camera lùi lại - tính theo vị trí camera THẬT lúc
+		## này (không dùng số lý thuyết WAVE_SLOT_COUNT*WAVE_SPACING_X cố định
+		## nữa - camera giờ bám theo 1 NHÂN VẬT CỤ THỂ, nếu đó là Priest/Archer
+		## (tầm xa, đứng lùi khá xa so với vị trí quái) thì số cố định đó dư ra
+		## 1 khoảng, đẩy camera vọt ra NGOÀI HẲN _camera_limit_left - đây chính
+		## là bug "camera nhảy thẳng" báo cáo 2026-08). Dịch sao cho camera hạ
+		## cánh ĐÚNG vị trí PARTY_CENTER.x + CAMERA_LOOKAHEAD_X sau khi gộp -
+		## luôn nằm trong giới hạn map, bất kể đang bám nhân vật nào.
+		_recenter_world(camera.position.x - (PARTY_CENTER.x + CAMERA_LOOKAHEAD_X))
 	_wave_anchor_x = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + slot * WAVE_SPACING_X
 
 	var encounter: Dictionary = EncounterGenerator.generate_encounter_for_floor(_stage.floor_number)
@@ -238,23 +287,64 @@ func _process(delta: float) -> void:
 	_update_fight(delta)
 	_check_wipe()
 
-## Camera bám theo X trung bình của party còn sống mỗi frame - vì quái đợt
-## sau luôn spawn xa hơn về +X và party tự đi tới (_fight_step không đổi gì),
-## việc camera luôn tự canh theo party (LỆCH sang phải CAMERA_LEFT_OFFSET_X,
-## không canh giữa) tạo đúng cảm giác "phe mình đứng yên ở góc trái, thế
-## giới/quái trôi qua từ bên phải" - không cần waypoint/trạng thái "đang tiến
-## quân" gì thêm. Chỉ dịch trục X (Y giữ nguyên, đội hình chỉ dàn theo chiều dọc nhẹ).
+## Camera bám LIÊN TỤC theo 1 nhân vật cụ thể (xem _pick_camera_follow_unit())
+## - hết phe mình (cả đội chết, đang chờ RESTART_DELAY hồi sinh) thì fallback
+## về PARTY_CENTER.x, tự nhiên lerp về nhà, không cần code riêng cho lúc thua.
+##
+## CHỈ đánh giá lại "nên bám ai" mỗi CAMERA_FOLLOW_SWITCH_HOLD giây (hoặc ngay
+## khi unit đang bám vừa chết) - không tính lại mỗi frame, vì is_engaged của
+## 1 unit có thể nhấp nháy liên tục lúc combat (ra/vào tầm đánh), nếu đổi
+## target ngay lập tức mỗi lần nhấp nháy thì camera cứ đổi hướng giữa chừng
+## liên tục, nhìn như "do dự" dù từng bước lerp vẫn mượt riêng lẻ.
 func _update_camera_follow(delta: float) -> void:
-	var sum_x := 0.0
-	var count := 0
-	for unit in party_units:
-		if not unit.is_dead():
-			sum_x += unit.position.x
-			count += 1
-	if count == 0:
+	if _camera_return_home:
+		## Đang chờ RESTART_DELAY (thắng cả tầng/thua) - ép về nhà, KHÔNG bám
+		## unit nào cả (party vẫn đứng nguyên chỗ vừa đánh xong, có thể rất xa
+		## PARTY_CENTER - lerp về từ từ suốt lúc chờ, xem _check_wipe()).
+		_camera_target_x = PARTY_CENTER.x
+		camera.position.x = lerpf(camera.position.x, _camera_target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
 		return
-	var target_x: float = sum_x / count + CAMERA_LEFT_OFFSET_X
-	camera.position.x = lerpf(camera.position.x, target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
+
+	if _camera_follow_unit != null and _camera_follow_unit.is_dead():
+		_camera_follow_unit = null ## buộc đánh giá lại ngay, không đợi hết cooldown
+	_camera_follow_switch_cooldown -= delta
+	if _camera_follow_unit == null or _camera_follow_switch_cooldown <= 0.0:
+		_camera_follow_unit = _pick_camera_follow_unit()
+		_camera_follow_switch_cooldown = CAMERA_FOLLOW_SWITCH_HOLD
+
+	_camera_target_x = (_camera_follow_unit.position.x + CAMERA_LOOKAHEAD_X) if _camera_follow_unit != null else PARTY_CENTER.x
+	camera.position.x = lerpf(camera.position.x, _camera_target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
+
+const NEAR_CHARACTER_KEY: String = "soldier" ## melee, tank đứng đầu tuyến
+const MID_CHARACTER_KEY: String = "priest" ## hỗ trợ, thường đứng giữa đội hình
+const FAR_CHARACTER_KEYS: Array[String] = ["archer", "wizard"] ## tầm xa, đứng hậu phương
+
+## Chọn 1 nhân vật CỤ THỂ để camera bám theo (không lấy trung bình cả đội) -
+## thứ tự ưu tiên ĐỔI tuỳ đã giao chiến hay chưa:
+## - CHƯA giao chiến (không unit nào is_engaged, còn đang đi tới quái): ưu tiên
+##   MID (Priest, thường đứng giữa) -> GẦN (Soldier, tank dẫn đầu) -> XA
+##   (Archer/Wizard).
+## - ĐÃ giao chiến (có unit is_engaged = đang trong tầm đánh): ưu tiên GẦN
+##   (Soldier, người tiếp cận quái đầu tiên) -> MID (Priest) -> XA.
+## Trả null nếu cả phe mình đã chết (xem _update_camera_follow() fallback).
+func _pick_camera_follow_unit() -> TroopUnit:
+	var any_engaged := party_units.any(func(u: TroopUnit) -> bool: return not u.is_dead() and u.is_engaged)
+	var priority_keys := [NEAR_CHARACTER_KEY, MID_CHARACTER_KEY] if any_engaged else [MID_CHARACTER_KEY, NEAR_CHARACTER_KEY]
+	for character_key in priority_keys:
+		var unit := _find_alive_party_by_character_key(character_key)
+		if unit != null:
+			return unit
+	for character_key in FAR_CHARACTER_KEYS:
+		var unit := _find_alive_party_by_character_key(character_key)
+		if unit != null:
+			return unit
+	return null
+
+func _find_alive_party_by_character_key(character_key: String) -> TroopUnit:
+	for unit in party_units:
+		if not unit.is_dead() and unit.troop_data.character_key == character_key:
+			return unit
+	return null
 
 ## Trong lúc chờ RESTART_DELAY, _update_fight không còn chạy nên phải tự gọi
 ## play_idle() MỖI FRAME ở đây thay vì 1 lần duy nhất - play_idle() cố ý
@@ -426,12 +516,19 @@ func _check_wipe() -> void:
 	if not party_alive:
 		_pending_win = false
 		_restart_timer = RESTART_DELAY
+		_camera_return_home = true ## lerp về PARTY_CENTER suốt lúc chờ hồi sinh, xem _update_camera_follow()
 		return
 	if _current_wave_index < _wave_count - 1:
 		_wave_transition_timer = WAVE_CLEAR_DELAY
 	else:
 		_pending_win = true
 		_restart_timer = RESTART_DELAY
+		## THẮNG CẢ TẦNG - party đang đứng nguyên chỗ vừa đánh xong đợt cuối
+		## (có thể rất xa PARTY_CENTER qua nhiều đợt). Ép camera lerp về nhà
+		## NGAY (suốt RESTART_DELAY, không đợi configure() tầng mới snap tức
+		## thì) - tới lúc tầng mới thật sự bắt đầu, camera đã sẵn ở đó, không
+		## còn "nhảy" đúng lúc đợt quái đầu tầng mới xuất hiện nữa.
+		_camera_return_home = true
 
 ## Báo GameState mở khoá tầng vừa thắng, rồi nạp tầng kế tiếp của ĐÚNG map
 ## đang treo - tầng tiến được VÔ HẠN kể cả khi chưa author StageData thật cho
@@ -462,4 +559,5 @@ func _revive_all() -> void:
 		unit.position = PARTY_CENTER + offset
 	_death_timers.clear()
 	_current_wave_index = -1
+	_camera_return_home = false ## đợt 1 bắt đầu lại thật - quay lại bám nhân vật bình thường
 	_spawn_next_wave()

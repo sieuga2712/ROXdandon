@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="StageData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="StageData" load_steps=2 format=3 uid="uid://wctxk04p8ugf"]
 
-[ext_resource type="Script" path="res://entities/stage/StageData.gd" id="1"]
+[ext_resource type="Script" uid="uid://cixtft50hfdyr" path="res://entities/stage/StageData.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
@@ -8,7 +8,9 @@ id = 1
 stage_name = "Ải 1"
 time_limit = 120.0
 reward_gold = 50
-enemy_troop_ids = Array[int]([18, 14])
-enemy_troop_counts = Array[int]([2, 2])
 map_id = 0
 floor_number = 1
+enemy_troop_ids = Array[int]([18, 14])
+enemy_troop_counts = Array[int]([2, 2])
+boss_trash_wave_count = 3
+boss_trash_monster_level = 1
