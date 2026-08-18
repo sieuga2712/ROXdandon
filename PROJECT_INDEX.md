@@ -8,7 +8,7 @@ Bản đồ toàn bộ module — dùng để biết nên mở file nào trướ
 | `core/database/` | mỗi file 1 autoload độc lập | `TroopDatabase.gd`, `StageDatabase.gd`, `BossDatabase.gd`, `MapDatabase.gd`, `MaterialDatabase.gd`, `MaterialData.gd` | `entities/troop`, `entities/stage` (kiểu dữ liệu trả về) |
 | `core/shared/` | không có (thuần toolkit) | `UIBuilders.gd`, `UIConstants.gd` | không phụ thuộc gì trong project |
 | `core/config/` | không có (thuần hằng số) | `Enums.gd`, `ExpTables.gd` | không phụ thuộc gì trong project |
-| `core/combat/` | không có (thuần công thức) | `EncounterGenerator.gd` | không phụ thuộc gì trong project |
+| `core/combat/` | không có (thuần công thức + hành vi nhân vật dùng chung) | `EncounterGenerator.gd`, `CombatResolver.gd` | `CombatResolver` phụ thuộc `core/app`, `core/database`, `entities/troop`; `EncounterGenerator` không phụ thuộc gì |
 | `entities/troop/` | `TroopUnit.gd` | `TroopUnit.gd`, `LinhData.gd`, `Projectile.gd`, `ImpactEffect.gd`, `DamagePopup.gd` | `core/config` (Enums) |
 | `entities/stage/` | `StageData.gd` | `StageData.gd` | không phụ thuộc gì trong project |
 | `features/city/` | `OverworldMap.gd` | `OverworldMap.gd`, `SimplePlaceholderPanel.gd`, `UpgraderPanel.gd`, `WarehousePanel.gd` | `core/app` (GameState), `core/database` (MaterialDatabase), `core/shared` |

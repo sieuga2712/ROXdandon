@@ -6,10 +6,11 @@ extends Node2D
 ## hạn với quái của đúng StageData đang treo. Đây CHÍNH LÀ trận đấu tạo ra
 ## phần thưởng thật - KHÔNG có công thức DPS/thời gian nào cả, quái chết thật
 ## thì cộng vàng (LinhData.gold_reward) + EXP (LinhData.exp_reward) NGAY LÚC
-## ĐÓ cho member_troop_ids (xem _apply_damage). Instance này được GameState
-## giữ sống suốt thời gian treo máy (xem GameState.start_idle_team) - "Xem
-## treo máy" chỉ là NHÚNG (reparent) instance đang chạy này vào UI để nhìn,
-## không tạo bản sao/không tính riêng gì cả.
+## ĐÓ cho member_troop_ids (xem CombatResolver._apply_damage). Instance này
+## được GameState giữ sống suốt thời gian treo máy (xem
+## GameState.start_idle_team) - "Xem treo máy" chỉ là NHÚNG (reparent)
+## instance đang chạy này vào UI để nhìn, không tạo bản sao/không tính riêng
+## gì cả.
 ##
 ## configure() được gọi ngay sau khi instance (xem GameState.start_idle_team_on_map) -
 ## lúc đó @onready đã sẵn sàng (Godot gọi _ready() ngay khi add_child() vào 1
@@ -17,90 +18,84 @@ extends Node2D
 ## nhiều lần trên cùng 1 instance (tự dọn quân cũ trước khi spawn quân mới) -
 ## dùng để LÊN TẦNG khi thắng, xem _advance_floor().
 ##
-## Mỗi tầng gồm NHIỀU ĐỢT quái nối tiếp dọc bản đồ (số đợt/số quái mỗi đợt/cấp
-## quái đều tăng theo floor_number - xem core/combat/EncounterGenerator.gd),
-## quái đợt kế luôn spawn xa hơn về +X (WAVE_SPACING_X) - party tự đi tới vì
-## AI vẫn chỉ "tìm địch gần nhất rồi tới đánh" như cũ, không có gì đổi ở đó.
+## Mô hình bản đồ "treadmill" (2026-08): CAMERA CỐ ĐỊNH VĨNH VIỄN tại (0,0)
+## (xem _ready()). Khung hình camera (rộng 2*viewport_half_width) chia làm 4
+## PHẦN BẰNG NHAU theo chiều ngang (Cam-1..Cam-4, trái->phải); khu vực quái
+## spawn (NGOÀI khung hình, bên phải Cam-4) chia làm 2 phần (Spawn-1 gần
+## camera, Spawn-2 xa/nơi quái spawn thật) - quái MỌI đợt (kể cả đợt đầu mỗi
+## tầng, kể cả floor cao có tới hàng chục đợt) đều spawn ở ĐÚNG 1 vị trí CỐ
+## ĐỊNH rồi tự đi vào. Mỗi đợt (trong 1 tầng), phe mình dàn quân theo 4 GIAI
+## ĐOẠN (WaveStagingState, xem _update_wave_staging()):
+## 1. CENTER_WAIT - đứng ở ranh giới Cam-2/Cam-3 (chính giữa khung hình), xếp
+##    đội hình "2-3-2 hình lục giác" (FORMATION_OFFSETS), giả vờ đi bộ
+##    (animation walk, KHÔNG đổi vị trí thật) trong lúc quái còn ở Spawn-2.
+## 2. RETREATING - quái lọt vào Spawn-1 (ranh giới Spawn-1/Spawn-2) -> phe
+##    mình LÙI THẬT (đổi vị trí) về GIỮA Cam-1.
+## 3. ENGAGED - quái đi tới GIỮA Cam-4 -> phá đội hình, bỏ mọi ràng buộc, cả 2
+##    bên tự do lao vào nhau như AI bình thường (CombatResolver lo hết).
+## 4. REFORMING - quái đợt vừa rồi chết sạch (còn đợt kế trong tầng) -> phe
+##    mình giả vờ tiến thêm về bên phải 1 nhịp ngắn, RỒI mới thật sự đi (lerp)
+##    về lại ĐÚNG 7 chỗ đội hình 2-3-2 tại CENTER_WAIT - xong mới spawn đợt kế.
+## Không còn world dài ra vô hạn cần bám/giới hạn/recenter camera phức tạp.
 ##
-## Camera BÁM LIÊN TỤC theo 1 NHÂN VẬT CỤ THỂ trong party (không phải trung
-## bình cả đội, không khoá cứng theo area/wave) - chọn nhân vật theo tầm đánh,
-## thứ tự ưu tiên ĐỔI tuỳ đã giao chiến hay chưa (xem _pick_camera_follow_unit()):
-## - CHƯA giao chiến (đang đi tới quái): ưu tiên MID (Priest) -> GẦN (Soldier)
-##   -> XA (Archer/Wizard).
-## - ĐÃ giao chiến (có unit is_engaged): ưu tiên GẦN (Soldier, tank đứng đầu)
-##   -> MID (Priest) -> XA (Archer/Wizard).
-## Lựa chọn này CHỈ đánh giá lại mỗi CAMERA_FOLLOW_SWITCH_HOLD giây (không
-## phải mỗi frame) - tránh camera đổi hướng liên tục nếu is_engaged nhấp nháy
-## lúc combat. Target còn lệch sang phải CAMERA_LOOKAHEAD_X so với nhân vật
-## đang bám (nhân vật hiện ở bên trái tâm màn hình), để nhân vật hiện rõ hơn
-## (không dính đúng tâm) và hé thêm không gian phía quái sắp tới. Hết phe
-## mình (cả đội chết, đang chờ hồi sinh) ->
-## fallback về PARTY_CENTER.x (xem _update_camera_follow()) - tự nhiên lerp về
-## nhà, không cần code riêng cho lúc thua. Giới hạn camera THEO MAP
-## (_camera_limit_left/right, tính từ
-## viewport thật lúc _ready(), không hard-code độ phân giải) đảm bảo không bao
-## giờ lộ ra ngoài world.
+## Toàn bộ hành vi CHIẾN ĐẤU của 1 đơn vị (targeting, né nhau, đòn đánh
+## thường, skill "Đánh mạnh", đạn bay, rớt đồ, thưởng EXP/vàng) nằm ở
+## `core/combat/CombatResolver.gd` - DÙNG CHUNG với BattleScene (Ải Boss), vì
+## đây là đặc trưng của NHÂN VẬT chứ không phải của map. File này chỉ còn lo
+## phần MAP: camera/vị trí spawn/giai đoạn dàn quân/tiến độ tầng/hồi sinh/vòng
+## đời. (Trước 2026-08, StageFarmWorld tự viết 1 bản chiến đấu RÚT GỌN riêng
+## không có skill/né nhau - chỉ vì lười viết chung, không phải chủ đích thiết
+## kế "map treo máy không nên có skill", nên giờ gộp lại và BẬT THẬT skill/né
+## nhau ở đây luôn, không còn thiếu như trước.)
 ##
-## Hết đợt hiện tại (còn đợt kế trong tầng) -> nghỉ WAVE_CLEAR_DELAY rồi spawn
-## đợt kế (_spawn_next_wave). Hết ĐỢT CUỐI CÙNG (party còn sống) = THẮNG CẢ
-## TẦNG -> báo GameState.report_floor_cleared rồi tự nạp StageData tầng kế
-## tiếp (không còn bị kẹp ở tầng cuối cùng đã author tay - xem
+## Hết đợt hiện tại (còn đợt kế trong tầng) -> REFORMING rồi spawn đợt kế
+## (_spawn_next_wave). Hết ĐỢT CUỐI CÙNG (party còn sống) = THẮNG CẢ TẦNG ->
+## báo GameState.report_floor_cleared rồi tự nạp StageData tầng kế tiếp
+## (không còn bị kẹp ở tầng cuối cùng đã author tay - xem
 ## GameState.resolve_stage_for_floor). THUA (party chết sạch, ở BẤT KỲ đợt
 ## nào) -> đánh lại từ ĐỢT 1 của đúng tầng đang treo, không tiếp tục từ đợt
 ## đang thua (xem _revive_all). Cả thắng/thua cả tầng đều chờ RESTART_DELAY
 ## giây trước khi thật sự đổi - giống kiểu AFK Arena/game farm-tầng-tự-động.
-##
-## PHẠM VI (cắt bớt có chủ đích): chỉ có đòn đánh thường (đúng công thức sát
-## thương của BattleScene._resolve_attack/_apply_damage - crit/giáp hiệu
-## dụng/life steal), CHƯA có skill "đánh mạnh". Đạn bay Archer/Wizard + hiệu
-## ứng Priest DÙNG CHUNG asset với BattleScene (chỉ bản đòn thường, không có
-## bản "skill" phóng to) để đòn đánh tầm xa có hiệu ứng nhìn thấy được, không
-## chỉ đổi tư thế đánh suông.
 
 const TROOP_UNIT_SCENE: PackedScene = preload("res://entities/troop/TroopUnit.tscn")
-const DAMAGE_POPUP_SCENE: PackedScene = preload("res://entities/troop/DamagePopup.tscn")
-const PROJECTILE_SCENE: PackedScene = preload("res://entities/troop/Projectile.tscn")
-const IMPACT_EFFECT_SCENE: PackedScene = preload("res://entities/troop/ImpactEffect.tscn")
-const ARROW_TEXTURE: Texture2D = preload("res://assets/troops/archer/ArrowProjectile.png")
-const MAGIC_PROJECTILE_FRAMES: SpriteFrames = preload("res://assets/troops/wizard/MagicProjectileFrames.tres")
-const PRIEST_ATTACK_EFFECT_FRAMES: SpriteFrames = preload("res://assets/troops/priest/PriestAttackEffectFrames.tres")
-const POPUP_SPAWN_OFFSET: Vector2 = Vector2(0, -70)
-const COLOR_DAMAGE: Color = Color.WHITE
-const COLOR_GOLD: Color = Color(1.0, 0.9, 0.3)
-const COLOR_MATERIAL: Color = Color(0.6, 0.85, 1.0)
-const MATERIAL_DROP_CHANCE: float = 0.7 ## hạ 1 quái = 70% rơi đúng 1 nguyên liệu cấp 1 (ngẫu nhiên trong 10 nhóm)
 
-const PARTY_CENTER: Vector2 = Vector2(-160.0, 0.0)
-const SPREAD_RADIUS: float = 44.0
-const REGEN_INTERVAL: float = 5.0 ## giống BattleScene.REGEN_INTERVAL
+const SPREAD_RADIUS: float = 44.0 ## giống hệt BattleScene.SPREAD_RADIUS - dùng cho quái, xem _spawn_enemy_team()
+
+const FORMATION_SPACING: float = 40.0 ## khoảng cách giữa các hàng/cột trong đội hình 2-3-2, xem FORMATION_OFFSETS
+## Đội hình "2-3-2 hình lục giác": hàng SAU (2, xa quái nhất, offset.x=-1) và
+## hàng TRƯỚC (2, gần quái nhất, offset.x=1) HẸP; hàng GIỮA (3, offset.x=0)
+## dàn RỘNG NHẤT - nối các điểm ngoài lại đúng hình lục giác. Gán vào lính
+## theo INDEX (i % 7) - CHƯA có logic "ai đứng vị trí nào" (tank đứng
+## trước...), để xử lý sau. Giống hệt BattleScene.FORMATION_OFFSETS.
+const FORMATION_OFFSETS: Array[Vector2] = [
+	Vector2(-1.0, -0.5), Vector2(-1.0, 0.5), ## hàng SAU (2, hẹp)
+	Vector2(0.0, -1.0), Vector2(0.0, 0.0), Vector2(0.0, 1.0), ## hàng GIỮA (3, rộng nhất)
+	Vector2(1.0, -0.5), Vector2(1.0, 0.5), ## hàng TRƯỚC (2, hẹp)
+]
+
 const RESTART_DELAY: float = 2.0 ## hết CẢ TẦNG (đợt cuối cùng) -> chờ rồi lên tầng/hồi sinh, đánh lại vòng mới
 const CORPSE_VANISH_DELAY: float = 2.0 ## xác đơn vị chết ẩn đi sau chừng này giây (dù phe kia còn đang đánh tiếp, không đợi tới lúc cả phe bị xoá sạch mới ẩn)
 
-## Bản đồ dài nhiều đợt (xem EncounterGenerator) - quái đợt kế spawn xa hơn
-## dọc trục X, quay vòng qua WAVE_SLOT_COUNT vị trí X cố định thay vì cộng dồn
-## vô hạn (xem WAVE_SLOT_COUNT bên dưới).
-const WAVE_SPACING_X: float = 900.0 ## khoảng cách world-X giữa 2 đợt liên tiếp
-const FIRST_WAVE_OFFSET_X: float = 260.0 ## khoảng cách từ PARTY_CENTER tới đợt đầu tiên
-const WAVE_CLEAR_DELAY: float = 0.6 ## nghỉ ngắn giữa 2 đợt trong CÙNG 1 tầng - khác RESTART_DELAY (dùng cho thắng/thua cả tầng)
-const CAMERA_FOLLOW_LERP_SPEED: float = 4.0 ## hệ số lerp/giây - camera lerp mượt tới _camera_target_x, KHÔNG tính lại target mỗi frame
+const CAMERA_VIEW_MARGIN: float = 40.0 ## đệm dôi thêm quanh nền, tránh lộ mép đúng lúc party/quái đứng sát biên
+const WAVE_SPAWN_MARGIN: float = 500.0 ## tổng bề rộng khu Spawn (ngoài khung hình camera) - chia làm 2 phần bằng nhau (Spawn-1 gần camera, Spawn-2 xa/nơi quái spawn thật)
+const REFORM_FAKE_WALK_DURATION: float = 0.4 ## đầu giai đoạn REFORMING - phe mình "giả vờ" tiến thêm về bên phải (animation, KHÔNG đổi vị trí) đúng chừng này giây trước khi thật sự đi (lerp) về đội hình
+const REFORM_ARRIVE_EPSILON: float = 4.0 ## coi là "đã về tới" đúng chỗ đội hình khi còn cách chừng này (px) - tránh rung/không bao giờ khớp tuyệt đối do float
 
-## --- Giới hạn bản đồ (2026-08) ---
-## Trước đây _wave_anchor_x cộng dồn WAVE_SPACING_X mãi mãi theo floor_number
-## (có thể tới 29 đợt ở floor 100) -> world "dài vô hạn" phải giả bằng cách
-## cho ground_background bám theo camera mỗi frame (đã xoá, xem
-## _update_camera_follow). Từ giờ: WAVE_SLOT_COUNT vị trí X CỐ ĐỊNH mà đợt
-## quái xoay vòng qua - hết 1 vòng, _recenter_world() dịch lại party + camera
-## lùi về đúng lúc không có quái trên màn (WAVE_CLEAR_DELAY), giữ nguyên cảm
-## giác "luôn tiến về phía trước" nhưng world không bao giờ vượt
-## _camera_limit_left/right nữa - ground_background giờ TĨNH, không cần bám
-## theo camera mỗi frame nữa.
-const WAVE_SLOT_COUNT: int = 3
+## Giai đoạn dàn quân đợt HIỆN TẠI - xem _update_wave_staging().
+enum WaveStagingState { CENTER_WAIT, RETREATING, ENGAGED, REFORMING }
 
-const CAMERA_VIEW_MARGIN: float = 40.0 ## đệm dôi thêm, tránh clamp chạm biên đúng lúc đang cần thấy trọn cảnh
+## true = phóng to camera ra để thấy TOÀN BỘ map (khung hình chuẩn + khu
+## spawn) + vẽ các đường chia vùng để xem trực quan lúc test - KHÔNG ảnh
+## hưởng logic thật (mọi mốc/toạ độ vẫn tính theo khung hình CHUẨN chưa phóng
+## to, xem _setup_debug_view()).
+const DEBUG_TEST_MODE: bool = false
+const DEBUG_ZONE_LINE_HEIGHT: float = 900.0
 
 @onready var arena: Node2D = $Arena
 @onready var camera: Camera2D = $FarmCamera
 @onready var ground_background: ColorRect = $GroundBackground
+
+var _resolver: CombatResolver
 
 var party_units: Array[TroopUnit] = []
 var enemy_units: Array[TroopUnit] = []
@@ -113,35 +108,42 @@ var _death_timers: Dictionary = {} ## TroopUnit đã chết -> số giây đã t
 
 var _wave_count: int = 1 ## tổng số đợt của tầng đang treo - xem EncounterGenerator.wave_count_for_floor()
 var _current_wave_index: int = -1 ## đợt đang đánh (0-based), -1 = chưa spawn đợt nào
-var _wave_anchor_x: float = 0.0 ## tâm X của đợt HIỆN TẠI - tính lại mỗi lần _spawn_next_wave() theo slot xoay vòng (xem WAVE_SLOT_COUNT)
-var _wave_transition_timer: float = -1.0 ## >=0: đang nghỉ WAVE_CLEAR_DELAY giữa 2 đợt (khác _restart_timer - dùng khi hết CẢ TẦNG)
+var _wave_anchor_x: float = 0.0 ## tâm X đợt HIỆN TẠI - luôn = _wave_spawn_x (CỐ ĐỊNH, mọi đợt mọi tầng), xem _spawn_next_wave()
+var _wave_staging_state: WaveStagingState = WaveStagingState.ENGAGED ## reset về CENTER_WAIT/REFORMING - giá trị khởi tạo không quan trọng
+var _reform_timer: float = 0.0 ## đếm ngược REFORM_FAKE_WALK_DURATION lúc mới vào REFORMING - xem _update_reforming()
 
-const CAMERA_FOLLOW_SWITCH_HOLD: float = 0.6 ## giữ nguyên nhân vật đang bám tối thiểu chừng này giây trước khi cho đổi lại - tránh camera "lật" liên tục nếu is_engaged nhấp nháy (unit ra/vào tầm đánh nhanh), xem _update_camera_follow()
-const CAMERA_LOOKAHEAD_X: float = 60.0 ## camera lệch sang PHẢI 1 khoảng nhỏ so với nhân vật đang bám - nhân vật hiện rõ hơn ở bên trái tâm màn hình thay vì đúng giữa, hé thêm không gian bên phải (hướng quái tới)
-
-var _camera_follow_unit: TroopUnit = null ## unit ĐANG được camera bám - chỉ đánh giá lại lựa chọn khi hết CAMERA_FOLLOW_SWITCH_HOLD hoặc unit này vừa chết, xem _update_camera_follow()
-var _camera_follow_switch_cooldown: float = 0.0
-var _camera_return_home: bool = false ## true = ép camera lerp về PARTY_CENTER.x bất kể đang bám ai - bật lúc THẮNG CẢ TẦNG/THUA (chờ RESTART_DELAY), để tới lúc configure() tầng mới/_revive_all() chạy thì camera đã sẵn ở nhà, không còn gì để "nhảy" - xem _check_wipe()
-var _camera_target_x: float = 0.0 ## = _camera_follow_unit.position.x + CAMERA_LOOKAHEAD_X (hoặc PARTY_CENTER.x nếu hết phe mình/_camera_return_home) - lưu ở đây chỉ để tiện đọc/debug, camera.position lerp mượt tới giá trị này chứ không gán thẳng
-var _camera_limit_left: float = 0.0 ## tính theo viewport THẬT lúc _ready() (không hard-code độ phân giải) - xem _ready()
-var _camera_limit_right: float = 0.0
+var _map_center_x: float = 0.0 ## = camera.position.x, ranh giới Cam-2/Cam-3 - đội hình ban đầu đứng đây (CENTER_WAIT)
+var _retreat_x: float = 0.0 ## GIỮA Cam-1 - vị trí phe mình lùi về lúc RETREATING
+var _engage_trigger_x: float = 0.0 ## GIỮA Cam-4 - quái X <= giá trị này -> ENGAGED (phá đội hình)
+var _camera_right_edge_x: float = 0.0 ## mép phải Cam-4 = ranh giới Cam-4/Spawn-1
+var _retreat_trigger_x: float = 0.0 ## ranh giới Spawn-1/Spawn-2 - quái X <= giá trị này (đã lọt vào Spawn-1) -> bắt đầu RETREATING
+var _wave_spawn_x: float = 0.0 ## vị trí spawn CỐ ĐỊNH cho MỌI đợt/MỌI tầng (giữa Spawn-2, xa nhất) - tính 1 lần ở _ready(), camera không đổi nên không cần tính lại
 
 func _ready() -> void:
-	## Nền + giới hạn camera CỐ ĐỊNH bất kể floor_number/wave_count - set 1 lần
-	## ở đây (LUÔN chạy trước configure() đầu tiên - Godot gọi _ready() ngay
-	## khi add_child(), trước khi add_child() trả về) để camera.position gán
-	## lần đầu trong configure() đã bị giới hạn đúng ngay từ đầu. Đọc
-	## get_viewport_rect() THẬT thay vì hard-code 1 độ phân giải cố định - vẫn
-	## đúng nếu SubViewport (xem StageFarmMap.tscn) đổi kích thước sau này.
+	_resolver = CombatResolver.new(arena, true) ## true = cộng vàng + hiện popup NGAY lúc giết (nguồn thưởng treo máy duy nhất, xem ghi chú đầu file)
+
+	## Camera CỐ ĐỊNH VĨNH VIỄN tại (0,0) - không bám theo ai, không đổi kể cả
+	## qua nhiều tầng/thắng/thua/hồi sinh. Mọi vị trí dàn quân/spawn đều suy ra
+	## từ đây, tính 1 lần vì camera không bao giờ đổi.
+	camera.position = Vector2.ZERO
+	camera.zoom = Vector2.ONE
 	var viewport_half_width: float = get_viewport_rect().size.x / 2.0
-	_camera_limit_left = PARTY_CENTER.x - viewport_half_width - CAMERA_VIEW_MARGIN
-	_camera_limit_right = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + (WAVE_SLOT_COUNT - 1) * WAVE_SPACING_X + viewport_half_width + CAMERA_VIEW_MARGIN
-	ground_background.position.x = _camera_limit_left
-	ground_background.size.x = _camera_limit_right - _camera_limit_left
-	camera.limit_left = roundi(_camera_limit_left)
-	camera.limit_right = roundi(_camera_limit_right)
-	## KHÔNG set limit_top/limit_bottom - camera.position.y không bao giờ đổi
-	## ở file này (lý do chi tiết xem BattleScene._ready(), cùng công thức).
+	var cam_quarter: float = viewport_half_width * 0.5 ## bề rộng 1/4 khung hình (khung hình rộng 2*half, chia 4 phần bằng nhau)
+	_map_center_x = camera.position.x
+	_retreat_x = _map_center_x - viewport_half_width + cam_quarter * 0.5 ## giữa Cam-1
+	_camera_right_edge_x = _map_center_x + viewport_half_width
+	_engage_trigger_x = _camera_right_edge_x - cam_quarter * 0.5 ## giữa Cam-4
+	_retreat_trigger_x = _camera_right_edge_x + WAVE_SPAWN_MARGIN * 0.5 ## ranh giới Spawn-1/Spawn-2
+	_wave_spawn_x = _camera_right_edge_x + WAVE_SPAWN_MARGIN
+	## Nền chỉ cần phủ đúng khung hình camera THẬT SỰ hiển thị - camera cố
+	## định vĩnh viễn nên không bao giờ lộ ra ngoài khoảng [-half, +half] này,
+	## kể cả quái spawn/đứng xa tít ngoài _wave_spawn_x (không bao giờ được
+	## camera vẽ tới) - không cần phủ xa như bản camera động cũ.
+	ground_background.position.x = -viewport_half_width - CAMERA_VIEW_MARGIN
+	ground_background.size.x = (viewport_half_width + CAMERA_VIEW_MARGIN) - ground_background.position.x
+
+	if DEBUG_TEST_MODE:
+		_setup_debug_view(viewport_half_width)
 
 ## Gọi được NHIỀU LẦN trên cùng 1 instance (lên tầng khi thắng) - tự dọn hết
 ## quân cũ (queue_free + xoá 2 mảng) trước khi spawn quân mới, không cần
@@ -156,21 +158,8 @@ func configure(stage: StageData, member_troop_ids: Array[int]) -> void:
 
 	_stage = stage
 	_member_troop_ids = member_troop_ids
-	## Camera bắt đầu tại PARTY_CENTER (chỗ phe mình sắp spawn) - tránh
-	## giật/lerp thừa từ vị trí Godot mặc định (0,0) lúc mới vào tầng.
-	## _update_camera_follow() ngay frame kế sẽ tự tính lại target đúng theo
-	## nhân vật được chọn (party vừa spawn tại đây nên giá trị khớp nhau).
-	camera.position = Vector2(PARTY_CENTER.x, 0.0)
-	camera.zoom = Vector2.ONE
-	## party_units cũ vừa bị queue_free() ở trên (nếu có) - _camera_follow_unit
-	## đang trỏ tới instance CŨ đó, phải reset để buộc đánh giá lại ngay trên
-	## party MỚI vừa spawn, không đợi hết CAMERA_FOLLOW_SWITCH_HOLD. Tắt luôn
-	## _camera_return_home (nếu bật từ lúc thắng cả tầng) - đợt/tầng mới đã bắt
-	## đầu thật, quay lại bám nhân vật bình thường.
-	_camera_follow_unit = null
-	_camera_follow_switch_cooldown = 0.0
-	_camera_return_home = false
-	_spawn_party(member_troop_ids)
+	_spawn_player_team(member_troop_ids, Vector2(_map_center_x, 0.0))
+	_wave_staging_state = WaveStagingState.CENTER_WAIT
 
 	_wave_count = EncounterGenerator.wave_count_for_floor(stage.floor_number)
 	_current_wave_index = -1
@@ -182,7 +171,10 @@ func get_stage() -> StageData:
 func get_member_troop_ids() -> Array[int]:
 	return _member_troop_ids
 
-func _spawn_party(member_troop_ids: Array[int]) -> void:
+## Xếp phe mình vào ĐÚNG 7 chỗ đội hình "2-3-2 hình lục giác" quanh `center`
+## (xem FORMATION_OFFSETS) - gán theo INDEX tạm thời, CHƯA phân biệt ai đứng
+## vị trí nào. Giống hệt BattleScene._spawn_player_team().
+func _spawn_player_team(member_troop_ids: Array[int], center: Vector2) -> void:
 	for i in range(member_troop_ids.size()):
 		var troop := TroopDatabase.get_by_id(member_troop_ids[i])
 		if troop == null:
@@ -190,20 +182,34 @@ func _spawn_party(member_troop_ids: Array[int]) -> void:
 		var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
 		arena.add_child(unit)
 		unit.setup(troop, Enums.Team.PLAYER)
-		unit.attack_bar_bg.visible = false
-		unit.skill_bar_bg.visible = false
-		var offset := Vector2.ZERO
-		if member_troop_ids.size() > 1:
-			offset = Vector2.RIGHT.rotated(TAU * i / member_troop_ids.size()) * SPREAD_RADIUS
-		unit.position = PARTY_CENTER + offset
+		unit.position = center + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
 		party_units.append(unit)
+
+## Rải quái quanh `center` theo vòng tròn, bán kính tự giãn theo số lượng
+## (`maxf(SPREAD_RADIUS, total * 9.0)`) - giống hệt BattleScene._spawn_enemy_team().
+func _spawn_enemy_team(troop_ids: Array[int], center: Vector2, monster_level: int) -> void:
+	var total := troop_ids.size()
+	var radius := maxf(SPREAD_RADIUS, total * 9.0) ## co giãn theo số quái - có thể lên tới MAX_MONSTERS_PER_WAVE
+	for i in range(total):
+		var troop := TroopDatabase.get_by_id(troop_ids[i])
+		if troop == null:
+			continue
+		var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
+		arena.add_child(unit)
+		unit.setup(troop, Enums.Team.ENEMY, monster_level)
+		var offset := Vector2.RIGHT.rotated(TAU * i / maxi(total, 1)) * radius
+		unit.position = center + offset
+		enemy_units.append(unit)
 
 ## Dọn đợt quái cũ (nếu có) rồi spawn đợt KẾ TIẾP (_current_wave_index += 1) -
 ## quái luôn random theo đúng floor_number đang treo (xem
-## EncounterGenerator.generate_encounter_for_floor). Vị trí X xoay vòng qua
-## WAVE_SLOT_COUNT vị trí cố định (xem ghi chú WAVE_SLOT_COUNT) - không cộng
-## dồn vô hạn. Gọi từ configure() (đợt đầu tầng), _process() khi hết
-## WAVE_CLEAR_DELAY, và _revive_all() (thua -> đánh lại từ đợt 1).
+## EncounterGenerator.generate_encounter_for_floor), LUÔN spawn tại ĐÚNG
+## _wave_spawn_x (không đổi giữa các đợt/các tầng - camera cố định nên không
+## cần xoay vòng/tính lại gì cả). KHÔNG còn tự đưa phe mình về đội
+## hình/CENTER_WAIT ở đây nữa - việc đó do configure() (đợt đầu tầng) hoặc
+## _update_reforming() hoàn tất xong đội hình mới gọi hàm này (đợt sau) lo.
+## Gọi từ configure(), _process() (REFORMING vừa xong), và _revive_all()
+## (thua -> đánh lại từ đợt 1).
 func _spawn_next_wave() -> void:
 	for unit in enemy_units:
 		unit.queue_free()
@@ -211,45 +217,11 @@ func _spawn_next_wave() -> void:
 	enemy_units.clear()
 
 	_current_wave_index += 1
-	var slot: int = _current_wave_index % WAVE_SLOT_COUNT
-	if slot == 0 and _current_wave_index > 0:
-		## Dịch cả party lẫn camera lùi lại - tính theo vị trí camera THẬT lúc
-		## này (không dùng số lý thuyết WAVE_SLOT_COUNT*WAVE_SPACING_X cố định
-		## nữa - camera giờ bám theo 1 NHÂN VẬT CỤ THỂ, nếu đó là Priest/Archer
-		## (tầm xa, đứng lùi khá xa so với vị trí quái) thì số cố định đó dư ra
-		## 1 khoảng, đẩy camera vọt ra NGOÀI HẲN _camera_limit_left - đây chính
-		## là bug "camera nhảy thẳng" báo cáo 2026-08). Dịch sao cho camera hạ
-		## cánh ĐÚNG vị trí PARTY_CENTER.x + CAMERA_LOOKAHEAD_X sau khi gộp -
-		## luôn nằm trong giới hạn map, bất kể đang bám nhân vật nào.
-		_recenter_world(camera.position.x - (PARTY_CENTER.x + CAMERA_LOOKAHEAD_X))
-	_wave_anchor_x = PARTY_CENTER.x + FIRST_WAVE_OFFSET_X + slot * WAVE_SPACING_X
+	_wave_anchor_x = _wave_spawn_x
 
 	var encounter: Dictionary = EncounterGenerator.generate_encounter_for_floor(_stage.floor_number)
-	var monster_ids: Array[int] = encounter["monster_ids"]
-	var monster_level: int = encounter["monster_level"]
-	var total := monster_ids.size()
-	var radius := maxf(SPREAD_RADIUS, total * 9.0) ## co giãn theo số quái - có thể lên tới MAX_MONSTERS_PER_WAVE
-	for i in range(total):
-		var troop := TroopDatabase.get_by_id(monster_ids[i])
-		if troop == null:
-			continue
-		var unit: TroopUnit = TROOP_UNIT_SCENE.instantiate()
-		arena.add_child(unit)
-		unit.setup(troop, Enums.Team.ENEMY, monster_level)
-		unit.attack_bar_bg.visible = false
-		unit.skill_bar_bg.visible = false
-		var offset := Vector2.RIGHT.rotated(TAU * i / maxi(total, 1)) * radius
-		unit.position = Vector2(_wave_anchor_x, 0.0) + offset
-		enemy_units.append(unit)
+	_spawn_enemy_team(encounter["monster_ids"], Vector2(_wave_anchor_x, 0.0), encounter["monster_level"])
 	_rebuild_all_units()
-
-## Dịch cả party lẫn camera lùi lại đúng `shift` - gọi ĐÚNG LÚC không còn quái
-## nào sống trên màn (giữa 2 đợt CÙNG 1 tầng), khi party đang idle nhờ
-## _hold_survivors_idle(), nên hoàn toàn không thấy "giật/nhảy".
-func _recenter_world(shift: float) -> void:
-	for unit in party_units:
-		unit.position.x -= shift
-	camera.position.x -= shift
 
 ## party_units/enemy_units không đổi thành phần trong lúc chiến đấu (chết chỉ
 ## đổi is_dead()) - chỉ cần gộp lại _all_units mỗi lần ĐỔI ĐỢT/TẦNG (spawn lại
@@ -259,11 +231,95 @@ func _rebuild_all_units() -> void:
 	_all_units.append_array(party_units)
 	_all_units.append_array(enemy_units)
 
+## Cập nhật giai đoạn dàn quân đợt hiện tại. REFORMING xử lý riêng (không cần
+## quái, xem _update_reforming()); ENGAGED giữ nguyên tới hết đợt. CENTER_WAIT/
+## RETREATING xét theo vị trí quái GẦN NHẤT còn sống - lọt vào Spawn-1 (X <=
+## _retreat_trigger_x) -> RETREATING; tới giữa Cam-4 (X <= _engage_trigger_x)
+## -> ENGAGED (phá đội hình, CombatResolver lo hết).
+func _update_wave_staging(delta: float) -> void:
+	if _wave_staging_state == WaveStagingState.ENGAGED:
+		return
+	if _wave_staging_state == WaveStagingState.REFORMING:
+		_update_reforming(delta)
+		return
+
+	var nearest_enemy_x: float = INF
+	for u in enemy_units:
+		if not u.is_dead():
+			nearest_enemy_x = minf(nearest_enemy_x, u.position.x)
+	if nearest_enemy_x == INF:
+		return ## chưa spawn quái hoặc quái đã chết sạch - giữ nguyên trạng thái hiện tại
+
+	if nearest_enemy_x <= _engage_trigger_x:
+		_wave_staging_state = WaveStagingState.ENGAGED
+		return
+
+	if _wave_staging_state == WaveStagingState.CENTER_WAIT:
+		if nearest_enemy_x <= _retreat_trigger_x:
+			_wave_staging_state = WaveStagingState.RETREATING
+		else:
+			for unit in party_units:
+				if not unit.is_dead():
+					unit.play_walk() ## giả vờ đi bộ tại chỗ - KHÔNG đổi .position
+		return
+
+	## RETREATING - lùi THẬT về _retreat_x, map tự set .position trực tiếp
+	## (CombatResolver chỉ biết "tiến tới mục tiêu", không có khái niệm "lùi
+	## xa mục tiêu" nên không thể diễn tả bước này qua run_ai()).
+	for unit in party_units:
+		if unit.is_dead():
+			continue
+		if unit.position.x > _retreat_x:
+			unit.play_walk()
+			unit.position.x = maxf(unit.position.x - unit.move_speed_px() * delta, _retreat_x)
+		else:
+			unit.play_idle()
+
+## Quái đợt vừa rồi đã chết sạch (còn đợt kế trong tầng) - trước khi spawn đợt
+## kế, phe mình: (1) giả vờ tiến thêm về bên phải REFORM_FAKE_WALK_DURATION
+## giây (animation, KHÔNG đổi vị trí - đúng cảm giác "vừa thắng, còn hăng"),
+## (2) SAU ĐÓ mới thật sự đi (lerp theo move_speed_px riêng từng người) về
+## ĐÚNG 7 chỗ đội hình 2-3-2 tại CENTER_WAIT (_map_center_x). Khi TẤT CẢ đã về
+## đúng chỗ (trong REFORM_ARRIVE_EPSILON) mới coi là xong - _process() phát
+## hiện chuyển sang CENTER_WAIT thì mới spawn đợt kế (xem _spawn_next_wave()) -
+## không dùng đồng hồ cố định như bản trước, đợi dàn quân THẬT SỰ xong. Giống
+## hệt BattleScene._update_reforming().
+func _update_reforming(delta: float) -> void:
+	if _reform_timer > 0.0:
+		_reform_timer -= delta
+		for unit in party_units:
+			if not unit.is_dead():
+				unit.play_walk()
+		return
+
+	var all_arrived := true
+	for i in range(party_units.size()):
+		var unit := party_units[i]
+		if unit.is_dead():
+			continue
+		var target: Vector2 = Vector2(_map_center_x, 0.0) + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
+		var to_target := target - unit.position
+		if to_target.length() > REFORM_ARRIVE_EPSILON:
+			unit.play_walk()
+			unit.position += to_target.normalized() * unit.move_speed_px() * delta
+			all_arrived = false
+		else:
+			unit.position = target
+			unit.play_idle()
+	if all_arrived:
+		_wave_staging_state = WaveStagingState.CENTER_WAIT
+
+## CENTER_WAIT/RETREATING: map tự điều khiển phe mình (fake-walk hoặc lùi
+## thật, xem _update_wave_staging()) - chặn CombatResolver tự ý di chuyển phe
+## mình đè lên (trả -INF, không mục tiêu nào thoả target.x <= -INF). ENGAGED:
+## bỏ hẳn ràng buộc (trả INF) - CombatResolver cho phe mình tự do lao vào quái.
+func _current_free_movement_x() -> float:
+	return INF if _wave_staging_state == WaveStagingState.ENGAGED else -INF
+
 func _process(delta: float) -> void:
 	if _stage == null:
 		return
 	_update_corpses(delta)
-	_update_camera_follow(delta)
 	if _restart_timer >= 0.0:
 		_hold_survivors_idle()
 		_restart_timer -= delta
@@ -274,79 +330,20 @@ func _process(delta: float) -> void:
 			else:
 				_revive_all()
 		return
-	## Nghỉ ngắn giữa 2 đợt CÙNG 1 tầng (khác _restart_timer ở trên - dùng khi
-	## hết CẢ TẦNG tức đợt cuối cùng) - xem _check_wipe().
-	if _wave_transition_timer >= 0.0:
-		_hold_survivors_idle()
-		_wave_transition_timer -= delta
-		if _wave_transition_timer <= 0.0:
-			_wave_transition_timer = -1.0
-			_spawn_next_wave()
+
+	var was_reforming: bool = _wave_staging_state == WaveStagingState.REFORMING
+	_update_wave_staging(delta)
+	if was_reforming and _wave_staging_state == WaveStagingState.CENTER_WAIT:
+		_spawn_next_wave() ## vừa dàn quân xong đúng đội hình - spawn đợt kế NGAY, khỏi chờ đồng hồ cố định nào cả
 		return
-	_update_regen(delta)
-	_update_fight(delta)
+	if _wave_staging_state == WaveStagingState.REFORMING:
+		return ## đang lo giả vờ tiến/dàn quân lại - quái đã chết sạch, chưa có gì để AI/kiểm tra thêm
+
+	_resolver.run_ai(party_units, enemy_units, delta, _member_troop_ids, _current_free_movement_x())
+	_resolver.resolve_collisions(party_units, enemy_units)
 	_check_wipe()
 
-## Camera bám LIÊN TỤC theo 1 nhân vật cụ thể (xem _pick_camera_follow_unit())
-## - hết phe mình (cả đội chết, đang chờ RESTART_DELAY hồi sinh) thì fallback
-## về PARTY_CENTER.x, tự nhiên lerp về nhà, không cần code riêng cho lúc thua.
-##
-## CHỈ đánh giá lại "nên bám ai" mỗi CAMERA_FOLLOW_SWITCH_HOLD giây (hoặc ngay
-## khi unit đang bám vừa chết) - không tính lại mỗi frame, vì is_engaged của
-## 1 unit có thể nhấp nháy liên tục lúc combat (ra/vào tầm đánh), nếu đổi
-## target ngay lập tức mỗi lần nhấp nháy thì camera cứ đổi hướng giữa chừng
-## liên tục, nhìn như "do dự" dù từng bước lerp vẫn mượt riêng lẻ.
-func _update_camera_follow(delta: float) -> void:
-	if _camera_return_home:
-		## Đang chờ RESTART_DELAY (thắng cả tầng/thua) - ép về nhà, KHÔNG bám
-		## unit nào cả (party vẫn đứng nguyên chỗ vừa đánh xong, có thể rất xa
-		## PARTY_CENTER - lerp về từ từ suốt lúc chờ, xem _check_wipe()).
-		_camera_target_x = PARTY_CENTER.x
-		camera.position.x = lerpf(camera.position.x, _camera_target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
-		return
-
-	if _camera_follow_unit != null and _camera_follow_unit.is_dead():
-		_camera_follow_unit = null ## buộc đánh giá lại ngay, không đợi hết cooldown
-	_camera_follow_switch_cooldown -= delta
-	if _camera_follow_unit == null or _camera_follow_switch_cooldown <= 0.0:
-		_camera_follow_unit = _pick_camera_follow_unit()
-		_camera_follow_switch_cooldown = CAMERA_FOLLOW_SWITCH_HOLD
-
-	_camera_target_x = (_camera_follow_unit.position.x + CAMERA_LOOKAHEAD_X) if _camera_follow_unit != null else PARTY_CENTER.x
-	camera.position.x = lerpf(camera.position.x, _camera_target_x, clampf(delta * CAMERA_FOLLOW_LERP_SPEED, 0.0, 1.0))
-
-const NEAR_CHARACTER_KEY: String = "soldier" ## melee, tank đứng đầu tuyến
-const MID_CHARACTER_KEY: String = "priest" ## hỗ trợ, thường đứng giữa đội hình
-const FAR_CHARACTER_KEYS: Array[String] = ["archer", "wizard"] ## tầm xa, đứng hậu phương
-
-## Chọn 1 nhân vật CỤ THỂ để camera bám theo (không lấy trung bình cả đội) -
-## thứ tự ưu tiên ĐỔI tuỳ đã giao chiến hay chưa:
-## - CHƯA giao chiến (không unit nào is_engaged, còn đang đi tới quái): ưu tiên
-##   MID (Priest, thường đứng giữa) -> GẦN (Soldier, tank dẫn đầu) -> XA
-##   (Archer/Wizard).
-## - ĐÃ giao chiến (có unit is_engaged = đang trong tầm đánh): ưu tiên GẦN
-##   (Soldier, người tiếp cận quái đầu tiên) -> MID (Priest) -> XA.
-## Trả null nếu cả phe mình đã chết (xem _update_camera_follow() fallback).
-func _pick_camera_follow_unit() -> TroopUnit:
-	var any_engaged := party_units.any(func(u: TroopUnit) -> bool: return not u.is_dead() and u.is_engaged)
-	var priority_keys := [NEAR_CHARACTER_KEY, MID_CHARACTER_KEY] if any_engaged else [MID_CHARACTER_KEY, NEAR_CHARACTER_KEY]
-	for character_key in priority_keys:
-		var unit := _find_alive_party_by_character_key(character_key)
-		if unit != null:
-			return unit
-	for character_key in FAR_CHARACTER_KEYS:
-		var unit := _find_alive_party_by_character_key(character_key)
-		if unit != null:
-			return unit
-	return null
-
-func _find_alive_party_by_character_key(character_key: String) -> TroopUnit:
-	for unit in party_units:
-		if not unit.is_dead() and unit.troop_data.character_key == character_key:
-			return unit
-	return null
-
-## Trong lúc chờ RESTART_DELAY, _update_fight không còn chạy nên phải tự gọi
+## Trong lúc chờ RESTART_DELAY, CombatResolver không còn chạy nên phải tự gọi
 ## play_idle() MỖI FRAME ở đây thay vì 1 lần duy nhất - play_idle() cố ý
 ## không ngắt animation đánh đang chạy dở (xem TroopUnit._is_busy()), nên gọi
 ## lại liên tục mới bắt đúng lúc animation đó tự kết thúc rồi chuyển hẳn về
@@ -372,142 +369,14 @@ func _update_corpses(delta: float) -> void:
 		if elapsed >= CORPSE_VANISH_DELAY:
 			unit.visible = false
 
-func _update_regen(delta: float) -> void:
-	for unit in _all_units:
-		if unit.is_dead():
-			continue
-		unit.regen_cooldown += delta
-		if unit.regen_cooldown >= REGEN_INTERVAL:
-			unit.regen_cooldown = 0.0
-			unit.heal(unit.troop_data.regen_hp)
-
-## Hết mục tiêu (phe kia đã chết sạch) -> đứng yên tư thế idle thay vì giữ
-## nguyên animation cuối cùng (thường đang giữa chừng 1 đòn tấn công) - trước
-## đây _fight_step chỉ được gọi khi CÓ mục tiêu nên animation bị đứng hình.
-func _update_fight(delta: float) -> void:
-	for unit in _all_units:
-		if unit.is_dead():
-			continue
-		var target := _find_nearest_enemy_of(unit)
-		if target != null:
-			_fight_step(unit, target, delta)
-		else:
-			unit.is_engaged = false
-			unit.play_idle()
-
-func _find_nearest_enemy_of(unit: TroopUnit) -> TroopUnit:
-	var pool: Array[TroopUnit] = enemy_units if unit.team == Enums.Team.PLAYER else party_units
-	var nearest: TroopUnit = null
-	var nearest_dist := INF
-	for other in pool:
-		if other.is_dead():
-			continue
-		var d := unit.position.distance_to(other.position)
-		if d < nearest_dist:
-			nearest_dist = d
-			nearest = other
-	return nearest
-
-## Ngoài tầm đánh thì đi tới, trong tầm thì đứng đánh theo cooldown - dùng
-## chung cho cả 2 phe, không có tấn công đặc biệt "đánh mạnh" (đạn bay đòn
-## thường xem _resolve_simple_attack).
-func _fight_step(attacker: TroopUnit, defender: TroopUnit, delta: float) -> void:
-	attacker.face_towards(defender.position)
-	var distance := attacker.position.distance_to(defender.position)
-	if distance > attacker.attack_range_px():
-		attacker.is_engaged = false
-		attacker.play_walk()
-		var dir := (defender.position - attacker.position).normalized()
-		attacker.position += dir * attacker.move_speed_px() * delta
-		return
-	attacker.is_engaged = true
-	attacker.attack_cooldown = maxf(attacker.attack_cooldown - delta, 0.0)
-	if attacker.attack_cooldown <= 0.0:
-		attacker.attack_cooldown = attacker.attack_interval()
-		attacker.play_attack()
-		_resolve_simple_attack(attacker, defender)
-	else:
-		attacker.play_idle()
-
-## Copy đúng công thức sát thương của BattleScene._resolve_attack/_apply_damage
-## (crit, giáp hiệu dụng theo armor penetration, life steal) - KHÔNG nhân
-## SKILL_DAMAGE_MULT vì chưa có skill "đánh mạnh". Quái (ENEMY) chết THẬT ở
-## _apply_damage() thì cộng vàng+EXP thật NGAY LÚC ĐÓ - đây chính là nguồn
-## thưởng treo máy duy nhất, không phải hình ảnh minh hoạ (xem ghi chú đầu file).
-##
-## Archer/Wizard bắn đạn bay (sát thương chỉ áp dụng lúc đạn TỚI NƠI qua
-## on_arrive callback, giống BattleScene._spawn_arrow/_spawn_magic_bolt) thay
-## vì trừ máu ngay lúc ra đòn - nếu không đòn tầm xa chỉ đổi tư thế đánh mà
-## không có hiệu ứng gì bay tới mục tiêu, nhìn như "đánh chay".
-func _resolve_simple_attack(attacker: TroopUnit, defender: TroopUnit) -> void:
-	var atk_data := attacker.troop_data
-	var is_crit := randf() < atk_data.crit_rate
-	var base_damage: float = attacker.effective_atk() * (atk_data.crit_damage if is_crit else 1.0)
-	var raw_defense: float = defender.effective_m_def() if atk_data.damage_type == Enums.DamageType.MAGIC else defender.effective_def()
-	var effective_defense: float = raw_defense * (1.0 - atk_data.armor_penetration / 100.0)
-	var final_damage: float = maxf(base_damage - effective_defense, 1.0)
-
-	match atk_data.character_key:
-		"archer":
-			_spawn_arrow(attacker, defender, final_damage)
-		"wizard":
-			_spawn_magic_bolt(attacker, defender, final_damage)
-		"priest":
-			_apply_damage(attacker, defender, final_damage)
-			_spawn_impact_effect(defender.position, PRIEST_ATTACK_EFFECT_FRAMES)
-		_:
-			_apply_damage(attacker, defender, final_damage)
-
-func _apply_damage(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
-	if defender.is_dead():
-		return
-	defender.take_damage(final_damage)
-	_spawn_popup(defender.position + POPUP_SPAWN_OFFSET, "-%d" % roundi(final_damage), COLOR_DAMAGE)
-	if attacker.troop_data.life_steal > 0.0:
-		attacker.heal(final_damage * attacker.troop_data.life_steal)
-	if defender.is_dead() and defender.team == Enums.Team.ENEMY:
-		GameState.add_gold(defender.troop_data.gold_reward)
-		GameState.grant_kill_exp(_member_troop_ids, defender.troop_data.exp_reward)
-		_spawn_popup(defender.position + POPUP_SPAWN_OFFSET + Vector2(0, -16), "+%d vàng" % defender.troop_data.gold_reward, COLOR_GOLD)
-		_roll_material_drop(defender)
-
-## Hạ 1 quái = MATERIAL_DROP_CHANCE (70%) rơi đúng 1 nguyên liệu cấp 1, ngẫu
-## nhiên trong 10 nhóm (xem MaterialDatabase.random_tier1_id) - cộng thẳng
-## vào GameState.materials (WarehousePanel đọc trực tiếp từ đó).
-func _roll_material_drop(defender: TroopUnit) -> void:
-	if randf() >= MATERIAL_DROP_CHANCE:
-		return
-	var material_id := MaterialDatabase.random_tier1_id()
-	GameState.add_material(material_id, 1)
-	var mat := MaterialDatabase.get_by_id(material_id)
-	_spawn_popup(defender.position + POPUP_SPAWN_OFFSET + Vector2(0, -32), "+1 %s" % mat.display_name, COLOR_MATERIAL)
-
-func _spawn_arrow(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
-	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
-	arena.add_child(projectile)
-	projectile.setup_static(attacker.position, defender.position, ARROW_TEXTURE, func(): _apply_damage(attacker, defender, final_damage))
-
-func _spawn_magic_bolt(attacker: TroopUnit, defender: TroopUnit, final_damage: float) -> void:
-	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
-	arena.add_child(projectile)
-	projectile.setup_animated(attacker.position, defender.position, MAGIC_PROJECTILE_FRAMES, "cast", func(): _apply_damage(attacker, defender, final_damage))
-
-func _spawn_impact_effect(world_position: Vector2, frames: SpriteFrames) -> void:
-	var effect: ImpactEffect = IMPACT_EFFECT_SCENE.instantiate()
-	arena.add_child(effect)
-	effect.setup(world_position, frames, "cast")
-
-func _spawn_popup(world_position: Vector2, text: String, color: Color) -> void:
-	var popup: DamagePopup = DAMAGE_POPUP_SCENE.instantiate()
-	arena.add_child(popup)
-	popup.setup(text, color, world_position)
-
 ## Quái ĐỢT HIỆN TẠI chết sạch mà party còn sống: còn đợt kế tiếp trong tầng
-## này -> chuyển đợt (WAVE_CLEAR_DELAY, xem _process); là đợt CUỐI CÙNG ->
-## THẮNG CẢ TẦNG (lên tầng, RESTART_DELAY). Party chết sạch (bất kể đợt nào)
-## = THUA -> đánh lại từ ĐỢT 1 của đúng tầng này (RESTART_DELAY, xem _revive_all).
+## này -> chuyển REFORMING (KHÔNG kết thúc tầng, xem _update_reforming()); là
+## đợt CUỐI CÙNG -> THẮNG CẢ TẦNG (lên tầng, RESTART_DELAY). Party chết sạch
+## (bất kể đợt nào) = THUA -> đánh lại từ ĐỢT 1 của đúng tầng này
+## (RESTART_DELAY, xem _revive_all). Guard REFORMING: tránh set lại
+## _reform_timer chồng lên chính nó mỗi frame trong lúc đang REFORMING dở.
 func _check_wipe() -> void:
-	if _restart_timer >= 0.0 or _wave_transition_timer >= 0.0:
+	if _restart_timer >= 0.0 or _wave_staging_state == WaveStagingState.REFORMING:
 		return
 	var party_alive := party_units.any(func(u: TroopUnit) -> bool: return not u.is_dead())
 	var enemy_alive := enemy_units.any(func(u: TroopUnit) -> bool: return not u.is_dead())
@@ -516,19 +385,13 @@ func _check_wipe() -> void:
 	if not party_alive:
 		_pending_win = false
 		_restart_timer = RESTART_DELAY
-		_camera_return_home = true ## lerp về PARTY_CENTER suốt lúc chờ hồi sinh, xem _update_camera_follow()
 		return
 	if _current_wave_index < _wave_count - 1:
-		_wave_transition_timer = WAVE_CLEAR_DELAY
+		_wave_staging_state = WaveStagingState.REFORMING
+		_reform_timer = REFORM_FAKE_WALK_DURATION
 	else:
 		_pending_win = true
 		_restart_timer = RESTART_DELAY
-		## THẮNG CẢ TẦNG - party đang đứng nguyên chỗ vừa đánh xong đợt cuối
-		## (có thể rất xa PARTY_CENTER qua nhiều đợt). Ép camera lerp về nhà
-		## NGAY (suốt RESTART_DELAY, không đợi configure() tầng mới snap tức
-		## thì) - tới lúc tầng mới thật sự bắt đầu, camera đã sẵn ở đó, không
-		## còn "nhảy" đúng lúc đợt quái đầu tầng mới xuất hiện nữa.
-		_camera_return_home = true
 
 ## Báo GameState mở khoá tầng vừa thắng, rồi nạp tầng kế tiếp của ĐÚNG map
 ## đang treo - tầng tiến được VÔ HẠN kể cả khi chưa author StageData thật cho
@@ -545,19 +408,59 @@ func _advance_floor() -> void:
 
 ## Thua -> đánh lại ĐỢT 1 của đúng tầng đang treo (không tiếp tục từ đợt đang
 ## thua) - hồi sinh party TẠI CHỖ rồi đưa .position về lại đội hình gốc quanh
-## PARTY_CENTER (party đã đi xa theo các đợt trước đó), dọn quái đợt dở dang,
+## _map_center_x (party đã đi xa theo các đợt trước đó), dọn quái đợt dở dang,
 ## reset lại state đợt về ban đầu rồi spawn lại đợt 1.
 func _revive_all() -> void:
-	for i in range(party_units.size()):
-		var unit := party_units[i]
+	for unit in party_units:
 		unit.revive()
-		unit.attack_bar_bg.visible = false
-		unit.skill_bar_bg.visible = false
-		var offset := Vector2.ZERO
-		if party_units.size() > 1:
-			offset = Vector2.RIGHT.rotated(TAU * i / party_units.size()) * SPREAD_RADIUS
-		unit.position = PARTY_CENTER + offset
 	_death_timers.clear()
+	_spawn_player_team_positions(Vector2(_map_center_x, 0.0))
+	_wave_staging_state = WaveStagingState.CENTER_WAIT
 	_current_wave_index = -1
-	_camera_return_home = false ## đợt 1 bắt đầu lại thật - quay lại bám nhân vật bình thường
 	_spawn_next_wave()
+
+## Đưa phe mình về ĐÚNG đội hình gốc quanh `center` (không spawn lại unit mới,
+## chỉ set lại .position) - dùng khi hồi sinh (_revive_all()), vì lúc đó
+## party_units đã tồn tại sẵn, khác _spawn_player_team() (spawn unit MỚI).
+func _spawn_player_team_positions(center: Vector2) -> void:
+	for i in range(party_units.size()):
+		party_units[i].position = center + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
+
+## ============================== DEBUG_TEST_MODE ==============================
+
+## CHỈ chạy khi DEBUG_TEST_MODE - phóng to camera THẬT SỰ ra đủ để thấy toàn
+## bộ map (khung hình chuẩn + khu spawn), vẽ đường chia 6 vùng (Cam-1..4 +
+## Spawn-1..2) + các mốc quan trọng bằng ColorRect mỏng. KHÔNG đổi bất kỳ hằng
+## số/mốc thật nào ở trên - camera lúc chơi bình thường (không debug) vẫn
+## đứng yên tại (0,0) zoom=1.
+func _setup_debug_view(viewport_half_width: float) -> void:
+	var debug_left: float = _map_center_x - viewport_half_width
+	var debug_right: float = _wave_spawn_x + CAMERA_VIEW_MARGIN
+	var debug_zoom: float = (viewport_half_width * 2.0) / (debug_right - debug_left)
+	camera.zoom = Vector2(debug_zoom, debug_zoom)
+	camera.position.x = (debug_left + debug_right) * 0.5
+
+	## Vẽ vào 1 layer RIÊNG (không phải arena - arena bị configure() xoá sạch
+	## mỗi lần lên tầng/hồi sinh đợt 1, sẽ xoá luôn mấy đường debug này).
+	var debug_layer := Node2D.new()
+	arena.get_parent().add_child(debug_layer)
+
+	var cam_quarter: float = viewport_half_width * 0.5
+	_add_debug_vline(debug_layer, debug_left, Color.YELLOW) ## mép trái Cam-1 ("hình vuông" camera chuẩn)
+	_add_debug_vline(debug_layer, _map_center_x - cam_quarter, Color.CYAN) ## Cam-1/Cam-2
+	_add_debug_vline(debug_layer, _map_center_x, Color.WHITE) ## Cam-2/Cam-3 (tâm - đội hình ban đầu, CENTER_WAIT)
+	_add_debug_vline(debug_layer, _map_center_x + cam_quarter, Color.CYAN) ## Cam-3/Cam-4
+	_add_debug_vline(debug_layer, _engage_trigger_x, Color.RED) ## giữa Cam-4 - quái tới đây thì phá đội hình (ENGAGED)
+	_add_debug_vline(debug_layer, _camera_right_edge_x, Color.YELLOW) ## mép phải Cam-4 ("hình vuông" camera chuẩn) = Cam-4/Spawn-1
+	_add_debug_vline(debug_layer, _retreat_trigger_x, Color.CYAN) ## Spawn-1/Spawn-2 - quái lọt qua đây thì bắt đầu RETREATING
+	_add_debug_vline(debug_layer, _wave_spawn_x, Color.ORANGE) ## quái spawn ở đây
+	_add_debug_vline(debug_layer, _retreat_x, Color.GREEN) ## đội hình lùi về đây (RETREATING)
+
+func _add_debug_vline(parent: Node2D, x: float, color: Color) -> void:
+	var line := ColorRect.new()
+	line.color = color
+	line.size = Vector2(3.0, DEBUG_ZONE_LINE_HEIGHT)
+	line.position = Vector2(x - 1.5, -DEBUG_ZONE_LINE_HEIGHT * 0.5)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	line.z_index = 100
+	parent.add_child(line)

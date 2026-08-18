@@ -28,7 +28,7 @@ func _ready() -> void:
 	stage_screen.stage_selected.connect(stage_flow.start_stage)
 	stage_flow.stage_finished.connect(stage_screen.on_stage_finished)
 	stage_screen.set_battle_scene(battle_scene)
-	_on_tab_selected("city")
+	_on_tab_selected("stage") ## màn khởi động = tab "Ải" (đổi 2026-08, trước đó là "city")
 
 func _process(_delta: float) -> void:
 	gold_label.text = "Vàng: %d" % GameState.gold
