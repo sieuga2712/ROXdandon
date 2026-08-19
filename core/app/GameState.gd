@@ -189,3 +189,91 @@ func merge_material_up(group_key: String, tier: int) -> bool:
 		return false
 	add_material(MaterialDatabase.make_id(group_key, tier + 1), 1)
 	return true
+
+## ============================== Trang bị ==============================
+## Trang bị KHÔNG stack/gộp như Kho nguyên liệu ở trên - mỗi món
+## (EquipmentItemData) là 1 instance ĐỘC LẬP dù trùng type_id, có thể khác
+## quality/tier/tinh luyện/cường hóa. `equipment_inventory` = túi đồ (CHƯA
+## mặc), `equipped` = đang mặc trên từng nhân vật (troop_id -> Dictionary
+## Enums.EquipmentSlotType -> instance_id). CHƯA có nguồn thu thập thật nào
+## gán vào đây (EquipmentDropTable.gd đã có công thức xác suất nhưng CHƯA nối
+## vào CombatResolver lúc giết quái) - xem [[Tiến độ & Việc còn dang dở]].
+
+var equipment_inventory: Array[EquipmentItemData] = []
+var equipped: Dictionary = {} ## troop_id (int) -> Dictionary[Enums.EquipmentSlotType -> instance_id (String)]
+
+var _next_equipment_instance_num: int = 1
+
+func _new_equipment_instance_id() -> String:
+	var id := "eq_%d" % _next_equipment_instance_num
+	_next_equipment_instance_num += 1
+	return id
+
+## Thêm 1 món trang bị MỚI vào túi đồ (chưa mặc) - dùng khi rớt đồ
+## (tương lai, xem EquipmentDropTable) hoặc debug/test. Trả về instance vừa tạo.
+func add_equipment_item(type_id: String, quality: Enums.EquipmentQuality, tier: int, refine_level: int = 0, enhance_level: int = 0) -> EquipmentItemData:
+	var item := EquipmentItemData.new()
+	item.instance_id = _new_equipment_instance_id()
+	item.type_id = type_id
+	item.quality = quality
+	item.tier = tier
+	item.refine_level = refine_level
+	item.enhance_level = enhance_level
+	equipment_inventory.append(item)
+	return item
+
+func get_equipment_item(instance_id: String) -> EquipmentItemData:
+	for item in equipment_inventory:
+		if item.instance_id == instance_id:
+			return item
+	return null
+
+## Trang bị đang mặc ở 1 slot của 1 nhân vật - null nếu chưa mặc gì.
+func get_equipped_item(troop_id: int, slot_type: Enums.EquipmentSlotType) -> EquipmentItemData:
+	var slots: Dictionary = equipped.get(troop_id, {})
+	var instance_id: String = slots.get(slot_type, "")
+	return get_equipment_item(instance_id) if instance_id != "" else null
+
+## Mặc 1 món (phải đang có trong equipment_inventory) vào ĐÚNG slot khớp
+## type của nó cho troop_id - món cũ đang mặc ở slot đó (nếu có) vẫn còn
+## nguyên trong equipment_inventory (không mất, không tự trả về "chưa mặc" -
+## đơn giản là không còn nằm trong `equipped` nữa vì đã bị món mới thế chỗ).
+func equip_item(troop_id: int, instance_id: String) -> void:
+	var item := get_equipment_item(instance_id)
+	if item == null:
+		return
+	var type_data := item.get_type()
+	if type_data == null:
+		return
+	if not equipped.has(troop_id):
+		equipped[troop_id] = {}
+	equipped[troop_id][type_data.slot_type] = instance_id
+
+## Danh sách trang bị TRONG TÚI ĐỒ (chưa mặc) khớp đúng slot_type + phù hợp
+## CombatGroup của nhân vật (UNIVERSAL luôn khớp mọi nhóm) - dùng để hiện bảng
+## chọn khi bấm vào 1 ô trang bị, xem CharacterBoardScreen.
+func get_owned_equipment_for_slot(slot_type: Enums.EquipmentSlotType, combat_group: Enums.CombatGroup) -> Array[EquipmentItemData]:
+	return equipment_inventory.filter(func(item: EquipmentItemData) -> bool:
+		var type_data := item.get_type()
+		if type_data == null or type_data.slot_type != slot_type:
+			return false
+		return type_data.combat_group == combat_group or type_data.combat_group == Enums.CombatGroup.UNIVERSAL
+	)
+
+## Nhóm chiến đấu của 1 thành viên party CỐ ĐỊNH (Soldier/Archer/Wizard/Priest) -
+## suy theo `character_key` (KHÔNG theo troop_type/damage_type: cả Archer lẫn
+## Wizard đều là Enums.TroopType.ARCHER, và archer.tres có lỗi kế thừa
+## damage_type=MAGIC dù là cung thủ vật lý - 2 field đó không đáng tin để suy
+## nhóm, xem ghi chú archer.tres trong tiến độ dự án). Party cố định không
+## phải gacha nên bảng cứng theo character_key là an toàn, không cần tổng quát hoá.
+func get_combat_group_for_troop(troop_id: int) -> Enums.CombatGroup:
+	var troop := TroopDatabase.get_by_id(troop_id)
+	if troop == null:
+		return Enums.CombatGroup.MELEE
+	match troop.character_key:
+		"archer":
+			return Enums.CombatGroup.RANGED_PHYSICAL
+		"wizard", "priest":
+			return Enums.CombatGroup.RANGED_MAGIC
+		_:
+			return Enums.CombatGroup.MELEE

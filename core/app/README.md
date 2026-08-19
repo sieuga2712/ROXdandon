@@ -19,10 +19,13 @@ grant_kill_exp(troop_ids, amount) / get_base_level(troop_id) / get_job_level(tro
 effective_hp/atk/def/m_def(troop_id, base_value)
 has_idle_team() / is_troop_idling(troop_id) / start_idle_team(stage_id, member_ids) / stop_idle_team() / get_idle_farm_map()
 get_material_count(id) / add_material(id, amount) / remove_material(id, amount) / merge_material_up(group_key, tier)
+add_equipment_item(type_id, quality, tier, refine_level, enhance_level) / get_equipment_item(instance_id)
+get_equipped_item(troop_id, slot_type) / equip_item(troop_id, instance_id)
+get_owned_equipment_for_slot(slot_type, combat_group) / get_combat_group_for_troop(troop_id)
 ```
 
 ## Module được phép gọi
-`core/database` (đọc dữ liệu), `entities/stage` (kiểu `StageData` dùng trong `start_idle_team`/`get_idle_farm_map`).
+`core/database` (đọc dữ liệu, gồm `EquipmentTypeDatabase`), `entities/stage` (kiểu `StageData` dùng trong `start_idle_team`/`get_idle_farm_map`), `entities/equipment` (kiểu `EquipmentItemData`).
 
 ## Ai được gọi vào đây
 Mọi `features/*` đều được gọi `GameState`. Không module nào được đọc field nội bộ của `GameState` mà không qua hàm public ở trên.

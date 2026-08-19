@@ -22,6 +22,7 @@ StageDatabase="*res://core/database/StageDatabase.gd"
 MapDatabase="*res://core/database/MapDatabase.gd"
 BossDatabase="*res://core/database/BossDatabase.gd"
 MaterialDatabase="*res://core/database/MaterialDatabase.gd"
+EquipmentTypeDatabase="*res://core/database/EquipmentTypeDatabase.gd"
 GameState="*res://core/app/GameState.gd"
 
 [display]

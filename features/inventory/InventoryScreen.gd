@@ -40,7 +40,7 @@ const SLOT_SIZE: int = 50 ## vừa khít trong ~452px còn lại (540 - margin/v
 const ROW_GAP: int = 6
 const GRID_WIDTH: float = COLS * SLOT_SIZE + (COLS - 1) * ROW_GAP ## = 442 - bề rộng CỐ ĐỊNH của grid bất kể có bao nhiêu món (ép qua custom_minimum_size.x ở _build_ui() - không để GridContainer tự co theo hàng dài nhất, xem ghi chú ở đó)
 const MAX_VISIBLE_ROWS: int = 6 ## quá số hàng này mới thật sự cuộn - tránh card cao vô hạn nếu có rất nhiều loại nguyên liệu
-const ICON_SIZE: int = SLOT_SIZE - 14 ## = 36 - đúng tỉ lệ "slot - 14" của bản "Kho báu" gốc
+const ICON_SIZE: int = SLOT_SIZE - 4 ## = 46 - icon PNG tự có khung riêng sẵn trong ảnh nên không cần chừa chỗ cho viền ô nữa (xem _build_slot(), đã bỏ viền ngoài)
 const COUNT_BOX_SIZE: int = 18 ## khung số lượng ở góc dưới-phải
 const COUNT_INSET: int = 4 ## lùi vào trong so với viền ô - KHÔNG dán sát cạnh như bản "Kho báu" gốc
 
@@ -213,15 +213,12 @@ func _refresh() -> void:
 
 func _build_slot(mat: MaterialData) -> PanelContainer:
 	var count := GameState.get_material_count(mat.id)
-	var tier_color: Color = TIER_BORDER_COLORS.get(mat.tier, SLOT_BORDER)
 	var slot := PanelContainer.new()
 	slot.custom_minimum_size = Vector2(SLOT_SIZE, SLOT_SIZE)
 	var style := StyleBoxFlat.new()
 	style.bg_color = SLOT_BG
-	style.border_color = tier_color
-	style.set_border_width_all(2)
 	style.set_corner_radius_all(6)
-	slot.add_theme_stylebox_override("panel", style)
+	slot.add_theme_stylebox_override("panel", style) ## KHÔNG vẽ viền ngoài nữa - icon PNG tự có khung riêng sẵn trong ảnh, viền ô chỉ làm icon nhỏ đi vô ích
 
 	## overlay là Control THƯỜNG (không phải Container) - PanelContainer chỉ ép
 	## khít đúng 1 con NÀY vào content rect; BÊN TRONG overlay, icon/số lượng

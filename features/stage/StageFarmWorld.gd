@@ -112,6 +112,9 @@ var _wave_anchor_x: float = 0.0 ## tâm X đợt HIỆN TẠI - luôn = _wave_sp
 var _wave_staging_state: WaveStagingState = WaveStagingState.ENGAGED ## reset về CENTER_WAIT/REFORMING - giá trị khởi tạo không quan trọng
 var _reform_timer: float = 0.0 ## đếm ngược REFORM_FAKE_WALK_DURATION lúc mới vào REFORMING - xem _update_reforming()
 
+var _wipe: ScreenWipe ## phủ đen lúc đổi tầng (xem _advance_floor()) - nằm trong 1 CanvasLayer riêng vì StageFarmWorld là Node2D (anchors FULL_RECT của ScreenWipe chỉ đúng khi ở trong cây Control/CanvasLayer, không phải Node2D)
+var _transitioning: bool = false ## true trong lúc đang chạy hiệu ứng wipe đổi tầng - _process() tạm dừng AI/kiểm tra, tránh đụng vào party/enemy_units đang bị configure() dọn dở dang
+
 var _map_center_x: float = 0.0 ## = camera.position.x, ranh giới Cam-2/Cam-3 - đội hình ban đầu đứng đây (CENTER_WAIT)
 var _retreat_x: float = 0.0 ## GIỮA Cam-1 - vị trí phe mình lùi về lúc RETREATING
 var _engage_trigger_x: float = 0.0 ## GIỮA Cam-4 - quái X <= giá trị này -> ENGAGED (phá đội hình)
@@ -144,6 +147,11 @@ func _ready() -> void:
 
 	if DEBUG_TEST_MODE:
 		_setup_debug_view(viewport_half_width)
+
+	var wipe_layer := CanvasLayer.new()
+	add_child(wipe_layer)
+	_wipe = ScreenWipe.new()
+	wipe_layer.add_child(_wipe)
 
 ## Gọi được NHIỀU LẦN trên cùng 1 instance (lên tầng khi thắng) - tự dọn hết
 ## quân cũ (queue_free + xoá 2 mảng) trước khi spawn quân mới, không cần
@@ -263,17 +271,11 @@ func _update_wave_staging(delta: float) -> void:
 					unit.play_walk() ## giả vờ đi bộ tại chỗ - KHÔNG đổi .position
 		return
 
-	## RETREATING - lùi THẬT về _retreat_x, map tự set .position trực tiếp
-	## (CombatResolver chỉ biết "tiến tới mục tiêu", không có khái niệm "lùi
-	## xa mục tiêu" nên không thể diễn tả bước này qua run_ai()).
-	for unit in party_units:
-		if unit.is_dead():
-			continue
-		if unit.position.x > _retreat_x:
-			unit.play_walk()
-			unit.position.x = maxf(unit.position.x - unit.move_speed_px() * delta, _retreat_x)
-		else:
-			unit.play_idle()
+	## RETREATING - lùi THẬT về ĐÚNG chỗ đội hình quanh _retreat_x, giữ nguyên
+	## FORMATION_OFFSETS (xem _move_units_to_formation()) - map tự set
+	## .position trực tiếp vì CombatResolver chỉ biết "tiến tới mục tiêu",
+	## không có khái niệm "lùi xa mục tiêu" nên không thể diễn tả qua run_ai().
+	_move_units_to_formation(party_units, _retreat_x, delta)
 
 ## Quái đợt vừa rồi đã chết sạch (còn đợt kế trong tầng) - trước khi spawn đợt
 ## kế, phe mình: (1) giả vờ tiến thêm về bên phải REFORM_FAKE_WALK_DURATION
@@ -292,12 +294,23 @@ func _update_reforming(delta: float) -> void:
 				unit.play_walk()
 		return
 
+	if _move_units_to_formation(party_units, _map_center_x, delta):
+		_wave_staging_state = WaveStagingState.CENTER_WAIT
+
+## Di chuyển từng đơn vị trong `units` về ĐÚNG chỗ đội hình 2-3-2 quanh tâm
+## `center_x` - GIỮ NGUYÊN offset riêng từng vị trí (FORMATION_OFFSETS), không
+## chỉ kéo phẳng 1 trục X chung cho mọi người (bug đã gặp 2026-08-19: làm vậy
+## cả đội hình dồn về cùng 1 X, mất hẳn hình lục giác, chỉ còn dàn theo Y
+## thành 1 hàng dọc). Trả về true khi TẤT CẢ đã về đúng chỗ (trong
+## REFORM_ARRIVE_EPSILON) - dùng chung cho cả RETREATING (lùi về Cam-1) lẫn
+## REFORMING (về lại CENTER_WAIT).
+func _move_units_to_formation(units: Array[TroopUnit], center_x: float, delta: float) -> bool:
 	var all_arrived := true
-	for i in range(party_units.size()):
-		var unit := party_units[i]
+	for i in range(units.size()):
+		var unit := units[i]
 		if unit.is_dead():
 			continue
-		var target: Vector2 = Vector2(_map_center_x, 0.0) + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
+		var target: Vector2 = Vector2(center_x, 0.0) + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
 		var to_target := target - unit.position
 		if to_target.length() > REFORM_ARRIVE_EPSILON:
 			unit.play_walk()
@@ -306,8 +319,7 @@ func _update_reforming(delta: float) -> void:
 		else:
 			unit.position = target
 			unit.play_idle()
-	if all_arrived:
-		_wave_staging_state = WaveStagingState.CENTER_WAIT
+	return all_arrived
 
 ## CENTER_WAIT/RETREATING: map tự điều khiển phe mình (fake-walk hoặc lùi
 ## thật, xem _update_wave_staging()) - chặn CombatResolver tự ý di chuyển phe
@@ -320,6 +332,8 @@ func _process(delta: float) -> void:
 	if _stage == null:
 		return
 	_update_corpses(delta)
+	if _transitioning:
+		return
 	if _restart_timer >= 0.0:
 		_hold_survivors_idle()
 		_restart_timer -= delta
@@ -398,6 +412,8 @@ func _check_wipe() -> void:
 ## tầng đó (xem GameState.resolve_stage_for_floor - tự duplicate() tầng cuối
 ## cùng có sẵn, chỉ map_id/floor_number còn được đọc thật ở luồng này).
 func _advance_floor() -> void:
+	_transitioning = true
+	await _wipe.close()
 	var map_id: int = _stage.map_id
 	var current_floor: int = _stage.floor_number
 	GameState.report_floor_cleared(map_id, current_floor)
@@ -405,6 +421,8 @@ func _advance_floor() -> void:
 	var floors: Array[StageData] = StageDatabase.get_floors_for_map(map_id)
 	var next_stage: StageData = GameState.resolve_stage_for_floor(floors, current_floor + 1)
 	configure(next_stage, _member_troop_ids)
+	await _wipe.open()
+	_transitioning = false
 
 ## Thua -> đánh lại ĐỢT 1 của đúng tầng đang treo (không tiếp tục từ đợt đang
 ## thua) - hồi sinh party TẠI CHỖ rồi đưa .position về lại đội hình gốc quanh

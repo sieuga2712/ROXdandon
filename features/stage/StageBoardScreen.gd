@@ -52,12 +52,16 @@ var _hosted_farm_map: StageFarmMap = null ## instance StageFarmMap hiện đang 
 var _battle_scene: BattleScene = null ## tiêm bởi MainShell qua set_battle_scene() - KHÔNG sở hữu, chỉ mượn tạm vào battle_view_host lúc đánh boss
 var _battle_scene_home_parent: Node = null ## cha gốc của _battle_scene (MainShell) - trả về đúng chỗ cũ khi đánh xong, xem _unmount_boss_battle()
 var _boss_battle_active: bool = false ## true = đang hiện BattleScene trong battle_view_host (đè lên treo máy) - chặn %AfkRefreshTimer tự remount treo máy đè lên trận boss
+var _view_wipe: ScreenWipe ## phủ đen lúc đổi map treo máy - xem _on_stage_item_pressed(). Luôn nổi trên cùng (z_index riêng, xem ScreenWipe) dù StageFarmMap/BattleScene reparent vào SAU nó.
 
 func _ready() -> void:
 	_build_sub_tab_buttons()
 	boss_panel.stage_selected.connect(_on_boss_stage_selected)
 	afk_refresh_timer.wait_time = AFK_REFRESH_INTERVAL
 	afk_refresh_timer.timeout.connect(_on_refresh_timer_timeout)
+
+	_view_wipe = ScreenWipe.new()
+	battle_view_host.add_child(_view_wipe)
 
 	## Mặc định treo ải đầu tiên của map đầu tiên ngay lần đầu vào tab, đúng
 	## yêu cầu "mặc định đánh ải đầu tiên tại map đầu tiên của ải thường".
@@ -95,6 +99,8 @@ func _mount_battle_view() -> void:
 	if farm_map == _hosted_farm_map:
 		return
 	for child in battle_view_host.get_children():
+		if child == _view_wipe:
+			continue ## overlay wipe sống cố định ở đây - không phải xác instance cũ
 		child.queue_free() ## xác instance StageFarmMap cũ (nếu có) - không queue_free() farm_map hiện tại, chỉ dọn con thừa nếu lỡ có
 	_hosted_farm_map = farm_map
 	if farm_map == null:
@@ -235,10 +241,15 @@ func _next_floor_for_map(map_id: int) -> int:
 		return 1
 	return mini(GameState.get_highest_floor(map_id) + 1, floors[-1].floor_number)
 
+## "Wipe đóng/mở" quanh lúc đổi map treo máy - phủ đen TRƯỚC khi
+## GameState tạo instance StageFarmMap mới (đổi đột ngột, không animation),
+## mờ dần mở ra SAU khi đã nhúng xong map mới vào view.
 func _on_stage_item_pressed(map_id: int) -> void:
+	await _view_wipe.close()
 	GameState.start_idle_team_on_map(map_id, GameState.PARTY_TROOP_IDS)
 	_mount_battle_view() ## đổi ngay, không đợi %AfkRefreshTimer tick tiếp theo (tối đa 1s sau)
 	_build_map_cards()
+	await _view_wipe.open()
 
 ## MainShell gọi lại sau khi StageFlowController.stage_finished bắn ra (user
 ## vừa đóng bảng kết quả thắng/thua trong BattleScene) - CHỈ còn liên quan Ải

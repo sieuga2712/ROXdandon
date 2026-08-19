@@ -97,6 +97,7 @@ const DEBUG_ZONE_LINE_HEIGHT: float = 900.0
 @onready var surrender_button: Button = %SurrenderButton
 
 var _resolver: CombatResolver
+var _wipe: ScreenWipe ## phủ đen lúc vào/ra trận Boss - xem start_battle()/_on_result_closed()
 
 var _stage: StageData
 var _player_units: Array[TroopUnit] = []
@@ -156,7 +157,14 @@ func _ready() -> void:
 	if DEBUG_TEST_MODE:
 		_setup_debug_view(viewport_half_width)
 
+	_wipe = ScreenWipe.new()
+	add_child(_wipe)
+
+## Phủ đen NGAY (không animation) trước khi spawn/hiện trận - che khoảnh khắc
+## đội hình mới xuất hiện, tránh "giật" hiện ra đột ngột - rồi mờ dần mở ra
+## sau khi mọi thứ đã sẵn sàng ("wipe đóng/mở" lúc vào 1 trận Boss).
 func start_battle(stage: StageData) -> void:
+	_wipe.color.a = 1.0
 	_stage = stage
 	_clear_units()
 	_spawn_player_team(GameState.PARTY_TROOP_IDS, Vector2(_map_center_x, 0.0))
@@ -173,6 +181,7 @@ func start_battle(stage: StageData) -> void:
 	surrender_button.visible = true
 	timer_label.visible = true
 	visible = true
+	await _wipe.open()
 
 ## Xếp phe mình vào ĐÚNG 7 chỗ đội hình "2-3-2 hình lục giác" quanh `center`
 ## (xem FORMATION_OFFSETS) - gán theo INDEX tạm thời, CHƯA phân biệt ai đứng
@@ -280,17 +289,11 @@ func _update_wave_staging(delta: float) -> void:
 					unit.play_walk() ## giả vờ đi bộ tại chỗ - KHÔNG đổi .position
 		return
 
-	## RETREATING - lùi THẬT về _retreat_x, map tự set .position trực tiếp
-	## (CombatResolver chỉ biết "tiến tới mục tiêu", không có khái niệm "lùi
-	## xa mục tiêu" nên không thể diễn tả bước này qua run_ai()).
-	for unit in _player_units:
-		if unit.is_dead():
-			continue
-		if unit.position.x > _retreat_x:
-			unit.play_walk()
-			unit.position.x = maxf(unit.position.x - unit.move_speed_px() * delta, _retreat_x)
-		else:
-			unit.play_idle()
+	## RETREATING - lùi THẬT về ĐÚNG chỗ đội hình quanh _retreat_x, giữ nguyên
+	## FORMATION_OFFSETS (xem _move_units_to_formation()) - map tự set
+	## .position trực tiếp vì CombatResolver chỉ biết "tiến tới mục tiêu",
+	## không có khái niệm "lùi xa mục tiêu" nên không thể diễn tả qua run_ai().
+	_move_units_to_formation(_player_units, _retreat_x, delta)
 
 ## Quái đợt vừa rồi đã chết sạch (còn đợt kế) - trước khi spawn đợt kế, phe
 ## mình: (1) giả vờ tiến thêm về bên phải REFORM_FAKE_WALK_DURATION giây
@@ -308,12 +311,23 @@ func _update_reforming(delta: float) -> void:
 				unit.play_walk()
 		return
 
+	if _move_units_to_formation(_player_units, _map_center_x, delta):
+		_wave_staging_state = WaveStagingState.CENTER_WAIT
+
+## Di chuyển từng đơn vị trong `units` về ĐÚNG chỗ đội hình 2-3-2 quanh tâm
+## `center_x` - GIỮ NGUYÊN offset riêng từng vị trí (FORMATION_OFFSETS), không
+## chỉ kéo phẳng 1 trục X chung cho mọi người (bug đã gặp 2026-08-19: làm vậy
+## cả đội hình dồn về cùng 1 X, mất hẳn hình lục giác, chỉ còn dàn theo Y
+## thành 1 hàng dọc). Trả về true khi TẤT CẢ đã về đúng chỗ (trong
+## REFORM_ARRIVE_EPSILON) - dùng chung cho cả RETREATING (lùi về Cam-1) lẫn
+## REFORMING (về lại CENTER_WAIT).
+func _move_units_to_formation(units: Array[TroopUnit], center_x: float, delta: float) -> bool:
 	var all_arrived := true
-	for i in range(_player_units.size()):
-		var unit := _player_units[i]
+	for i in range(units.size()):
+		var unit := units[i]
 		if unit.is_dead():
 			continue
-		var target: Vector2 = Vector2(_map_center_x, 0.0) + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
+		var target: Vector2 = Vector2(center_x, 0.0) + FORMATION_OFFSETS[i % FORMATION_OFFSETS.size()] * FORMATION_SPACING
 		var to_target := target - unit.position
 		if to_target.length() > REFORM_ARRIVE_EPSILON:
 			unit.play_walk()
@@ -322,8 +336,7 @@ func _update_reforming(delta: float) -> void:
 		else:
 			unit.position = target
 			unit.play_idle()
-	if all_arrived:
-		_wave_staging_state = WaveStagingState.CENTER_WAIT
+	return all_arrived
 
 func _process(delta: float) -> void:
 	if not _active:
@@ -404,7 +417,11 @@ func _end_battle(won: bool) -> void:
 	if won:
 		GameState.add_gold(_stage.reward_gold)
 
+## Phủ đen dần ("wipe đóng") trước khi thật sự ẩn/dọn trận - StageBoardScreen
+## chỉ đổi lại view (trả về treo máy) SAU khi `closed` phát ra, nên màn hình
+## đã che kín đúng lúc nội dung bên dưới đổi, không bị "giật" hiện đột ngột.
 func _on_result_closed() -> void:
+	await _wipe.close()
 	visible = false
 	_clear_units()
 	closed.emit(_last_result_won)
